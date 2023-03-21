@@ -16,9 +16,17 @@
         "issues": "https://github.com/drevops/shell-variables-extractor/issues",
         "source": "https://github.com/drevops/shell-variables-extractor"
     },
-    "require": {},
     "scripts": {
-        "lint": "echo Would run code lint",
-        "test": "echo Would run tests"
+        "lint": "vendor/bin/phpcs -s --standard=Drupal extract-shell-variables.php",
+        "lint:fix": "vendor/bin/phpcbf -s --standard=Drupal extract-shell-variables.php",
+        "test": "cd ./tests && ./test.sh"
+    },
+    "require-dev": {
+        "drupal/coder": "^8.3"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
     }
 }

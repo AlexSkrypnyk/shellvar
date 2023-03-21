@@ -11,4 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - run: echo "Would run tests"
+    - uses: actions/cache@v3
+      with:
+        path: /tmp/composer-cache
+        key: ${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
+    - uses: php-actions/composer@v6
+    - run: composer lint
+    - run: composer test
