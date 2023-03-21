@@ -1,0 +1,24 @@
+{
+    "name": "drevops/shell-variables-extractor",
+    "type": "library",
+    "description": "Provides shell-variables-extractor functionality.",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Alex Skrypnyk",
+            "email": "alex@drevops.com",
+            "homepage": "https://drevops.com",
+            "role": "Maintainer"
+        }
+    ],
+    "homepage": "https://github.com/drevops/shell-variables-extractor",
+    "support": {
+        "issues": "https://github.com/drevops/shell-variables-extractor/issues",
+        "source": "https://github.com/drevops/shell-variables-extractor"
+    },
+    "require": {},
+    "scripts": {
+        "lint": "echo Would run code lint",
+        "test": "echo Would run tests"
+    }
+}
