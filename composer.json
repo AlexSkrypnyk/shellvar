@@ -1,7 +1,7 @@
 {
     "name": "drevops/shell-variables-extractor",
     "type": "library",
-    "description": "Provides shell-variables-extractor functionality.",
+    "description": "Extracts shell variables from one or multiple files in a directory.",
     "license": "GPL-2.0-or-later",
     "authors": [
         {
@@ -19,10 +19,20 @@
     "scripts": {
         "lint": "vendor/bin/phpcs -s --standard=Drupal extract-shell-variables.php",
         "lint:fix": "vendor/bin/phpcbf -s --standard=Drupal extract-shell-variables.php",
-        "test": "cd ./tests && ./test.sh"
+        "test": [
+            "cd ./tests && ./test.sh",
+            "phpunit tests/phpunit/unit"
+        ]
     },
     "require-dev": {
+        "phpunit/phpunit": "^9.5",
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.7.2",
         "drupal/coder": "^8.3"
+    },
+    "autoload-dev": {
+        "classmap": [
+            "tests/phpunit/unit"
+        ]
     },
     "config": {
         "allow-plugins": {
