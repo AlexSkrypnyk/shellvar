@@ -8,9 +8,9 @@ Scan a file or a directory with shell scripts and extract all variables.
 
 ## Features
 
-- Your first feature as a list item
-- Your second feature as a list item
-- Your third feature as a list item
+- Scan a file or a directory with shell scripts and extract found variables.
+- Extract variables comments.
+- Use exclude list to skip specified variables.
 
 ## Installation
 
