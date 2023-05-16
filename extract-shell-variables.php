@@ -11,6 +11,7 @@
  * This is helpful to maintain a table of variables and their descriptions in
  * documentation.
  *
+ * Usage:
  * ./extract-shell-variables.php path/to/file1 path/to/file2
  * ./extract-shell-variables.php path/to/dir
  *
@@ -20,15 +21,40 @@
  * Full:
  * ./extract-shell-variables.php  -t -m -e ./excluded.txt -u "<NOT SET>" ../
  *
- * phpcs:disable Drupal.Commenting.FunctionComment.Missing
  * phpcs:disable Drupal.Commenting.InlineComment.SpacingBefore
+ * phpcs:disable Drupal.Commenting.InlineComment.SpacingAfter
  * phpcs:disable Drupal.Classes.ClassFileName.NoMatch
+ * phpcs:disable Drupal.Commenting.FunctionComment.Missing
  */
 
 /**
- * Main install functionality.
+ * Defines exit codes.
+ */
+define('EXIT_SUCCESS', 0);
+define('EXIT_ERROR', 1);
+
+/**
+ * Defines error level to be reported as an error.
+ */
+define('ERROR_LEVEL', E_USER_WARNING);
+
+/**
+ * Main functionality.
  */
 function main(array $argv, $argc) {
+  if (in_array($argv[1] ?? NULL, ['--help', '-help', '-h', '-?'])) {
+    print_help();
+
+    return EXIT_SUCCESS;
+  }
+
+  // Show help if not enough or more than required arguments.
+  if ($argc < 2) {
+    print_help();
+
+    return EXIT_ERROR;
+  }
+
   init_cli_args_and_options($argv, $argc);
 
   $files = get_targets(get_config('paths'));
@@ -91,6 +117,8 @@ function main(array $argv, $argc) {
   else {
     print render_variables_data($all_variables);
   }
+
+  return EXIT_SUCCESS;
 }
 
 /**
@@ -110,6 +138,7 @@ function init_cli_args_and_options($argv, $argc) {
     'filter-global' => 'g',
   ];
 
+  $optind = 0;
   $options = getopt(implode('', $opts), array_keys($opts), $optind);
 
   foreach ($opts as $longopt => $shortopt) {
@@ -449,6 +478,7 @@ function get_configs() {
 // ////////////////////////////////////////////////////////////////////////// //
 //                                CSVTable                                    //
 // ////////////////////////////////////////////////////////////////////////// //
+
 /**
  * CSVTable.
  *
@@ -664,15 +694,93 @@ class MarkdownBlocks {
 
 }
 
+/**
+ * Print help.
+ */
+function print_help() {
+  $script_name = basename(__FILE__);
+  print <<<EOF
+Extract variables from shell scripts.
+-------------------------------------
+
+Arguments:
+  file or directory     File or directory to scan. Multiple files seprated 
+                        by space.
+
+Options:
+  --csv-delim|-c              
+  --debug|-d            Debug script.
+  --exclude-file|-e     Path to a file with exluded variables.
+  --filter-global|-g  
+  --filter-prefix|-p
+  --help                This help.
+  --markdown|-m         Output as markdown.
+  --slugify|-s
+  --ticks|-t
+  --unset|-u            The string value of the variables without a value.
+
+Examples:
+  php $script_name path/to/file1 path/to/file2
+   
+  # With excluded variables specified in the file:
+  ./$script_name -e ../excluded.txt path/to/file
+ 
+  # Full:
+  ./$script_name  -t -m -e ./excluded.txt -u "<NOT SET>" ../  
+
+EOF;
+  print PHP_EOL;
+}
+
+// ////////////////////////////////////////////////////////////////////////// //
+//                                UTILITIES                                   //
+// ////////////////////////////////////////////////////////////////////////// //
+
+/**
+ * Show a verbose message.
+ */
+function verbose() {
+  if (getenv('SCRIPT_QUIET') != '1') {
+    print call_user_func_array('sprintf', func_get_args()) . PHP_EOL;
+  }
+}
+
 // ////////////////////////////////////////////////////////////////////////// //
 //                                ENTRYPOINT                                  //
 // ////////////////////////////////////////////////////////////////////////// //
+
 ini_set('display_errors', 1);
 
 if (PHP_SAPI != 'cli' || !empty($_SERVER['REMOTE_ADDR'])) {
   die('This script can be only ran from the command line.');
 }
 
-// Do not run this script if INSTALLER_SKIP_RUN is set. Useful when requiring
-// this file from other scripts (e.g. for testing).
-main($argv, $argc);
+// Allow to skip the script run.
+if (getenv('SCRIPT_RUN_SKIP') != 1) {
+  // Custom error handler to catch errors based on set ERROR_LEVEL.
+  set_error_handler(function ($severity, $message, $file, $line) {
+    if (!(error_reporting() & $severity)) {
+      // This error code is not included in error_reporting.
+      return;
+    }
+    throw new ErrorException($message, 0, $severity, $file, $line);
+  });
+
+  try {
+    $code = main($argv, $argc);
+    if (is_null($code)) {
+      throw new \Exception('Script exited without providing an exit code.');
+    }
+    exit($code);
+  }
+  catch (\ErrorException $exception) {
+    if ($exception->getSeverity() <= ERROR_LEVEL) {
+      print PHP_EOL . 'RUNTIME ERROR: ' . $exception->getMessage() . PHP_EOL;
+      exit($exception->getCode() == 0 ? EXIT_ERROR : $exception->getCode());
+    }
+  }
+  catch (\Exception $exception) {
+    print PHP_EOL . 'ERROR: ' . $exception->getMessage() . PHP_EOL;
+    exit($exception->getCode() == 0 ? EXIT_ERROR : $exception->getCode());
+  }
+}
