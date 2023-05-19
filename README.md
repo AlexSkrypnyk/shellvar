@@ -2,7 +2,7 @@
 
 Scan a file or a directory with shell scripts and extract all variables.
 
-[![Tests](https://github.com/drevops/shell-variables-extractor/actions/workflows/tests.yml/badge.svg)](https://github.com/drevops/shell-variables-extractor/actions/workflows/tests.yml)
+[![Tests](https://github.com/drevops/shell-variables-extractor/actions/workflows/test.yml/badge.svg)](https://github.com/drevops/shell-variables-extractor/actions/workflows/test.yml)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/drevops/shell-variables-extractor)
 ![LICENSE](https://img.shields.io/github/license/drevops/shell-variables-extractor)
 
