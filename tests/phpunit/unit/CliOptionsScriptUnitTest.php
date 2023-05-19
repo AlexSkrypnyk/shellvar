@@ -1,16 +1,16 @@
 <?php
 
 /**
- * Class ExampleScriptUnitTest.
+ * Class CliOptionsScriptUnitTest.
  *
- * Unit tests for script.php.
+ * Unit tests for CLI options of extract-shell-variables.php script.
  *
  * @group scripts
  *
  * phpcs:disable Drupal.Commenting.DocComment.MissingShort
  * phpcs:disable Drupal.Commenting.FunctionComment.Missing
  */
-class ExampleScriptUnitTest extends ScriptUnitTestBase {
+class CliOptionsScriptUnitTest extends ScriptUnitTestBase {
 
   /**
    * {@inheritdoc}
