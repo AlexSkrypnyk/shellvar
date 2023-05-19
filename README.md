@@ -24,16 +24,16 @@ to the STDOUT in the CSV format as `name, default_value, description`.
 This is helpful to maintain a table of variables and their descriptions in
 documentation.
 
-    ./shell-variable-extractor.php path/to/file1 path/to/file2
-    ./shell-variable-extractor.php path/to/dir
+    ./shell-variables-extractor.php path/to/file1 path/to/file2
+    ./shell-variables-extractor.php path/to/dir
 
 With excluded file:
 
-    ./shell-variable-extractor.php -e ../excluded.txt path/to/file
+    ./shell-variables-extractor.php -e ../excluded.txt path/to/file
 
 Full:
     
-    ./shell-variable-extractor.php  -t -m -e ./excluded.txt -u "<NOT SET>" ../
+    ./shell-variables-extractor.php  -t -m -e ./excluded.txt -u "<NOT SET>" ../
 
 ## Maintenance
 

@@ -1,4 +1,4 @@
-name: Test
+name: test
 
 on:
   push:
@@ -18,3 +18,15 @@ jobs:
     - uses: php-actions/composer@v6
     - run: composer lint
     - run: composer test
+    - name: Install Box
+      run: |
+        export BOX_VERSION="4.3.8" 
+        wget "https://github.com/humbug/box/releases/download/${BOX_VERSION}/box.phar" --quiet -O ./box
+        chmod +x ./box
+        sudo mv ./box /usr/local/bin
+    - name: Build Application PHAR
+      run: |
+        box validate
+        box compile
+    - name: Self-test
+      run: ./build/shell-variables-extractor.phar --help | grep -q "Extract variables from shell scripts."

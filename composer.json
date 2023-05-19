@@ -16,20 +16,28 @@
         "issues": "https://github.com/drevops/shell-variables-extractor/issues",
         "source": "https://github.com/drevops/shell-variables-extractor"
     },
-    "scripts": {
-        "lint": "vendor/bin/phpcs -s --standard=Drupal shell-variable-extractor.php tests",
-        "lint:fix": "vendor/bin/phpcbf -s --standard=Drupal shell-variable-extractor.php tests",
-        "test": "phpunit tests/phpunit"
+    "require": {
+        "symfony/console": "^5.2"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5",
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7.2",
         "drupal/coder": "^8.3"
     },
+    "autoload": {
+        "psr-4": {
+            "Drevops\\App\\": "src/"
+        }
+    },
     "autoload-dev": {
         "psr-4": {
             "Drevops\\Tests\\": "tests/phpunit/"
         }
+    },
+    "scripts": {
+        "lint": "vendor/bin/phpcs -s --standard=Drupal bin src tests",
+        "lint:fix": "vendor/bin/phpcbf -s --standard=Drupal bin src tests",
+        "test": "phpunit tests/phpunit"
     },
     "config": {
         "allow-plugins": {

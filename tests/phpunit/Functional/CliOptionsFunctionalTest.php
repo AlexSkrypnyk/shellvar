@@ -42,16 +42,6 @@ class CliOptionsFunctionalTest extends FunctionalTestBase {
         0,
         'Extract variables from shell scripts.',
       ],
-      [
-        '-?',
-        0,
-        'Extract variables from shell scripts.',
-      ],
-      [
-        [],
-        1,
-        'Extract variables from shell scripts.',
-      ],
     ];
   }
 
