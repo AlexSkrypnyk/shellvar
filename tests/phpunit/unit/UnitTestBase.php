@@ -16,7 +16,7 @@ abstract class UnitTestBase extends TestCase {
    *
    * @var string
    */
-  protected $script = 'extract-shell-variables.php';
+  protected $script = 'shell-variable-extractor.php';
 
   /**
    * {@inheritdoc}
