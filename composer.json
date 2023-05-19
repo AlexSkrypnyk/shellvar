@@ -17,12 +17,9 @@
         "source": "https://github.com/drevops/shell-variables-extractor"
     },
     "scripts": {
-        "lint": "vendor/bin/phpcs -s --standard=Drupal extract-shell-variables.php",
-        "lint:fix": "vendor/bin/phpcbf -s --standard=Drupal extract-shell-variables.php",
-        "test": [
-            "cd ./tests && ./test.sh",
-            "phpunit tests/phpunit/unit"
-        ]
+        "lint": "vendor/bin/phpcs -s --standard=Drupal extract-shell-variables.php tests",
+        "lint:fix": "vendor/bin/phpcbf -s --standard=Drupal extract-shell-variables.php tests",
+        "test": "phpunit tests/phpunit/unit"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5",

@@ -1,21 +1,16 @@
 <?php
 
 /**
- * Class CliOptionsScriptUnitTest.
+ * Class HelpFunctionalTest.
  *
- * Unit tests for CLI options of extract-shell-variables.php script.
+ * Functional tests for CLI options.
  *
  * @group scripts
  *
  * phpcs:disable Drupal.Commenting.DocComment.MissingShort
  * phpcs:disable Drupal.Commenting.FunctionComment.Missing
  */
-class CliOptionsScriptUnitTest extends ScriptUnitTestBase {
-
-  /**
-   * {@inheritdoc}
-   */
-  protected $script = 'extract-shell-variables.php';
+class CliOptionsFunctionalTest extends FunctionalTestBase {
 
   /**
    * @dataProvider dataProviderMain
