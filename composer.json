@@ -19,7 +19,7 @@
     "scripts": {
         "lint": "vendor/bin/phpcs -s --standard=Drupal shell-variable-extractor.php tests",
         "lint:fix": "vendor/bin/phpcbf -s --standard=Drupal shell-variable-extractor.php tests",
-        "test": "phpunit tests/phpunit/unit"
+        "test": "phpunit tests/phpunit"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5",
@@ -27,9 +27,9 @@
         "drupal/coder": "^8.3"
     },
     "autoload-dev": {
-        "classmap": [
-            "tests/phpunit/unit"
-        ]
+        "psr-4": {
+            "Drevops\\Tests\\": "tests/phpunit/"
+        }
     },
     "config": {
         "allow-plugins": {

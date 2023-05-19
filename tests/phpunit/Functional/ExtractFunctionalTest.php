@@ -1,5 +1,7 @@
 <?php
 
+namespace Drevops\Tests\Functional;
+
 /**
  * Class HelpFunctionalTest.
  *
