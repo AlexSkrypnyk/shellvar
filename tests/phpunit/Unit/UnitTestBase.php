@@ -1,5 +1,7 @@
 <?php
 
+namespace Drevops\Tests\Unit;
+
 use PHPUnit\Framework\TestCase;
 
 /**
