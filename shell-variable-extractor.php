@@ -39,6 +39,49 @@ define('EXIT_ERROR', 1);
 define('ERROR_LEVEL', E_USER_WARNING);
 
 /**
+ * Print help.
+ */
+function print_help() {
+  $script_name = basename(__FILE__);
+  print <<<EOF
+  Description:
+    Extract variables from shell scripts.
+  
+  Usage:
+   php \$script_name [options] [<paths>...]
+  
+  Arguments:
+    paths                File or directory to scan. Multiple files separated
+                         by space.
+  
+  Options:
+    -c, --csv-delim      CSV delimiter character. (Default: ;)
+    -d, --debug          Enable debug mode.
+    -e, --exclude-file   Path to a file with excluded variables.
+    -g, --filter-global  Exclude non-global variables.
+    -p, --filter-prefix  Exclude variables with specified prefix.
+    -h, --help           Display this help message.
+    -m, --markdown       Output as markdown. Can be 'table' or a path to a file
+                         with a custom template.
+    -s, --slugify        Generate anchor links for variables in markdown output.
+    -t, --ticks          Enclose variables and default values in backticks.
+    -u, --unset          The string value of the variables without a value.
+  
+  Examples:
+    php \$script_name path/to/file1 path/to/file2
+     
+    # With excluded variables specified in the file:
+    php \$script_name --exclude-file=../excluded.txt path/to/file
+   
+    # With excluded variables specified in the file, custom value for variables
+    # without a value, and output as markdown with variables wrapped in ticks:
+    php \$script_name --ticks --markdown --exclude-file=./excluded.txt --unset="<NOT SET>" ../  
+  
+  EOF;
+  print PHP_EOL;
+}
+
+/**
  * Main functionality.
  */
 function main(array $argv, $argc) {
@@ -105,7 +148,19 @@ function main(array $argv, $argc) {
   });
   $all_variables = array_filter($all_variables);
 
+  // Make sure that there are always 3 elements in the array.
+  array_walk($all_variables, function (&$value) {
+    $value += [
+      'name' => '',
+      'default_value' => '',
+      'description' => '',
+    ];
+  });
+
   if (get_config('markdown') == 'table') {
+    $all_variables = array_map(function ($v) {
+      return str_replace("\n", "<br/>", $v);
+    }, $all_variables);
     $csv = render_variables_data($all_variables);
     $csvTable = new CSVTable($csv, get_config('csv_delim'));
     print $csvTable->getMarkup();
@@ -483,27 +538,86 @@ function get_configs() {
  * CSVTable.
  *
  * Credits: https://github.com/mre/CSVTable.
+ *
+ * Refactored and optimised to support linebreaks in cells and other
+ * improvements.
  */
 class CSVTable {
 
-  public function __construct($csv, $delim = ',', $enclosure = '"', $table_separator = '|') {
-    $this->csv = $csv;
-    $this->delim = $delim;
-    $this->enclosure = $enclosure;
-    $this->table_separator = $table_separator;
+  /**
+   * Initial CSV string.
+   *
+   * @var string
+   */
+  protected $csvString;
+
+  /**
+   * CSV delimiter.
+   *
+   * @var mixed|string
+   */
+  protected $csvDelimiter;
+
+  /**
+   * CSV enclosure.
+   *
+   * @var mixed|string
+   */
+  protected $csvEnclosure;
+
+  /**
+   * Table separator.
+   *
+   * @var mixed|string
+   */
+  protected $tableSeparator;
+
+  /**
+   * Table header.
+   *
+   * @var string
+   */
+  protected $header;
+
+  /**
+   * Table rows.
+   *
+   * @var string
+   */
+  protected $rows;
+
+  /**
+   * Table length.
+   *
+   * @var int
+   */
+  protected $length;
+
+  /**
+   * Array of column widths.
+   *
+   * @var array
+   */
+  protected $colWidths;
+
+  public function __construct($csv_string, $delim = ',', $enclosure = '"', $table_separator = '|') {
+    $this->csvString = $csv_string;
+    $this->csvDelimiter = $delim;
+    $this->csvEnclosure = $enclosure;
+    $this->tableSeparator = $table_separator;
 
     // Fill the rows with Markdown output.
     // Table header.
-    $this->header = "";
+    $this->header = '';
     // Table rows.
-    $this->rows = "";
+    $this->rows = '';
     $this->csvToTable();
   }
 
   private function csvToTable() {
-    $parsed_array = $this->toArray($this->csv);
+    $parsed_array = $this->toArray($this->csvString);
     $this->length = $this->minRowLength($parsed_array);
-    $this->col_widths = $this->maxColumnWidths($parsed_array);
+    $this->colWidths = $this->maxColumnWidths($parsed_array);
 
     $header_array = array_shift($parsed_array);
     $this->header = $this->createHeader($header_array);
@@ -514,36 +628,45 @@ class CSVTable {
    * Convert the CSV into a PHP array.
    */
   public function toArray($csv) {
-    // Parse the rows.
-    $parsed = str_getcsv($csv, "\n");
     $output = [];
-    foreach ($parsed as &$row) {
-      // Parse the items in rows.
-      $row = str_getcsv($row, $this->delim, $this->enclosure);
-      array_push($output, $row);
+
+    $stream = fopen('php://memory', 'r+');
+    fwrite($stream, $csv);
+    rewind($stream);
+
+    while (($data = fgetcsv($stream, 0, ";")) !== FALSE) {
+      $output[] = $data;
     }
+
+    fclose($stream);
 
     return $output;
   }
 
   private function createHeader($header_array) {
-    return $this->createRow($header_array) . $this->createSeparator();
+    return $this->createRow($header_array) . $this->createHeaderSeparator();
   }
 
-  private function createSeparator() {
-    $output = "";
-    for ($i = 0; $i < $this->length - 1; ++$i) {
-      $output .= str_repeat("-", $this->col_widths[$i]);
-      $output .= $this->table_separator;
+  private function createHeaderSeparator() {
+    $output = '';
+
+    $output .= $this->tableSeparator;
+
+    for ($i = 0; $i < $this->length - 1; $i++) {
+      $output .= str_repeat('-', $this->colWidths[$i] + 2);
+      $output .= $this->tableSeparator;
     }
+
     $last_index = $this->length - 1;
-    $output .= str_repeat("-", $this->col_widths[$last_index]);
+    $output .= str_repeat('-', $this->colWidths[$last_index] + 2);
+
+    $output .= $this->tableSeparator;
 
     return $output . "\n";
   }
 
   protected function createRows($rows) {
-    $output = "";
+    $output = '';
     foreach ($rows as $row) {
       $output .= $this->createRow($row);
     }
@@ -565,18 +688,24 @@ class CSVTable {
   }
 
   protected function createRow($row) {
-    $output = "";
+    $output = '';
+
+    $output .= $this->tableSeparator . ' ';
+
     // Only create as many columns as the minimal number of elements
     // in all rows. Otherwise this would not be a valid Markdown table.
     for ($i = 0; $i < $this->length - 1; ++$i) {
-      $element = $this->padded($row[$i], $this->col_widths[$i]);
+      $element = $this->padded($row[$i], $this->colWidths[$i]);
       $output .= $element;
-      $output .= $this->table_separator;
+      $output .= ' ' . $this->tableSeparator . ' ';
     }
     // Don't append a separator to the last element.
     $last_index = $this->length - 1;
-    $element = $this->padded($row[$last_index], $this->col_widths[$last_index]);
+    $element = $this->padded($row[$last_index], $this->colWidths[$last_index]);
     $output .= $element;
+
+    $output .= ' ' . $this->tableSeparator;
+
     // Row ends with a newline.
     $output .= "\n";
 
@@ -692,44 +821,6 @@ class MarkdownBlocks {
     return $this->markup;
   }
 
-}
-
-/**
- * Print help.
- */
-function print_help() {
-  $script_name = basename(__FILE__);
-  print <<<EOF
-Extract variables from shell scripts.
--------------------------------------
-
-Arguments:
-  file or directory     File or directory to scan. Multiple files seprated 
-                        by space.
-
-Options:
-  --csv-delim|-c              
-  --debug|-d            Debug script.
-  --exclude-file|-e     Path to a file with exluded variables.
-  --filter-global|-g  
-  --filter-prefix|-p
-  --help                This help.
-  --markdown|-m         Output as markdown.
-  --slugify|-s
-  --ticks|-t
-  --unset|-u            The string value of the variables without a value.
-
-Examples:
-  php $script_name path/to/file1 path/to/file2
-   
-  # With excluded variables specified in the file:
-  ./$script_name -e ../excluded.txt path/to/file
- 
-  # Full:
-  ./$script_name  -t -m -e ./excluded.txt -u "<NOT SET>" ../  
-
-EOF;
-  print PHP_EOL;
 }
 
 // ////////////////////////////////////////////////////////////////////////// //
