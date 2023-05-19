@@ -60,7 +60,7 @@ class ExtractFunctionalTest extends FunctionalTestBase {
       [
         [
           '--filter-global',
-          '-e ' . $this->fixtureFile('test-data-excluded.txt'),
+          '--exclude-file=' . $this->fixtureFile('test-data-excluded.txt'),
           $this->fixtureFile('test-data.sh'),
         ],
         <<<'EOD'
@@ -92,7 +92,7 @@ class ExtractFunctionalTest extends FunctionalTestBase {
       [
         [
           '--filter-global',
-          '-e ' . $this->fixtureFile('test-data-excluded.txt'),
+          '--exclude-file=' . $this->fixtureFile('test-data-excluded.txt'),
           '--filter-prefix=VAR1',
           $this->fixtureFile('test-data.sh'),
         ],
@@ -125,7 +125,7 @@ class ExtractFunctionalTest extends FunctionalTestBase {
       [
         [
           '--filter-global',
-          '-t',
+          '--ticks',
           $this->fixtureFile('test-data.sh'),
         ],
         <<<'EOD'
@@ -159,8 +159,8 @@ class ExtractFunctionalTest extends FunctionalTestBase {
       [
         [
           '--filter-global',
-          '-t',
-          '-s',
+          '--ticks',
+          '--slugify',
           $this->fixtureFile('test-data.sh'),
         ],
         <<<'EOD'
@@ -194,8 +194,8 @@ class ExtractFunctionalTest extends FunctionalTestBase {
       [
         [
           '--filter-global',
-          '-t',
-          '-s',
+          '--ticks',
+          '--slugify',
           '-l ' . $this->fixtureFile('test-data-ticks-included.txt'),
           $this->fixtureFile('test-data.sh'),
         ],
