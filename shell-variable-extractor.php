@@ -12,14 +12,14 @@
  * documentation.
  *
  * Usage:
- * ./extract-shell-variables.php path/to/file1 path/to/file2
- * ./extract-shell-variables.php path/to/dir
+ * ./shell-variable-extractor.php path/to/file1 path/to/file2
+ * ./shell-variable-extractor.php path/to/dir
  *
  * With excluded file:
- * ./extract-shell-variables.php -e ../excluded.txt path/to/file
+ * ./shell-variable-extractor.php -e ../excluded.txt path/to/file
  *
  * Full:
- * ./extract-shell-variables.php  -t -m -e ./excluded.txt -u "<NOT SET>" ../
+ * ./shell-variable-extractor.php  -t -m -e ./excluded.txt -u "<NOT SET>" ../
  *
  * phpcs:disable Drupal.Commenting.InlineComment.SpacingBefore
  * phpcs:disable Drupal.Commenting.InlineComment.SpacingAfter
