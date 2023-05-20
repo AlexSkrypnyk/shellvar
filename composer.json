@@ -35,6 +35,7 @@
             "Drevops\\Tests\\": "tests/phpunit/"
         }
     },
+    "bin": "bin/shell-variables-extractor",
     "scripts": {
         "lint": "vendor/bin/phpcs -s --standard=Drupal bin src tests",
         "lint:fix": "vendor/bin/phpcbf -s --standard=Drupal bin src tests",
