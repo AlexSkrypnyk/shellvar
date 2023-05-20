@@ -1,6 +1,6 @@
 <?php
 
-namespace Drevops\Tests\Unit;
+namespace AlexSkrypnyk\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 

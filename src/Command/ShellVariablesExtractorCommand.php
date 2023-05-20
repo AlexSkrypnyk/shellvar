@@ -1,10 +1,10 @@
 <?php
 
-namespace Drevops\App\Command;
+namespace AlexSkrypnyk\App\Command;
 
 use AlexSkrypnyk\CsvTable\CsvTable;
 use AlexSkrypnyk\CsvTable\Markdown;
-use Drevops\App\MarkdownBlocks;
+use AlexSkrypnyk\App\MarkdownBlocks;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -16,7 +16,7 @@ use Symfony\Component\Console\SingleCommandApplication;
  *
  * Extracts variables from shell scripts.
  *
- * @package Drevops\App\Command
+ * @package AlexSkrypnyk\App\Command
  */
 class ShellVariablesExtractorCommand {
 

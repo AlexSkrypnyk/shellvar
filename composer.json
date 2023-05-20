@@ -1,5 +1,5 @@
 {
-    "name": "drevops/shell-variables-extractor",
+    "name": "alexskrypnyk/shell-variables-extractor",
     "type": "library",
     "description": "Extracts shell variables from one or multiple files in a directory.",
     "license": "GPL-2.0-or-later",
@@ -11,10 +11,10 @@
             "role": "Maintainer"
         }
     ],
-    "homepage": "https://github.com/drevops/shell-variables-extractor",
+    "homepage": "https://github.com/AlexSkrypnyk/shell-variables-extractor",
     "support": {
-        "issues": "https://github.com/drevops/shell-variables-extractor/issues",
-        "source": "https://github.com/drevops/shell-variables-extractor"
+        "issues": "https://github.com/AlexSkrypnyk/shell-variables-extractor/issues",
+        "source": "https://github.com/AlexSkrypnyk/shell-variables-extractor"
     },
     "require": {
         "symfony/console": "^5.2",
@@ -27,12 +27,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Drevops\\App\\": "src/"
+            "AlexSkrypnyk\\App\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Drevops\\Tests\\": "tests/phpunit/"
+            "AlexSkrypnyk\\Tests\\": "tests/phpunit/"
         }
     },
     "bin": "bin/shell-variables-extractor",

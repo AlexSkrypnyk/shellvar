@@ -5,7 +5,7 @@
  * Entrypoint.
  */
 
-use Drevops\App\Command\ShellVariablesExtractorCommand;
+use AlexSkrypnyk\App\Command\ShellVariablesExtractorCommand;
 use Symfony\Component\Console\SingleCommandApplication;
 
 $application = new SingleCommandApplication();

@@ -1,8 +1,8 @@
 <?php
 
-namespace Drevops\Tests\Functional;
+namespace AlexSkrypnyk\Tests\Functional;
 
-use Drevops\Tests\Unit\UnitTestBase;
+use AlexSkrypnyk\Tests\Unit\UnitTestBase;
 
 /**
  * Class FunctionalTestBase.
