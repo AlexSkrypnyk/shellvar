@@ -1,5 +1,4 @@
 {
-    "main": "bin/shell-variables-extractor",
     "output": "build/shell-variables-extractor.phar",
     "compression": "GZ",
     "finder": [
