@@ -57,7 +57,7 @@ class MarkdownBlocks {
       }, array_keys($item));
 
       $placeholders_values = array_map(function ($v) {
-        return str_replace("\n", "<br/>", $v);
+        return str_replace("\n", "<br />", $v);
       }, $item);
 
       $placeholders = array_combine($placeholders_tokens, $placeholders_values);
@@ -68,28 +68,12 @@ class MarkdownBlocks {
   }
 
   /**
-   * Convert CSV to table.
-   */
-  public function toArray($csv) {
-    $array = [];
-    // Parse the rows.
-    $parsed = str_getcsv($csv, "\n");
-    foreach ($parsed as &$row) {
-      // Parse the items in rows.
-      $row = str_getcsv($row, $this->delim, $this->enclosure);
-      array_push($array, $row);
-    }
-
-    return $array;
-  }
-
-  /**
-   * Get markup.
+   * Render markup.
    *
    * @return string
-   *   Markup.
+   *   Rendered markup
    */
-  public function getMarkup() {
+  public function render() {
     return $this->markup;
   }
 

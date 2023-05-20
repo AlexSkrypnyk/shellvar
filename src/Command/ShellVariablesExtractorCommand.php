@@ -2,7 +2,8 @@
 
 namespace Drevops\App\Command;
 
-use Drevops\App\CSVTable;
+use AlexSkrypnyk\CsvTable\CsvTable;
+use AlexSkrypnyk\CsvTable\Markdown;
 use Drevops\App\MarkdownBlocks;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -195,19 +196,14 @@ class ShellVariablesExtractorCommand {
     });
 
     if ($this->getConfig('markdown') == 'table') {
-      $all_variables = array_map(function ($v) {
-        return str_replace("\n", "<br/>", $v);
-      }, $all_variables);
-      $csv = $this->renderVariablesData($all_variables);
-      $csvTable = new CSVTable($csv, $this->getConfig('csv-delim'));
-      print $csvTable->getMarkup();
+      $csv = $this->toCsv($all_variables);
+      print (new CsvTable($csv, $this->getConfig('csv-delim')))->render(Markdown::class);
     }
     elseif ($this->getConfig('markdown')) {
-      $markdown_blocks = new MarkdownBlocks($all_variables, $this->getConfig('markdown'));
-      print $markdown_blocks->getMarkup();
+      print (new MarkdownBlocks($all_variables, $this->getConfig('markdown')))->render();
     }
     else {
-      print $this->renderVariablesData($all_variables);
+      print $this->toCsv($all_variables);
     }
 
     return self::EXIT_SUCCESS;
@@ -489,7 +485,7 @@ class ShellVariablesExtractorCommand {
    * @return string
    *   A rendered CSV string.
    */
-  public function renderVariablesData($variables) {
+  public function toCsv($variables) {
     $csv = fopen('php://temp/maxmemory:' . (5 * 1024 * 1024), 'r+');
     fputcsv($csv, ['Name', 'Default value', 'Description'], $this->getConfig('csv-delim'));
     foreach ($variables as $variable) {
