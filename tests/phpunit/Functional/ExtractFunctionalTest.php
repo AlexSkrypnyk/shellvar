@@ -302,7 +302,7 @@ class ExtractFunctionalTest extends FunctionalTestBase {
         | VAR1    | <UNSET>       |                                                                                                                                                                                                                          |
         | VAR10   | val10         | Description without a leading space.                                                                                                                                                                                     |
         | VAR11   | val11         | Description without a leading space that goes on multiple lines and has a `VAR7`, `$VAR8`, $VAR9, VAR10 and VAR12 variable reference.                                                                                    |
-        | VAR12   | val12         | Description without a leading space that goes on multiple lines.<br/>And has a comment with no content.                                                                                                                  |
+        | VAR12   | val12         | Description without a leading space that goes on multiple lines.<br />And has a comment with no content.                                                                                                                 |
         | VAR13   | val13         | And has an empty line before it without a content.                                                                                                                                                                       |
         | VAR14   | val14         |                                                                                                                                                                                                                          |
         | VAR15   | val16         |                                                                                                                                                                                                                          |
@@ -349,7 +349,7 @@ class ExtractFunctionalTest extends FunctionalTestBase {
 
         ### `VAR12`
 
-        Description without a leading space that goes on multiple lines.<br/>And has a comment with no content.
+        Description without a leading space that goes on multiple lines.<br />And has a comment with no content.
 
         Default value: `val12`
 
