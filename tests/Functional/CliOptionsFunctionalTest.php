@@ -3,7 +3,7 @@
 namespace AlexSkrypnyk\Tests\Functional;
 
 /**
- * Class HelpFunctionalTest.
+ * Class CliOptionsFunctionalTest.
  *
  * Functional tests for CLI options.
  *

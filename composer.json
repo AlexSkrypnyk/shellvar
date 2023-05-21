@@ -27,19 +27,19 @@
     },
     "autoload": {
         "psr-4": {
-            "AlexSkrypnyk\\App\\": "src/"
+            "AlexSkrypnyk\\ShellVariablesExtractor\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "AlexSkrypnyk\\Tests\\": "tests/phpunit/"
+            "AlexSkrypnyk\\Tests\\": "tests/"
         }
     },
-    "bin": "bin/shell-variables-extractor",
+    "bin": "shell-variables-extractor",
     "scripts": {
-        "lint": "vendor/bin/phpcs -s --standard=Drupal bin src tests",
-        "lint:fix": "vendor/bin/phpcbf -s --standard=Drupal bin src tests",
-        "test": "phpunit tests/phpunit"
+        "lint": "vendor/bin/phpcs -s --standard=Drupal shell-variables-extractor src tests",
+        "lint:fix": "vendor/bin/phpcbf -s --standard=Drupal shell-variables-extractor src tests",
+        "test": "phpunit tests"
     },
     "config": {
         "allow-plugins": {
