@@ -67,6 +67,11 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
         $a = preg_replace('/\b((?<!`)' . preg_quote($token, '/') . ')\b/', '`${1}`', $variable->getDescription());
         $variable->setDescription($a);
       }
+
+      // Convert numbers to code values.
+      if ($this->config['md-inline-code-wrap-numbers']) {
+        $variable->setDescription(preg_replace('/\b((?<!`)[0-9]+)\b/', '`${1}`', $variable->getDescription()));
+      }
     }
 
     return $variables;

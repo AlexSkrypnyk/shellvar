@@ -94,6 +94,12 @@ class ShellVariablesExtractorCommand {
     );
 
     $app->addOption(
+      name: 'md-inline-code-wrap-numbers',
+      mode: InputOption::VALUE_NONE,
+      description: 'Wrap numbers to show them as inline code in the Markdown output format.'
+    );
+
+    $app->addOption(
       name: 'md-inline-code-extra-file',
       mode: InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
       description: 'A path to a file that contains additional strings to be formatted as inline code in the Markdown output format.',
