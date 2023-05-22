@@ -163,4 +163,32 @@ class ExtractorUnitTest extends UnitTestBase {
     ];
   }
 
+  /**
+   * Tests the extractVariableValue() method.
+   *
+   * @dataProvider dataProviderExtractVariableDescription
+   */
+  public function testExtractVariableDescription($lines, $line_num, $expected) {
+    $extractor = $this->prepareMock(Extractor::class);
+    $actual = $this->callProtectedMethod($extractor, 'extractVariableDescription', [$lines, $line_num]);
+    $this->assertEquals($expected, $actual);
+  }
+
+  /**
+   * Data provider for testExtractVariableDescription().
+   */
+  public function dataProviderExtractVariableDescription() {
+    return [
+      [[], 0, ''],
+      [[], 10, ''],
+      [['string'], 0, ''],
+      [['string'], 10, ''],
+      [['# first second', 'VAR1'], 1, 'first second'],
+      [[' ', '# first second', 'VAR1'], 2, 'first second'],
+      [['# zero', ' ', '# first second', 'VAR1'], 3, 'first second'],
+      [['# zero', ' ', '# first second', '#', '# third', 'VAR1'], 5, 'first second' . "\n" . 'third'],
+      [['# zero', ' ', '# first second', '#', '# third', '# forth', 'VAR1'], 6, 'first second' . "\n" . 'third forth'],
+    ];
+  }
+
 }
