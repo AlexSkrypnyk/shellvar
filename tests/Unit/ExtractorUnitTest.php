@@ -9,11 +9,13 @@ use AlexSkrypnyk\ShellVariablesExtractor\Extractor\Extractor;
  * Class ExtractorUnitTest.
  *
  * Unit tests for the Extractor class.
+ *
+ * phpcs:disable Drupal.Arrays.Array.LongLineDeclaration
  */
 class ExtractorUnitTest extends UnitTestBase {
 
   /**
-   * Tests the extract() method.
+   * Tests the extractVariable() method.
    *
    * @dataProvider dataProviderExtractVariable
    */
@@ -99,6 +101,65 @@ class ExtractorUnitTest extends UnitTestBase {
       ['`VAR1=123` end', NULL],
       ['start `VAR1=123 end`', NULL],
       ['`start VAR1=123` end', NULL],
+    ];
+  }
+
+  /**
+   * Tests the extractVariableValue() method.
+   *
+   * @dataProvider dataProviderExtractVariableValue
+   */
+  public function testExtractVariableValue($line, $expected) {
+    $extractor = $this->prepareMock(Extractor::class);
+    $actual = $this->callProtectedMethod($extractor, 'extractVariableValue', [$line, 'TESTUNSET']);
+    $this->assertEquals($expected, $actual);
+  }
+
+  /**
+   * Data provider for testExtractVariable().
+   *
+   * Note that we only assert for assignment expressions. Non-assignment
+   * expressions would not reach this method.
+   */
+  public function dataProviderExtractVariableValue() {
+    return [
+      ['VAR1=', 'TESTUNSET'],
+      ['VAR1= ', 'TESTUNSET'],
+      ['VAR1=   ', 'TESTUNSET'],
+      ['VAR1=""', 'TESTUNSET'],
+      ['VAR1= ""', 'TESTUNSET'],
+
+      ['VAR1=" "', ' '],
+      ['VAR1= " "', ' '],
+
+      ['VAR1=123', '123'],
+      ['VAR1="123"', '123'],
+
+      ['VAR1=$VAR2', 'VAR2'],
+      ['VAR1="$VAR2"', 'VAR2'],
+      ['VAR1=${VAR2}', 'VAR2'],
+      ['VAR1="${VAR2}"', 'VAR2'],
+
+      ['VAR1=${VAR2:-}', 'VAR2'],
+      ['VAR1="${VAR2:-}"', 'VAR2'],
+      ['VAR1=${VAR2:-123}', 123],
+      ['VAR1="${VAR2:-123}"', 123],
+
+      ['VAR1=${VAR2:-$VAR3}', 'VAR3'],
+      ['VAR1="${VAR2:-$VAR3}"', 'VAR3'],
+      ['VAR1="${VAR2:-"$VAR3"}"', 'VAR3'],
+      ['VAR1=${VAR2:-${VAR3}}', 'VAR3'],
+      ['VAR1=${VAR2:-"${VAR3}"}', 'VAR3'],
+      ['VAR1="${VAR2:-"${VAR3}"}"', 'VAR3'],
+      ['VAR1="${VAR2:-${VAR3}}"', 'VAR3'],
+      ['VAR1="${VAR2:-${VAR3:-}}"', 'VAR3'],
+      ['VAR1="${VAR2:-${VAR3:-567}}"', '567'],
+      ['VAR1="${VAR2:-${VAR3:-567}}"', '567'],
+      ['VAR1="${VAR2:-${VAR3:-"${VAR4:-567}"}}"', '567'],
+
+      // Still a valid expression in the context of this method.
+      ['$VAR1=123', 123],
+      ['${VAR1}=123', 123],
     ];
   }
 
