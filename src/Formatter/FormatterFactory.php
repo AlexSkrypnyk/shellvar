@@ -14,7 +14,7 @@ class FormatterFactory {
    *
    * @var \AlexSkrypnyk\ShellVariablesExtractor\Formatter\FormatterInterface[]
    */
-  protected static $formatters;
+  protected static $formatters = [];
 
   /**
    * Create formatter by name.
@@ -48,6 +48,15 @@ class FormatterFactory {
   }
 
   /**
+   * Reset instance.
+   */
+  public static function reset() {
+    foreach (array_keys(static::$formatters) as $k) {
+      unset(static::$formatters[$k]);
+    }
+  }
+
+  /**
    * Register a formatter.
    *
    * @param string $name
@@ -65,19 +74,17 @@ class FormatterFactory {
    * Extending classes can use FormatterFactory::registerFormatter() to register
    * their own.
    */
-  protected static function discoverOwnFormatters(): void {
-    $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator(__DIR__));
+  protected static function discoverOwnFormatters($dir = __DIR__): void {
+    $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($dir));
     $phpFiles = new \RegexIterator($iterator, '/\.php$/');
 
     foreach ($phpFiles as $phpFile) {
       require_once $phpFile->getPathname();
-    }
-
-    foreach (get_declared_classes() as $class) {
+      $class = __NAMESPACE__ . '\\' . $phpFile->getBasename('.php');
       $reflection = new \ReflectionClass($class);
       $interfaces = $reflection->getInterfaceNames();
       if (!$reflection->isAbstract() && in_array(FormatterInterface::class, $interfaces)) {
-        static::registerFormatter($class::getName(), $class);
+        self::$formatters[$class::getName()] = $class;
       }
     }
   }
