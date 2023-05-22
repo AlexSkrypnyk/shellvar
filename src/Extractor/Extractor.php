@@ -122,17 +122,15 @@ class Extractor implements ExtractorInterface {
    *
    * @param array $paths
    *   A list of paths to files.
-   * @param string $eol
-   *   An end of line character.
    *
    * @return array
    *   A list of lines, merged into one array.
    */
-  protected function getLinesFromFiles($paths, $eol = "\n") {
+  protected function getLinesFromFiles($paths) {
     $lines = [];
 
     foreach ($paths as $path) {
-      $lines = array_merge($lines, explode($eol, file_get_contents($path)));
+      $lines = array_merge($lines, preg_split("/(\r\n|\n|\r)/", file_get_contents($path)));
     }
 
     return $lines;

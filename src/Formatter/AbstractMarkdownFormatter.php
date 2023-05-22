@@ -49,17 +49,24 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
    *   A list of processed variables.
    */
   protected function processInlineCode(array $variables): array {
+    // Process all additional code items.
+    $tokens = [];
+    if (!empty($this->config['md-inline-code-extra-file'])) {
+      $tokens = array_filter($this->getLinesFromFiles($this->config['md-inline-code-extra-file']));
+    }
+
     foreach ($variables as $variable) {
       $variable->setName('`' . $variable->getName() . '`');
       if (!empty($variable->getDefaultValue())) {
         $variable->setDefaultValue('`' . $variable->getDefaultValue() . '`');
       }
-    }
 
-    // Process all additional code items.
-    foreach ($this->config['md-inline-code-extra-file'] as $token) {
-      $token = trim($token);
-      $variable->setDescription(preg_replace('/\b((?<!`)' . preg_quote($token, '/') . ')\b/', '`${1}`', $variable->getDescription()));
+      // Process all additional code items.
+      foreach ($tokens as $token) {
+        $token = trim($token);
+        $a = preg_replace('/\b((?<!`)' . preg_quote($token, '/') . ')\b/', '`${1}`', $variable->getDescription());
+        $variable->setDescription($a);
+      }
     }
 
     return $variables;
@@ -105,6 +112,25 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
     }
 
     return $variables;
+  }
+
+  /**
+   * Get lines from files.
+   *
+   * @param array $paths
+   *   A list of paths to files.
+   *
+   * @return array
+   *   A list of lines, merged into one array.
+   */
+  protected function getLinesFromFiles($paths) {
+    $lines = [];
+
+    foreach ($paths as $path) {
+      $lines = array_merge($lines, preg_split("/(\r\n|\n|\r)/", file_get_contents($path)));
+    }
+
+    return $lines;
   }
 
 }
