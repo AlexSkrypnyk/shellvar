@@ -282,7 +282,7 @@ class Extractor implements ExtractorInterface {
    */
   protected function filterLocalVars(array $vars): array {
     return array_filter($vars, function (Variable $variable) {
-      return preg_match('/^[A-Z0-9_]+$/', $variable->getName());
+      return $variable->getName() != strtolower($variable->getName());
     });
   }
 
