@@ -191,4 +191,42 @@ class ExtractorUnitTest extends UnitTestBase {
     ];
   }
 
+  /**
+   * Tests the filterExcludedPrefixedVars() method.
+   *
+   * @dataProvider dataProviderFilterExcludedPrefixedVars
+   */
+  public function testFilterExcludedPrefixedVars($var_names, $prefixes, $expected) {
+    $vars = [];
+    foreach ($var_names as $var_name) {
+      $vars[] = new Variable($var_name);
+    }
+
+    $extractor = $this->prepareMock(Extractor::class);
+    $actual = $this->callProtectedMethod($extractor, 'filterExcludedPrefixedVars', [$vars, $prefixes]);
+
+    $actual_names = [];
+    foreach ($actual as $item) {
+      $actual_names[] = $item->getName();
+    }
+
+    $this->assertEquals($expected, $actual_names);
+  }
+
+  /**
+   * Data provider for testFilterExcludedPrefixedVars().
+   */
+  public function dataProviderFilterExcludedPrefixedVars() {
+    return [
+      [[], [], []],
+      [['VAR1'], [], ['VAR1']],
+      [['VAR1'], ['RAND'], ['VAR1']],
+      [['VAR1', 'VAR2'], ['RAND'], ['VAR1', 'VAR2']],
+      [['VAR1', 'VAR2', 'VAR3_VAR31'], ['VAR3'], ['VAR1', 'VAR2']],
+      [['VAR1', 'VAR2', 'VAR3_VAR31'], ['VAR3', 'RAND'], ['VAR1', 'VAR2']],
+      [['VAR1', 'VAR2', 'VAR3_VAR31', 'VAR4_VAR41'], ['VAR3', 'VAR4', 'RAND'], ['VAR1', 'VAR2']],
+      [['VAR1', 'VAR2', 'VAR31_VAR31', 'VAR4_VAR41'], ['VAR3_', 'VAR4', 'RAND'], ['VAR1', 'VAR2', 'VAR31_VAR31']],
+    ];
+  }
+
 }
