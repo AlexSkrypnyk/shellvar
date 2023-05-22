@@ -190,6 +190,8 @@ class Extractor implements ExtractorInterface {
   /**
    * Extract variable value from a line.
    *
+   * It is already known that the line contains a variable assignment.
+   *
    * @param string $line
    *   A line to extract a variable value from.
    * @param string $default_value
@@ -199,35 +201,42 @@ class Extractor implements ExtractorInterface {
    *   A variable value.
    */
   protected function extractVariableValue($line, string $default_value) {
-    $value = $default_value;
+    [, $value] = explode('=', $line, 2);
 
-    $value_string = '';
-    // Assignment.
-    if (preg_match('/{?[a-zA-Z][a-zA-Z0-9_]*}?="?([^"]*)"?/', $line, $matches)) {
-      $value_string = $matches[1];
+    $value = trim($value);
+
+    if (empty($value)) {
+      return $default_value;
     }
 
-    if (empty($value_string)) {
-      return $value;
-    }
+    // Replace all outermost matching patterns with the found sub-group. This
+    // allows to reduce the value to the innermost matching pattern.
+    while (TRUE) {
+      $replaced = 0;
+      $value = preg_replace_callback('/\$\{([^:\-}]+):-([^}]+)?}/', function ($matches) use (&$replaced) {
+        $replaced++;
 
-    // Value is in the second part of the assigned value.
-    if (strpos($value_string, ':') !== FALSE) {
-      if (preg_match('/\${[a-zA-Z][a-zA-Z0-9_]*:-?\$?{?([a-zA-Z][^}]*)/', $value_string, $matches)) {
-        $value = $matches[1];
-      }
-    }
-    else {
-      // Value is a simple scalar or another value.
-      if (preg_match('/{?([a-zA-Z][^}]*)/', $value_string, $matches)) {
-        $value = $matches[1];
-      }
-      else {
-        $value = $value_string;
+        // Use found value or the default value, i.e. in case of ${var:-abc},
+        // use 'abc'; in case of ${var:-}, use 'var'.
+        return trim($matches[2] ?? $matches[1], '"');
+      }, $value);
+
+      if ($replaced === 0) {
+        break;
       }
     }
 
-    return $value;
+    $value = trim($value, '"');
+
+    if (str_starts_with($value, '${')) {
+      $value = trim($value, '${}');
+      $value = trim($value, '"');
+    }
+    if (str_starts_with($value, '$')) {
+      $value = trim($value, '$');
+    }
+
+    return empty($value) ? $default_value : $value;
   }
 
   /**
