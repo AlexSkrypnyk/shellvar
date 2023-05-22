@@ -255,6 +255,8 @@ class Extractor implements ExtractorInterface {
   protected function extractVariableDescription($lines, $line_num, $comment_separator = self::COMMENT_SEPARATOR) {
     $comment_lines = [];
 
+    $line_num = min($line_num, count($lines) - 1);
+
     // Look behind until the first non-comment line.
     while ($line_num > 0 && str_starts_with(trim($lines[$line_num - 1]), $comment_separator)) {
       $comment_lines[] = trim(ltrim(trim($lines[$line_num - 1]), $comment_separator));
