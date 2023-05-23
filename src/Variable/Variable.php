@@ -1,6 +1,6 @@
 <?php
 
-namespace AlexSkrypnyk\ShellVariablesExtractor\Entity;
+namespace AlexSkrypnyk\ShellVariablesExtractor\Variable;
 
 /**
  * Class Variable.

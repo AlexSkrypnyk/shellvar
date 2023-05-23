@@ -2,6 +2,9 @@
 
 namespace AlexSkrypnyk\ShellVariablesExtractor\Formatter;
 
+use AlexSkrypnyk\ShellVariablesExtractor\Utils;
+use Symfony\Component\Console\Input\InputOption;
+
 /**
  * Class AbstractMarkdownFormatter.
  *
@@ -12,29 +15,51 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
   /**
    * {@inheritdoc}
    */
-  public function format(): string {
-    $this->processVariables();
-
-    return $this->doFormat();
+  public static function getConsoleOptions() {
+    return array_merge(parent::getConsoleOptions(), [
+      new InputOption(
+        name: 'md-link-vars',
+        mode: InputOption::VALUE_NONE,
+        description: 'Link variables within usages to their definitions in the Markdown output format.'
+      ),
+      new InputOption(
+        name: 'md-inline-code-wrap-vars',
+        mode: InputOption::VALUE_NONE,
+        description: 'Wrap variables to show them as inline code in the Markdown output format.'
+      ),
+      new InputOption(
+        name: 'md-inline-code-wrap-numbers',
+        mode: InputOption::VALUE_NONE,
+        description: 'Wrap numbers to show them as inline code in the Markdown output format.'
+      ),
+      new InputOption(
+        name: 'md-inline-code-extra-file',
+        mode: InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
+        description: 'A path to a file that contains additional strings to be formatted as inline code in the Markdown output format.',
+        default: [],
+      ),
+    ]);
   }
 
   /**
-   * Render variables data as a Markdown string.
-   *
-   * @return string
-   *   A rendered Markdown string.
+   * {@inheritdoc}
    */
-  abstract protected function doFormat(): string;
+  public function processConfig($config):void {
+    parent::processConfig($config);
+    $config->set('md-inline-code-extra-file', Utils::getNonEmptyLinesFromFiles(Utils::resolvePaths($config->get('md-inline-code-extra-file'))));
+  }
 
   /**
    * Process variables data.
    */
   protected function processVariables(): void {
-    if ($this->config['md-inline-code-wrap-vars']) {
-      $this->variables = $this->processInlineCode($this->variables);
+    parent::processVariables();
+
+    if ($this->config->get('md-inline-code-wrap-vars')) {
+      $this->variables = $this->processInlineCode($this->variables, $this->config->get('md-inline-code-extra-file'));
     }
 
-    if ($this->config['md-link-vars']) {
+    if ($this->config->get('md-link-vars')) {
       $this->variables = $this->processLinks($this->variables);
     }
   }
@@ -42,19 +67,15 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
   /**
    * Process inline code.
    *
-   * @param \AlexSkrypnyk\ShellVariablesExtractor\Entity\Variable[] $variables
+   * @param \AlexSkrypnyk\ShellVariablesExtractor\Variable\Variable[] $variables
    *   A list of variables to process.
+   * @param string[] $tokens
+   *   Additional tokens to be processed as inline code.
    *
-   * @return \AlexSkrypnyk\ShellVariablesExtractor\Entity\Variable[]
+   * @return \AlexSkrypnyk\ShellVariablesExtractor\Variable\Variable[]
    *   A list of processed variables.
    */
-  protected function processInlineCode(array $variables): array {
-    // Process all additional code items.
-    $tokens = [];
-    if (!empty($this->config['md-inline-code-extra-file'])) {
-      $tokens = array_filter($this->getLinesFromFiles($this->config['md-inline-code-extra-file']));
-    }
-
+  protected function processInlineCode(array $variables, array $tokens = []): array {
     foreach ($variables as $variable) {
       $variable->setName('`' . $variable->getName() . '`');
       if (!empty($variable->getDefaultValue())) {
@@ -69,7 +90,7 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
       }
 
       // Convert numbers to code values.
-      if ($this->config['md-inline-code-wrap-numbers']) {
+      if ($this->config->get('md-inline-code-wrap-numbers')) {
         $variable->setDescription(preg_replace('/\b((?<!`)[0-9]+)\b/', '`${1}`', $variable->getDescription()));
       }
     }
@@ -80,10 +101,10 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
   /**
    * Link variables.
    *
-   * @param \AlexSkrypnyk\ShellVariablesExtractor\Entity\Variable[] $variables
+   * @param \AlexSkrypnyk\ShellVariablesExtractor\Variable\Variable[] $variables
    *   A list of variables to process.
    *
-   * @return \AlexSkrypnyk\ShellVariablesExtractor\Entity\Variable[]
+   * @return \AlexSkrypnyk\ShellVariablesExtractor\Variable\Variable[]
    *   A list of processed variables.
    */
   protected function processLinks(array $variables): array {
@@ -117,25 +138,6 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
     }
 
     return $variables;
-  }
-
-  /**
-   * Get lines from files.
-   *
-   * @param array $paths
-   *   A list of paths to files.
-   *
-   * @return array
-   *   A list of lines, merged into one array.
-   */
-  protected function getLinesFromFiles($paths) {
-    $lines = [];
-
-    foreach ($paths as $path) {
-      $lines = array_merge($lines, preg_split("/(\r\n|\n|\r)/", file_get_contents($path)));
-    }
-
-    return $lines;
   }
 
 }

@@ -87,7 +87,7 @@ trait HelperTrait {
    *   Optional array of constructor arguments. If omitted, a constructor will
    *   not be called.
    *
-   * @return object
+   * @return \PHPUnit\Framework\MockObject\MockObject
    *   Mocked class.
    *
    * @SuppressWarnings(PHPMD.ElseExpression)
@@ -104,15 +104,15 @@ trait HelperTrait {
     }
     else {
       $mock = $this->getMockBuilder($class);
+
       if (!empty($args)) {
-        $mock = $mock->enableOriginalConstructor()
-          ->setConstructorArgs($args);
+        $mock = $mock->enableOriginalConstructor()->setConstructorArgs($args);
       }
       else {
         $mock = $mock->disableOriginalConstructor();
       }
-      $mock = $mock->setMethods($methods)
-        ->getMock();
+
+      $mock = $mock->setMethods($methods)->getMock();
     }
 
     foreach ($methodsMap as $method => $value) {
