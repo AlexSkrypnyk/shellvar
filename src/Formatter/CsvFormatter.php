@@ -2,6 +2,8 @@
 
 namespace AlexSkrypnyk\ShellVariablesExtractor\Formatter;
 
+use Symfony\Component\Console\Input\InputOption;
+
 /**
  * Class CsvFormatter.
  *
@@ -19,13 +21,27 @@ class CsvFormatter extends AbstractFormatter {
   /**
    * {@inheritdoc}
    */
-  public function format(): string {
+  public static function getConsoleOptions(): array {
+    return array_merge(parent::getConsoleOptions(), [
+      new InputOption(
+        name: 'csv-separator',
+        mode: InputOption::VALUE_REQUIRED,
+        description: 'Separator for the CSV output format.',
+        default: ';'
+      ),
+    ]);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function doFormat(): string {
     $csv = fopen('php://temp/maxmemory:' . (5 * 1024 * 1024), 'r+');
 
-    fputcsv($csv, ['Name', 'Default value', 'Description'], $this->config['csv-separator'] ?? ',');
+    fputcsv($csv, ['Name', 'Default value', 'Description'], $this->config->get('csv-separator') ?? ',');
 
     foreach ($this->variables as $variable) {
-      fputcsv($csv, $variable->toArray(), $this->config['csv-separator'] ?? ',');
+      fputcsv($csv, $variable->toArray(), $this->config->get('csv-separator') ?? ',');
     }
 
     rewind($csv);

@@ -10,19 +10,11 @@ namespace AlexSkrypnyk\ShellVariablesExtractor\Formatter;
 interface FormatterInterface {
 
   /**
-   * Get formatter name.
-   *
-   * @return string
-   *   Formatter name.
-   */
-  public static function getName(): string;
-
-  /**
    * Format variables data.
    *
    * @return string
    *   A formatted variables data as a string.
    */
-  public function format(): string;
+  public function format(array $variables): string;
 
 }

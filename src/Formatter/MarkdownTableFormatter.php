@@ -25,9 +25,11 @@ class MarkdownTableFormatter extends AbstractMarkdownFormatter {
   protected function doFormat(): string {
     // Use the CsvFormatter to format the variables data as CSV to then render
     // it as a CsvTable with Markdown renderer.
-    $csv = (new CsvFormatter($this->variables, $this->config))->format();
+    // Also, using ';' as a CSV separator to make sure that the Markdown table
+    // is rendered correctly.
+    $csv = (new CsvFormatter($this->config, ';'))->format($this->variables);
 
-    return (new CsvTable($csv, $this->config['csv-separator']))->render(Markdown::class);
+    return (new CsvTable($csv, ';'))->render(Markdown::class);
   }
 
 }

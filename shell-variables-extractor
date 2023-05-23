@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 
-use AlexSkrypnyk\ShellVariablesExtractor\ShellVariablesExtractorCommand;
+use AlexSkrypnyk\ShellVariablesExtractor\VariablesExtractorCommand;
 use Symfony\Component\Console\SingleCommandApplication;
 
 foreach ([$GLOBALS['_composer_autoload_path'] ?? NULL, __DIR__ . '/../../autoload.php', __DIR__ . '/../vendor/autoload.php', __DIR__ . '/vendor/autoload.php'] as $file) {
@@ -13,4 +13,4 @@ foreach ([$GLOBALS['_composer_autoload_path'] ?? NULL, __DIR__ . '/../../autoloa
 }
 
 $app = new SingleCommandApplication();
-$app->setCode([new ShellVariablesExtractorCommand($app), 'execute'])->run();
+$app->setCode([new VariablesExtractorCommand($app), 'execute'])->run();

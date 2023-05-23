@@ -30,7 +30,7 @@ abstract class UnitTestBase extends TestCase {
    * Get path to a fixture directory.
    */
   protected function fixtureDir() {
-    return 'tests/fixtures';
+    return 'tests/Fixtures';
   }
 
 }

@@ -2,6 +2,9 @@
 
 namespace AlexSkrypnyk\ShellVariablesExtractor\Formatter;
 
+use AlexSkrypnyk\ShellVariablesExtractor\Utils;
+use Symfony\Component\Console\Input\InputOption;
+
 /**
  * Class MarkdownBlocksFormatter.
  *
@@ -19,7 +22,28 @@ class MarkdownBlocksFormatter extends AbstractMarkdownFormatter {
   /**
    * {@inheritdoc}
    */
-  public function doFormat(): string {
+  public static function getConsoleOptions() {
+    return array_merge(parent::getConsoleOptions(), [
+      new InputOption(
+        name: 'md-block-template-file',
+        mode: InputOption::VALUE_REQUIRED,
+        description: "A path to a Markdown template file used for Markdown blocks (md-blocks) output format.\n{{ name }}, {{ description }} and {{ default_value }} tokens can be used within the template."
+      ),
+    ]);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function processConfig($config):void {
+    parent::processConfig($config);
+    $config->set('md-block-template-file', file_get_contents(Utils::resolvePath($config->get('md-block-template-file'))));
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function doFormat(): string {
     $content = '';
 
     foreach ($this->variables as $variable) {
@@ -32,7 +56,7 @@ class MarkdownBlocksFormatter extends AbstractMarkdownFormatter {
       }, $variable->toArray());
 
       $placeholders = array_combine($placeholders_tokens, $placeholders_values);
-      $content .= str_replace("\n\n\n", "\n", strtr(file_get_contents($this->config['md-block-template-file']), $placeholders));
+      $content .= str_replace("\n\n\n", "\n", strtr($this->config->get('md-block-template-file'), $placeholders));
     }
 
     return $content;

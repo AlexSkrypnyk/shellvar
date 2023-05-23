@@ -2,38 +2,124 @@
 
 namespace AlexSkrypnyk\ShellVariablesExtractor\Formatter;
 
+use AlexSkrypnyk\ShellVariablesExtractor\Config\Config;
+use AlexSkrypnyk\ShellVariablesExtractor\Config\ConfigAwareTrait;
+use AlexSkrypnyk\ShellVariablesExtractor\Factory\FactoryDiscoverableInterface;
+use AlexSkrypnyk\ShellVariablesExtractor\Variable\VariableAwareTrait;
+use Symfony\Component\Console\Input\InputOption;
+
 /**
  * Class AbstractFormatter.
  *
  * Abstract formatter class to be extended by all formatters.
  */
-abstract class AbstractFormatter implements FormatterInterface {
+abstract class AbstractFormatter implements FormatterInterface, FactoryDiscoverableInterface {
+
+  use ConfigAwareTrait;
+  use VariableAwareTrait;
 
   /**
-   * Array of variables.
+   * AbstractFormatter constructor.
    *
-   * @var \AlexSkrypnyk\ShellVariablesExtractor\Entity\Variable[]
+   * @param \AlexSkrypnyk\ShellVariablesExtractor\Config\Config $config
+   *   The configuration.
    */
-  protected $variables;
+  public function __construct(Config $config) {
+    $this->setConfig($config);
+  }
 
   /**
-   * Array of configuration options.
-   *
-   * @var array
+   * {@inheritdoc}
    */
-  protected $config;
+  public static function getConsoleArguments(): array {
+    return [];
+  }
 
   /**
-   * Command constructor.
-   *
-   * @param \AlexSkrypnyk\ShellVariablesExtractor\Entity\Variable[] $variables
-   *   Array of variables.
-   * @param array $config
-   *   Array of configuration options.
+   * {@inheritdoc}
    */
-  public function __construct(array $variables, array $config = []) {
-    $this->variables = $variables;
-    $this->config = $config;
+  public static function getConsoleOptions() {
+    return [
+      new InputOption(
+        name: 'unset',
+        mode: InputOption::VALUE_REQUIRED,
+        description: 'Specifies a placeholder value for variables that are defined but have no set value.',
+        default: '<UNSET>'
+      ),
+      new InputOption(
+        name: 'sort',
+        mode: InputOption::VALUE_NONE,
+        description: 'Sort variables by name.'
+      ),
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function format(array $variables): string {
+    $this->setVariables($variables);
+
+    $this->processVariables();
+
+    return $this->doFormat();
+  }
+
+  /**
+   * Render variables data as a Markdown string.
+   *
+   * @return string
+   *   A rendered Markdown string.
+   */
+  abstract protected function doFormat(): string;
+
+  /**
+   * Process variables data before formatting.
+   */
+  protected function processVariables(): void {
+    if ($this->config->get('sort')) {
+      $this->variables = $this->processSort($this->variables);
+    }
+
+    if ($this->config->get('unset')) {
+      $this->variables = $this->processUnset($this->variables, $this->config->get('unset'));
+    }
+  }
+
+  /**
+   * Process variables to sort.
+   *
+   * @param \AlexSkrypnyk\ShellVariablesExtractor\Variable\Variable[] $variables
+   *   The variables array.
+   *
+   * @return \AlexSkrypnyk\ShellVariablesExtractor\Variable\Variable[]
+   *   An array of processed variables.
+   */
+  protected function processSort($variables) {
+    ksort($variables);
+
+    return $variables;
+  }
+
+  /**
+   * Process variables to set values for the variables without a value.
+   *
+   * @param \AlexSkrypnyk\ShellVariablesExtractor\Variable\Variable[] $variables
+   *   The variables array.
+   * @param string $unset
+   *   The value to set for the variables without a value.
+   *
+   * @return \AlexSkrypnyk\ShellVariablesExtractor\Variable\Variable[]
+   *   An array of processed variables.
+   */
+  protected function processUnset(array $variables, string $unset):array {
+    foreach ($variables as $variable) {
+      if (empty($variable->getDefaultValue())) {
+        $variable->setDefaultValue($unset);
+      }
+    }
+
+    return $variables;
   }
 
 }

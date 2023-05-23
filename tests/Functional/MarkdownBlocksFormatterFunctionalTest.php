@@ -18,7 +18,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
     return [
       [
         [
-          '--globals-only',
+          '--exclude-local',
           '--sort',
           '--format=md-blocks',
           '--md-block-template-file=' . $this->fixtureFile('test-template.md'),
@@ -129,7 +129,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
       // Wrapped in inline code.
       [
         [
-          '--globals-only',
+          '--exclude-local',
           '--sort',
           '--format=md-blocks',
           '--md-block-template-file=' . $this->fixtureFile('test-template.md'),
@@ -241,7 +241,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
       // Wrapped in inline code with numbers.
       [
         [
-          '--globals-only',
+          '--exclude-local',
           '--sort',
           '--format=md-blocks',
           '--md-block-template-file=' . $this->fixtureFile('test-template.md'),
@@ -354,7 +354,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
       // Wrapped in inline code with extras.
       [
         [
-          '--globals-only',
+          '--exclude-local',
           '--sort',
           '--format=md-blocks',
           '--md-block-template-file=' . $this->fixtureFile('test-template.md'),

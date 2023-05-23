@@ -2,90 +2,48 @@
 
 namespace AlexSkrypnyk\ShellVariablesExtractor\Extractor;
 
-use AlexSkrypnyk\ShellVariablesExtractor\Entity\Variable;
+use AlexSkrypnyk\ShellVariablesExtractor\Variable\Variable;
+use AlexSkrypnyk\ShellVariablesExtractor\Utils;
 
 /**
- * Class ShellVariablesExtractorCommand.
+ * Class ShellExtractor.
  *
  * Extracts variables from shell scripts.
  */
-class Extractor implements ExtractorInterface {
+class ShellExtractor extends AbstractExtractor {
 
+  /**
+   * Defines a comment separator.
+   */
   const COMMENT_SEPARATOR = '#';
 
   /**
-   * Array of target files.
-   *
-   * @var array
+   * {@inheritdoc}
    */
-  protected $targets;
-
-  /**
-   * Array of configuration options passed from the CLI.
-   *
-   * @var array
-   */
-  protected $config;
-
-  /**
-   * Command constructor.
-   *
-   * @param array $targets
-   *   Array of target files.
-   * @param array $config
-   *   Array of configuration options.
-   */
-  public function __construct(array $targets, array $config) {
-    $this->targets = $targets;
-    $this->config = $config;
+  public static function getName(): string {
+    return 'extractor-shell';
   }
 
   /**
    * {@inheritdoc}
    */
-  public function extract(array $targets): array {
-    $vars = [];
-
-    // Extract all variables.
-    foreach ($targets as $target) {
-      $vars += $this->extractVariablesFromFile($target);
-    }
-
-    // Filter-out excluded local variables.
-    if ($this->config['globals-only']) {
-      $vars = $this->filterLocalVars($vars);
-    }
-
-    // Filter-out excluded variables.
-    $vars = $this->filterExcludedVars($vars, $this->getLinesFromFiles($this->config['exclude-file']));
-
-    // Filter-out excluded prefixed variables.
-    $vars = $this->filterExcludedPrefixedVars($vars, $this->config['exclude-prefix']);
-
-    // Sort variables by name.
-    if ($this->config['sort']) {
-      ksort($vars);
-    }
+  public function extract(): array {
+    parent::extract();
 
     // Exclude non-assignments.
-    array_walk($vars, function (&$var) {
+    array_walk($this->variables, function (&$var) {
       $var = !$var->getIsAssignment() ? FALSE : $var;
     });
-    $vars = array_filter($vars);
+    $this->variables = array_filter($this->variables);
 
-    return $vars;
+    return $this->variables;
   }
 
   /**
-   * Extract variables from file.
-   *
-   * @param string $file
-   *   Path to file.
+   * {@inheritdoc}
    */
-  protected function extractVariablesFromFile($file) {
-    $vars = [];
-
-    $lines = $this->getLinesFromFiles([$file]);
+  protected function extractVariablesFromFile($file):void {
+    $lines = Utils::getLinesFromFiles([$file]);
 
     foreach ($lines as $num => $line) {
       $var = $this->extractVariable($line);
@@ -95,12 +53,12 @@ class Extractor implements ExtractorInterface {
       }
 
       // Only use the very first occurrence.
-      if (!empty($vars[$var->getName()])) {
+      if (!empty($this->variables[$var->getName()])) {
         continue;
       }
 
       if ($var->getIsAssignment()) {
-        $default_value = $this->extractVariableValue($line, $this->config['unset']);
+        $default_value = $this->extractVariableValue($line, $this->config->get('unset'));
         if ($default_value) {
           $var->setDefaultValue($default_value);
         }
@@ -111,29 +69,8 @@ class Extractor implements ExtractorInterface {
         $var->setDescription($description);
       }
 
-      $vars[$var->getName()] = $var;
+      $this->variables[$var->getName()] = $var;
     }
-
-    return $vars;
-  }
-
-  /**
-   * Get lines from files.
-   *
-   * @param array $paths
-   *   A list of paths to files.
-   *
-   * @return array
-   *   A list of lines, merged into one array.
-   */
-  protected function getLinesFromFiles($paths) {
-    $lines = [];
-
-    foreach ($paths as $path) {
-      $lines = array_merge($lines, preg_split("/(\r\n|\n|\r)/", file_get_contents($path)));
-    }
-
-    return $lines;
   }
 
   /**
@@ -142,7 +79,7 @@ class Extractor implements ExtractorInterface {
    * @param string $line
    *   A line to extract a variable name from.
    *
-   * @return \AlexSkrypnyk\ShellVariablesExtractor\Entity\Variable|null
+   * @return \AlexSkrypnyk\ShellVariablesExtractor\Variable\Variable|null
    *   Variable instance or NULL if a variable was not extracted.
    */
   protected function extractVariable(string $line) {
@@ -270,34 +207,6 @@ class Extractor implements ExtractorInterface {
     $output = str_replace([" \n ", " \n", "\n "], "\n", $output);
 
     return $output;
-  }
-
-  /**
-   * Filter out local variables.
-   *
-   * @param \AlexSkrypnyk\ShellVariablesExtractor\Entity\Variable[] $vars
-   *   A list of variables to filter.
-   */
-  protected function filterLocalVars(array $vars): array {
-    return array_filter($vars, function (Variable $variable) {
-      return $variable->getName() != strtolower($variable->getName());
-    });
-  }
-
-  /**
-   * Filter out excluded variables.
-   */
-  protected function filterExcludedVars(array $vars, array $excluded): array {
-    return array_diff_key($vars, array_flip($excluded));
-  }
-
-  /**
-   * Filter out excluded prefixed variables.
-   */
-  protected function filterExcludedPrefixedVars(array $vars, array $prefixes): array {
-    return array_filter($vars, function (Variable $variable) use ($prefixes) {
-      return !array_filter($prefixes, fn($p) => str_starts_with($variable->getName(), $p));
-    });
   }
 
 }

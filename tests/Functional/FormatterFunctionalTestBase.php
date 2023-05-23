@@ -5,7 +5,7 @@ namespace AlexSkrypnyk\Tests\Functional;
 /**
  * Class FormatterFunctionalTestBase.
  *
- * Functional tests for extractions.
+ * Functional tests for formatters.
  *
  * @group scripts
  *

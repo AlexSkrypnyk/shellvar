@@ -18,7 +18,7 @@ class MarkdownTableFormatterFunctionalTest extends FormatterFunctionalTestBase {
     return [
       [
         [
-          '--globals-only',
+          '--exclude-local',
           '--format=md-table',
           '--sort',
           $this->fixtureFile('test-data.sh'),
@@ -53,7 +53,7 @@ class MarkdownTableFormatterFunctionalTest extends FormatterFunctionalTestBase {
       // Wrapped in inline code.
       [
         [
-          '--globals-only',
+          '--exclude-local',
           '--format=md-table',
           '--sort',
           '--md-inline-code-wrap-vars',
@@ -89,7 +89,7 @@ class MarkdownTableFormatterFunctionalTest extends FormatterFunctionalTestBase {
       // Wrapped in inline code with numbers.
       [
         [
-          '--globals-only',
+          '--exclude-local',
           '--format=md-table',
           '--sort',
           '--md-inline-code-wrap-vars',
@@ -126,7 +126,7 @@ class MarkdownTableFormatterFunctionalTest extends FormatterFunctionalTestBase {
       // Wrapped in inline code with extras.
       [
         [
-          '--globals-only',
+          '--exclude-local',
           '--format=md-table',
           '--sort',
           '--md-inline-code-wrap-vars',
