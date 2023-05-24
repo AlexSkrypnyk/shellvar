@@ -8,6 +8,7 @@ use AlexSkrypnyk\ShellVariablesExtractor\ConsoleAwareInterface;
 use AlexSkrypnyk\ShellVariablesExtractor\Utils;
 use AlexSkrypnyk\ShellVariablesExtractor\Variable\VariableAwareTrait;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 
 /**
  * Class AbstractExtractor.
@@ -46,7 +47,14 @@ abstract class AbstractExtractor implements ExtractorInterface, ConsoleAwareInte
    * {@inheritdoc}
    */
   public static function getConsoleOptions(): array {
-    return [];
+    return [
+      new InputOption(
+        name: 'skip-description-prefix',
+        mode: InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
+        description: 'Skip description lines that start with the provided prefix.',
+        default: []
+      ),
+    ];
   }
 
   /**

@@ -168,9 +168,9 @@ class ExtractorUnitTest extends UnitTestBase {
    *
    * @dataProvider dataProviderExtractVariableDescription
    */
-  public function testExtractVariableDescription($lines, $line_num, $expected) {
+  public function testExtractVariableDescription($lines, $line_num, $skip_prefix, $expected) {
     $extractor = $this->prepareMock(ShellExtractor::class);
-    $actual = $this->callProtectedMethod($extractor, 'extractVariableDescription', [$lines, $line_num]);
+    $actual = $this->callProtectedMethod($extractor, 'extractVariableDescription', [$lines, $line_num, $skip_prefix]);
     $this->assertEquals($expected, $actual);
   }
 
@@ -179,15 +179,24 @@ class ExtractorUnitTest extends UnitTestBase {
    */
   public function dataProviderExtractVariableDescription() {
     return [
-      [[], 0, ''],
-      [[], 10, ''],
-      [['string'], 0, ''],
-      [['string'], 10, ''],
-      [['# first second', 'VAR1'], 1, 'first second'],
-      [[' ', '# first second', 'VAR1'], 2, 'first second'],
-      [['# zero', ' ', '# first second', 'VAR1'], 3, 'first second'],
-      [['# zero', ' ', '# first second', '#', '# third', 'VAR1'], 5, 'first second' . "\n" . 'third'],
-      [['# zero', ' ', '# first second', '#', '# third', '# forth', 'VAR1'], 6, 'first second' . "\n" . 'third forth'],
+      [[], 0, [], ''],
+      [[], 10, [], ''],
+      [['string'], 0, [], ''],
+      [['string'], 10, [], ''],
+      [['# first second', 'VAR1'], 1, [], 'first second'],
+      [[' ', '# first second', 'VAR1'], 2, [], 'first second'],
+      [['# zero', ' ', '# first second', 'VAR1'], 3, [], 'first second'],
+      [['# zero', ' ', '# first second', '#', '# third', 'VAR1'], 5, [], 'first second' . "\n" . 'third'],
+      [['# zero', ' ', '# first second', '#', '# third', '# forth', 'VAR1'], 6, [], 'first second' . "\n" . 'third forth'],
+
+      [['# zero', ' ', '# first second', '#', '# third', '# forth', 'VAR1'], 6, [], 'first second' . "\n" . 'third forth'],
+
+      // Description prefixes.
+      [['# zero', ' ', '#;< first second', '# third', '# forth', 'VAR1'], 5, ['#;<'], 'third forth'],
+      [['# zero', ' ', '#;< first second', '#;> third', '# forth', 'VAR1'], 5, ['#;<', '#;>'], 'forth'],
+      [['# zero', ' ', '#;< first second', '#;> third', '# forth', 'VAR1'], 5, [';<', ';>'], 'forth'],
+      // Special case: removing the skipped prefix should avoid additional line.
+      [['# zero', ' ', '# first second', '#', '#;> third', '# forth', 'VAR1'], 6, [';<', ';>'], 'first second' . "\n" . 'forth'],
     ];
   }
 
