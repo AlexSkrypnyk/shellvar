@@ -8,9 +8,10 @@ Scan a file or a directory with shell scripts and extract all variables.
 
 ## Features
 
-- Scan a file or a directory with shell scripts and extract found variables.
-- Extract variables comments.
-- Use exclude list to skip specified variables.
+- Scan a file or a directory with shell scripts and extract found variables with comments and values.
+- Filter variables: exclude local, exclude by prefix, exclude from a list in file.
+- Format output as CSV, Markdown table or Markdown blocks defined in template.
+- Extend filters and formatters with custom classes.
 
 ## Installation
 
