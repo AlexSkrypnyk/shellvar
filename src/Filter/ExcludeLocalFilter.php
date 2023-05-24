@@ -34,7 +34,7 @@ class ExcludeLocalFilter extends AbstractFilter {
       new InputOption(
         name: 'exclude-local',
         mode: InputOption::VALUE_NONE,
-        description: 'Indicates that the tool should only consider global variables, ignoring local variables.'
+        description: 'Remove local variables.'
       ),
     ];
   }

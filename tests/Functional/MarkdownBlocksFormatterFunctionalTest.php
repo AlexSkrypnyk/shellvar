@@ -27,7 +27,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
         <<<'EOD'
         ### VAR1
 
-        Default value: <UNSET>
+        Default value: UNSET
 
         ### VAR10
 
@@ -79,7 +79,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
 
         ### VAR34
 
-        Default value: <UNSET>
+        Default value: UNSET
 
         ### VAR4
 
@@ -113,7 +113,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
 
         ### VARENV2
 
-        Default value: <UNSET>
+        Default value: UNSET
 
         ### VARENV3
 
@@ -125,7 +125,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
 
         Comment 2 from script without a leading space that goes on multiple lines.
 
-        Default value: <UNSET>
+        Default value: UNSET
 
         EOD,
       ],
@@ -143,7 +143,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
         <<<'EOD'
         ### `VAR1`
 
-        Default value: `<UNSET>`
+        Default value: `UNSET`
 
         ### `VAR10`
 
@@ -195,7 +195,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
 
         ### `VAR34`
 
-        Default value: `<UNSET>`
+        Default value: `UNSET`
 
         ### `VAR4`
 
@@ -229,7 +229,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
 
         ### `VARENV2`
 
-        Default value: `<UNSET>`
+        Default value: `UNSET`
 
         ### `VARENV3`
 
@@ -241,7 +241,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
 
         Comment 2 from script without a leading space that goes on multiple lines.
 
-        Default value: `<UNSET>`
+        Default value: `UNSET`
 
         EOD,
       ],
@@ -260,7 +260,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
         <<<'EOD'
         ### `VAR1`
 
-        Default value: `<UNSET>`
+        Default value: `UNSET`
 
         ### `VAR10`
 
@@ -312,7 +312,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
 
         ### `VAR34`
 
-        Default value: `<UNSET>`
+        Default value: `UNSET`
 
         ### `VAR4`
 
@@ -346,7 +346,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
 
         ### `VARENV2`
 
-        Default value: `<UNSET>`
+        Default value: `UNSET`
 
         ### `VARENV3`
 
@@ -358,7 +358,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
 
         Comment `2` from script without a leading space that goes on multiple lines.
 
-        Default value: `<UNSET>`
+        Default value: `UNSET`
 
         EOD,
       ],
@@ -377,7 +377,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
         <<<'EOD'
         ### `VAR1`
 
-        Default value: `<UNSET>`
+        Default value: `UNSET`
 
         ### `VAR10`
 
@@ -429,7 +429,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
 
         ### `VAR34`
 
-        Default value: `<UNSET>`
+        Default value: `UNSET`
 
         ### `VAR4`
 
@@ -463,7 +463,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
 
         ### `VARENV2`
 
-        Default value: `<UNSET>`
+        Default value: `UNSET`
 
         ### `VARENV3`
 
@@ -475,7 +475,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
 
         Comment 2 from script without a leading space that goes on multiple lines.
 
-        Default value: `<UNSET>`
+        Default value: `UNSET`
 
         EOD,
       ],

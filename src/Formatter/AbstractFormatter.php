@@ -49,13 +49,13 @@ abstract class AbstractFormatter implements FormatterInterface, FactoryDiscovera
       new InputOption(
         name: 'unset',
         mode: InputOption::VALUE_REQUIRED,
-        description: 'Specifies a placeholder value for variables that are defined but have no set value.',
-        default: '<UNSET>'
+        description: 'A string to represent a value for variables that are defined but have no set value.',
+        default: 'UNSET'
       ),
       new InputOption(
         name: 'sort',
         mode: InputOption::VALUE_NONE,
-        description: 'Sort variables by name.'
+        description: 'Sort variables in ascending order by name.'
       ),
       new InputOption(
         name: 'path-strip-prefix',

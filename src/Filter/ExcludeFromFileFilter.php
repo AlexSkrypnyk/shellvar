@@ -26,7 +26,7 @@ class ExcludeFromFileFilter extends AbstractFilter {
   public static function getConsoleOptions(): array {
     return [
       new InputOption(
-        name: 'exclude-file',
+        name: 'exclude-from-file',
         mode: InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
         description: 'A path to a file that contains variables to be excluded from the extraction process.',
       ),
@@ -38,14 +38,14 @@ class ExcludeFromFileFilter extends AbstractFilter {
    */
   protected function processConfig(Config $config):void {
     parent::processConfig($config);
-    $config->set('exclude-file', Utils::getNonEmptyLinesFromFiles(Utils::resolvePaths($config->get('exclude-file', []))));
+    $config->set('exclude-from-file', Utils::getNonEmptyLinesFromFiles(Utils::resolvePaths($config->get('exclude-from-file', []))));
   }
 
   /**
    * {@inheritdoc}
    */
   public function filter(array $variables): array {
-    return array_diff_key($variables, array_flip($this->config->get('exclude-file')));
+    return array_diff_key($variables, array_flip($this->config->get('exclude-from-file')));
   }
 
 }
