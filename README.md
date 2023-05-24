@@ -26,7 +26,7 @@ By default, variable names, descriptions (taken from the comments) and their
 values are printed to STDOUT in the CSV format. You can also change the output
 format to Markdown table or Markdown blocks.
 
-Given the following shell script:
+Given the following shell script (see [extended example](tests/Fixtures/test-data.sh) used in tests):
 
 ```bash
 # Assignment to scalar value.
