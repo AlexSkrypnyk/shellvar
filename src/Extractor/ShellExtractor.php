@@ -153,8 +153,9 @@ class ShellExtractor extends AbstractExtractor {
         $replaced++;
 
         // Use found value or the default value, i.e. in case of ${var:-abc},
-        // use 'abc'; in case of ${var:-}, use 'var'.
-        return trim($matches[2] ?? $matches[1], '"');
+        // use 'abc'; in case of ${var:-}, use 'var', but as a variable to make
+        // sure that it is not confused with a scalar value ($var vs 'var').
+        return trim($matches[2] ?? '$' . $matches[1], '"');
       }, $value);
 
       if ($replaced === 0) {
@@ -164,12 +165,16 @@ class ShellExtractor extends AbstractExtractor {
 
     $value = trim($value, '"');
 
-    if (str_starts_with($value, '${')) {
-      $value = trim($value, '${}');
-      $value = trim($value, '"');
-    }
     if (str_starts_with($value, '$')) {
+      if (str_starts_with($value, '${')) {
+        $value = trim($value, '${}');
+        $value = trim($value, '"');
+      }
+
       $value = trim($value, '$');
+
+      // Numeric values are script arguments, so we convert them to defaults.
+      $value = is_numeric($value) ? $default_value : $value;
     }
 
     return empty($value) ? $default_value : $value;

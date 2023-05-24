@@ -160,6 +160,13 @@ class ExtractorUnitTest extends UnitTestBase {
       // Still a valid expression in the context of this method.
       ['$VAR1=123', 123],
       ['${VAR1}=123', 123],
+
+      // Script arguments.
+      ['VAR1=${VAR2:-$1}', 'TESTUNSET'],
+      ['VAR1=${VAR2:-${1}}', 'TESTUNSET'],
+      ['VAR1=${1:-}', 'TESTUNSET'],
+      ['VAR1=${1:-2}', '2'],
+      ['VAR1=${1:-$2}', 'TESTUNSET'],
     ];
   }
 
