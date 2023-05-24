@@ -65,7 +65,7 @@ class ShellExtractor extends AbstractExtractor {
         }
       }
 
-      $description = $this->extractVariableDescription($lines, $num);
+      $description = $this->extractVariableDescription($lines, $num, $this->config->get('skip-description-prefix'));
       if ($description) {
         $var->setDescription($description);
       }
@@ -182,13 +182,15 @@ class ShellExtractor extends AbstractExtractor {
    *   A list of lines to extract a variable description from.
    * @param int $line_num
    *   A line number to start from.
+   * @param array $skip_prefixes
+   *   A list of prefixes to skip.
    * @param string $comment_separator
    *   A comment delimiter.
    *
    * @return string
    *   A variable description.
    */
-  protected function extractVariableDescription($lines, $line_num, $comment_separator = self::COMMENT_SEPARATOR) {
+  protected function extractVariableDescription($lines, $line_num, array $skip_prefixes = [], $comment_separator = self::COMMENT_SEPARATOR) {
     $comment_lines = [];
 
     $line_num = min($line_num, count($lines) - 1);
@@ -200,12 +202,23 @@ class ShellExtractor extends AbstractExtractor {
     }
 
     $comment_lines = array_reverse($comment_lines);
+
+    $comment_lines = array_filter($comment_lines, function ($value) use ($skip_prefixes, $comment_separator) {
+      foreach ($skip_prefixes as $prefix) {
+        if (str_starts_with($value, ltrim($prefix, $comment_separator))) {
+          return FALSE;
+        }
+      }
+      return TRUE;
+    });
+
     array_walk($comment_lines, function (&$value) {
       $value = empty($value) ? "\n" : trim($value);
     });
 
     $output = implode(' ', $comment_lines);
     $output = str_replace([" \n ", " \n", "\n "], "\n", $output);
+    $output = trim($output, "\n");
 
     return $output;
   }

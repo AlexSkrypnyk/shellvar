@@ -6,7 +6,7 @@
          convertWarningsToExceptions="true"
          processIsolation="true"
          cacheResult ="false"
-         stopOnFailure="false">
+         stopOnFailure="true">
     <testsuites>
         <testsuite name="My Test Suite">
             <directory suffix=".php">./test</directory>

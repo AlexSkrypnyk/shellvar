@@ -40,6 +40,7 @@ With excluded variables specified in the file, custom value `<NOT SET>` for vari
 ```
       --format=FORMAT                                        The output format. [default: "csv"]
       --sort                                                 Sort variables by name.
+      --skip-description-prefix[=SKIP-DESCRIPTION-PREFIX]    Skip description lines that start with the provided prefix.
       --exclude-prefix=EXCLUDE-PREFIX                        Exclude variables that start with the provided prefix. (multiple values allowed)
       --exclude-file=EXCLUDE-FILE                            A path to a file that contains variables to be excluded from the extraction process. (multiple values allowed)
       --exclude-local                                        Indicates that the tool should only consider global variables, ignoring local variables.
