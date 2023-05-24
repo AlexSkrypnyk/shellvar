@@ -30,9 +30,28 @@ With excluded variables specified in the file:
 
     ./vendor/bin/shell-variables-extractor --exclude-file=../excluded.txt path/to/file
 
-With excluded variables specified in the file, custom value for variables without a value, and output as markdown with variables wrapped in ticks:
+With excluded variables specified in the file, custom value `<NOT SET>` for variables without a value, and output as markdown blocks with variables wrapped in inline code:
    
-    ./vendor/bin/shell-variables-extractor --ticks --markdown --exclude-file=./excluded.txt --unset="<NOT SET>" ../   
+    ./vendor/bin/shell-variables-extractor --exclude-file=./excluded.txt --unset="<NOT SET>" --format=md-blocks --md-inline-code-wrap-vars ../   
+
+## Options
+
+```
+      --format=FORMAT                                        The output format. [default: "csv"]
+      --sort                                                 Sort variables by name.
+      --exclude-prefix=EXCLUDE-PREFIX                        Exclude variables that start with the provided prefix. (multiple values allowed)
+      --exclude-file=EXCLUDE-FILE                            A path to a file that contains variables to be excluded from the extraction process. (multiple values allowed)
+      --exclude-local                                        Indicates that the tool should only consider global variables, ignoring local variables.
+      --unset=UNSET                                          Specifies a placeholder value for variables that are defined but have no set value. [default: "<UNSET>"]      
+      --csv-separator=CSV-SEPARATOR                          Separator for the CSV output format. [default: ";"]
+      --md-link-vars                                         Link variables within usages to their definitions in the Markdown output format.
+      --md-inline-code-wrap-vars                             Wrap variables to show them as inline code in the Markdown output format.
+      --md-inline-code-wrap-numbers                          Wrap numbers to show them as inline code in the Markdown output format.
+      --md-inline-code-extra-file=MD-INLINE-CODE-EXTRA-FILE  A path to a file that contains additional strings to be formatted as inline code in the Markdown output format. (multiple values allowed)
+      --md-block-template-file=MD-BLOCK-TEMPLATE-FILE        A path to a Markdown template file used for Markdown blocks (md-blocks) output format.
+                                                             {{ name }}, {{ description }} and {{ default_value }} tokens can be used within the template.
+
+```
 
 ## Maintenance
 
