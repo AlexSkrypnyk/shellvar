@@ -39,12 +39,14 @@ With excluded variables specified in the file, custom value `<NOT SET>` for vari
 
 ```
       --format=FORMAT                                        The output format. [default: "csv"]
-      --sort                                                 Sort variables by name.
-      --skip-description-prefix[=SKIP-DESCRIPTION-PREFIX]    Skip description lines that start with the provided prefix.
+      --skip-description-prefix=SKIP-DESCRIPTION-PREFIX      Skip description lines that start with the provided prefix. (multiple values allowed)
       --exclude-prefix=EXCLUDE-PREFIX                        Exclude variables that start with the provided prefix. (multiple values allowed)
       --exclude-file=EXCLUDE-FILE                            A path to a file that contains variables to be excluded from the extraction process. (multiple values allowed)
       --exclude-local                                        Indicates that the tool should only consider global variables, ignoring local variables.
-      --unset=UNSET                                          Specifies a placeholder value for variables that are defined but have no set value. [default: "<UNSET>"]      
+      --fields=FIELDS                                        Semicolon-separated list of fields. Each field is a key-label pair in the format "key=label". If label is omitted, key is used as label. [default: "name=Name;default_value=\"Default value\";description=Description"]
+      --unset=UNSET                                          Specifies a placeholder value for variables that are defined but have no set value. [default: "<UNSET>"]
+      --sort                                                 Sort variables by name.
+      --path-strip-prefix=PATH-STRIP-PREFIX                  Strip the provided prefix from the path.
       --csv-separator=CSV-SEPARATOR                          Separator for the CSV output format. [default: ";"]
       --md-link-vars                                         Link variables within usages to their definitions in the Markdown output format.
       --md-inline-code-wrap-vars                             Wrap variables to show them as inline code in the Markdown output format.

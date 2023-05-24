@@ -78,6 +78,7 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
   protected function processInlineCode(array $variables, array $tokens = []): array {
     foreach ($variables as $variable) {
       $variable->setName('`' . $variable->getName() . '`');
+      $variable->setPath('`' . $variable->getPath() . '`');
       if (!empty($variable->getDefaultValue())) {
         $variable->setDefaultValue('`' . $variable->getDefaultValue() . '`');
       }

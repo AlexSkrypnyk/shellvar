@@ -21,49 +21,44 @@ class Variable {
    *
    * @var string
    */
-  protected $description;
+  protected $description = '';
 
   /**
    * The variable default value.
    *
    * @var mixed
    */
-  protected $defaultValue;
+  protected $defaultValue = NULL;
+
+  /**
+   * Path to the file where the variable is defined.
+   *
+   * @var string
+   */
+  protected $path;
 
   /**
    * Whether the variable is an assignment.
    *
    * @var bool
    */
-  protected $isAssignment;
+  protected $isAssignment = FALSE;
 
   /**
    * Whether the variable is an inline code.
    *
    * @var bool
    */
-  protected $isInlineCode;
+  protected $isInlineCode = FALSE;
 
   /**
    * Variable constructor.
    *
    * @param string $name
    *   The variable name.
-   * @param string $description
-   *   The variable description.
-   * @param mixed $default_value
-   *   The variable default value.
-   * @param bool $is_assignment
-   *   Whether the variable is an assignment.
-   * @param bool $is_inline_code
-   *   Whether the variable is an inline code.
    */
-  public function __construct($name, $description = '', $default_value = NULL, $is_assignment = FALSE, $is_inline_code = FALSE) {
+  public function __construct($name) {
     $this->name = $name;
-    $this->description = $description;
-    $this->defaultValue = $default_value;
-    $this->isAssignment = $is_assignment;
-    $this->isInlineCode = $is_inline_code;
   }
 
   /**
@@ -142,6 +137,31 @@ class Variable {
   }
 
   /**
+   * Get path to the file where the variable is defined.
+   *
+   * @return string
+   *   Path to the file where the variable is defined.
+   */
+  public function getPath(): string {
+    return $this->path;
+  }
+
+  /**
+   * Set path to the file where the variable is defined.
+   *
+   * @param string $path
+   *   Path to the file where the variable is defined.
+   *
+   * @return Variable
+   *   The variable instance.
+   */
+  public function setPath(string $path): Variable {
+    $this->path = $path;
+
+    return $this;
+  }
+
+  /**
    * Get whether the variable is an assignment.
    *
    * @return bool
@@ -194,15 +214,25 @@ class Variable {
   /**
    * Convert internal variables to array representation.
    *
+   * @param array $fields
+   *   Array of field names to sort by.
+   *
    * @return array
-   *   Internal variables as array.
+   *   Array of values, keyed by the order and name of the fields.
+   *
+   * phpcs:disable Drupal.Arrays.Array.LongLineDeclaration
    */
-  public function toArray() {
-    return [
+  public function toArray(array $fields = ['name', 'default_value', 'description']): array {
+    $values = [
       'name' => $this->name,
       'default_value' => $this->defaultValue,
       'description' => $this->description,
+      'path' => $this->path,
     ];
+
+    $values = array_merge(array_flip($fields), $values);
+
+    return array_intersect_key($values, array_flip($fields));
   }
 
 }
