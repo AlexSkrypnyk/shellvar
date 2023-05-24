@@ -35,9 +35,12 @@ class MarkdownBlocksFormatter extends AbstractMarkdownFormatter {
   /**
    * {@inheritdoc}
    */
-  public function processConfig($config):void {
+  public function processConfig($config): void {
     parent::processConfig($config);
-    $config->set('md-block-template-file', file_get_contents(Utils::resolvePath($config->get('md-block-template-file'))));
+
+    if (!empty($config->get('md-block-template-file'))) {
+      $config->set('md-block-template-file', file_get_contents(Utils::resolvePath($config->get('md-block-template-file'))));
+    }
   }
 
   /**
@@ -53,6 +56,8 @@ class MarkdownBlocksFormatter extends AbstractMarkdownFormatter {
       'path',
     ];
 
+    $template = $this->config->get('md-block-template-file') ?: static::getDefaultTemplate();
+
     foreach ($this->variables as $variable) {
       $placeholders_tokens = array_map(function ($v) {
         return '{{ ' . $v . ' }}';
@@ -63,10 +68,28 @@ class MarkdownBlocksFormatter extends AbstractMarkdownFormatter {
       }, $variable->toArray($fields));
 
       $placeholders = array_combine($placeholders_tokens, $placeholders_values);
-      $content .= str_replace("\n\n\n", "\n", strtr($this->config->get('md-block-template-file'), $placeholders));
+      $content .= str_replace("\n\n\n", "\n", strtr($template, $placeholders));
     }
 
     return $content;
+  }
+
+  /**
+   * Default template for a single block.
+   *
+   * @return string
+   *   The template.
+   */
+  protected static function getDefaultTemplate() {
+    return <<<EOT
+    ### {{ name }}
+    
+    {{ description }}
+    
+    Default value: {{ default_value }}
+
+
+    EOT;
   }
 
 }
