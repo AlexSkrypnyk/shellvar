@@ -37,6 +37,7 @@ class CsvFormatterFunctionalTest extends FormatterFunctionalTestBase {
               VAR2;val2;
               VAR3;val3;
               VAR33;VAR32;
+              VAR34;<UNSET>;
               VAR4;val4;
               VAR5;abc;
               VAR6;VAR5;
@@ -70,6 +71,7 @@ class CsvFormatterFunctionalTest extends FormatterFunctionalTestBase {
         VAR2;val2;
         VAR3;val3;
         VAR33;VAR32;
+        VAR34;<UNSET>;
         VAR4;val4;
         VAR5;abc;
         VAR6;VAR5;
@@ -97,6 +99,7 @@ class CsvFormatterFunctionalTest extends FormatterFunctionalTestBase {
         VAR2;val2;
         VAR3;val3;
         VAR33;VAR32;
+        VAR34;<UNSET>;
         VAR4;val4;
         VAR5;abc;
         VAR6;VAR5;
@@ -131,6 +134,7 @@ class CsvFormatterFunctionalTest extends FormatterFunctionalTestBase {
         VAR2;val2bash;
         VAR3;val3;
         VAR33;VAR32;
+        VAR34;<UNSET>;
         VAR4;val4;
         VAR5;abc;
         VAR6;VAR5;
@@ -166,6 +170,7 @@ class CsvFormatterFunctionalTest extends FormatterFunctionalTestBase {
         VAR2;val2bash;
         VAR3;val3;
         VAR33;VAR32;
+        VAR34;<UNSET>;
         VAR4;val4;
         VAR5;abc;
         VAR6;VAR5;

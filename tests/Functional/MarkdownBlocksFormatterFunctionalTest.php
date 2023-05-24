@@ -77,6 +77,10 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
 
         Default value: VAR32
 
+        ### VAR34
+
+        Default value: <UNSET>
+
         ### VAR4
 
         Default value: val4
@@ -188,6 +192,10 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
         ### `VAR33`
 
         Default value: `VAR32`
+
+        ### `VAR34`
+
+        Default value: `<UNSET>`
 
         ### `VAR4`
 
@@ -301,6 +309,10 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
         ### `VAR33`
 
         Default value: `VAR32`
+        
+        ### `VAR34`
+
+        Default value: `<UNSET>`
 
         ### `VAR4`
 
@@ -414,6 +426,10 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
         ### `VAR33`
 
         Default value: `VAR32`
+
+        ### `VAR34`
+
+        Default value: `<UNSET>`
 
         ### `VAR4`
 
