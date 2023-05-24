@@ -61,6 +61,8 @@ VARENV3=valenv3
 
 VAR33=${VAR31:-${VAR32}}
 
+VAR34=${VAR34:-}
+
 export VAR43=${VAR41:-${VAR42}}
 
 # Another try with a comment. The variable above and below should not be included.
