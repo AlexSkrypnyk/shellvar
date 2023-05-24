@@ -23,14 +23,14 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
         description: 'Link variables within usages to their definitions in the Markdown output format.'
       ),
       new InputOption(
-        name: 'md-inline-code-wrap-vars',
+        name: 'md-no-inline-code-wrap-vars',
         mode: InputOption::VALUE_NONE,
-        description: 'Wrap variables to show them as inline code in the Markdown output format.'
+        description: 'Do not wrap variables to show them as inline code in the Markdown output format.'
       ),
       new InputOption(
-        name: 'md-inline-code-wrap-numbers',
+        name: 'md-no-inline-code-wrap-numbers',
         mode: InputOption::VALUE_NONE,
-        description: 'Wrap numbers to show them as inline code in the Markdown output format.'
+        description: 'Do not wrap numbers to show them as inline code in the Markdown output format.'
       ),
       new InputOption(
         name: 'md-inline-code-extra-file',
@@ -55,8 +55,12 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
   protected function processVariables(): void {
     parent::processVariables();
 
-    if ($this->config->get('md-inline-code-wrap-vars')) {
-      $this->variables = $this->processInlineCode($this->variables, $this->config->get('md-inline-code-extra-file'));
+    if (!$this->config->get('md-no-inline-code-wrap-vars')) {
+      $this->variables = $this->processInlineCodeVars($this->variables, $this->config->get('md-inline-code-extra-file'));
+    }
+
+    if (!$this->config->get('md-no-inline-code-wrap-numbers')) {
+      $this->variables = $this->processInlineCodeNumbers($this->variables);
     }
 
     if ($this->config->get('md-link-vars')) {
@@ -75,7 +79,7 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
    * @return \AlexSkrypnyk\ShellVariablesExtractor\Variable\Variable[]
    *   A list of processed variables.
    */
-  protected function processInlineCode(array $variables, array $tokens = []): array {
+  protected function processInlineCodeVars(array $variables, array $tokens = []): array {
     foreach ($variables as $variable) {
       $variable->setName('`' . $variable->getName() . '`');
       $variable->setPath('`' . $variable->getPath() . '`');
@@ -89,11 +93,23 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
         $a = preg_replace('/\b((?<!`)' . preg_quote($token, '/') . ')\b/', '`${1}`', $variable->getDescription());
         $variable->setDescription($a);
       }
+    }
 
-      // Convert numbers to code values.
-      if ($this->config->get('md-inline-code-wrap-numbers')) {
-        $variable->setDescription(preg_replace('/\b((?<!`)[0-9]+)\b/', '`${1}`', $variable->getDescription()));
-      }
+    return $variables;
+  }
+
+  /**
+   * Process inline code to Convert numbers to code values.
+   *
+   * @param \AlexSkrypnyk\ShellVariablesExtractor\Variable\Variable[] $variables
+   *   A list of variables to process.
+   *
+   * @return \AlexSkrypnyk\ShellVariablesExtractor\Variable\Variable[]
+   *   A list of processed variables.
+   */
+  protected function processInlineCodeNumbers(array $variables): array {
+    foreach ($variables as $variable) {
+      $variable->setDescription(preg_replace('/\b((?<!`)[0-9]+)\b/', '`${1}`', $variable->getDescription()));
     }
 
     return $variables;

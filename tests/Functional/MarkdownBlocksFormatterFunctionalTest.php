@@ -21,6 +21,8 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
           '--exclude-local',
           '--sort',
           '--format=md-blocks',
+          '--md-no-inline-code-wrap-vars',
+          '--md-no-inline-code-wrap-numbers',
           $this->fixtureFile('test-data.sh'),
         ],
         <<<'EOD'
@@ -135,7 +137,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
           '--exclude-local',
           '--sort',
           '--format=md-blocks',
-          '--md-inline-code-wrap-vars',
+          '--md-no-inline-code-wrap-numbers',
           $this->fixtureFile('test-data.sh'),
         ],
         <<<'EOD'
@@ -250,8 +252,6 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
           '--exclude-local',
           '--sort',
           '--format=md-blocks',
-          '--md-inline-code-wrap-vars',
-          '--md-inline-code-wrap-numbers',
           $this->fixtureFile('test-data.sh'),
         ],
         <<<'EOD'
@@ -366,7 +366,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
           '--exclude-local',
           '--sort',
           '--format=md-blocks',
-          '--md-inline-code-wrap-vars',
+          '--md-no-inline-code-wrap-numbers',
           '--md-inline-code-extra-file=' . $this->fixtureFile('test-data-ticks-included.txt'),
           $this->fixtureFile('test-data.sh'),
         ],
@@ -484,7 +484,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
           '--format=md-blocks',
           '--md-block-template-file=' . $this->fixtureFile('test-template-path.md'),
           '--path-strip-prefix=' . dirname(realpath(__DIR__ . '/..')),
-          '--md-inline-code-wrap-vars',
+          '--md-no-inline-code-wrap-numbers',
           $this->fixtureFile('test-data.bash'),
         ],
         <<<'EOD'
