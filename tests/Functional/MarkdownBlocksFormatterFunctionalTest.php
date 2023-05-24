@@ -309,7 +309,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
         ### `VAR33`
 
         Default value: `VAR32`
-        
+
         ### `VAR34`
 
         Default value: `<UNSET>`
@@ -476,6 +476,35 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
         Comment 2 from script without a leading space that goes on multiple lines.
 
         Default value: `<UNSET>`
+
+        EOD,
+      ],
+
+      // Wrapped in inline code with path.
+      [
+        [
+          '--exclude-local',
+          '--sort',
+          '--format=md-blocks',
+          '--md-block-template-file=' . $this->fixtureFile('test-template-path.md'),
+          '--path-strip-prefix=' . dirname(realpath(__DIR__ . '/..')),
+          '--md-inline-code-wrap-vars',
+          $this->fixtureFile('test-data.bash'),
+        ],
+        <<<'EOD'
+        ### `VAR11`
+
+        Description from bash without a leading space that goes on multiple lines.
+        
+        Default value: `val11bash`
+        
+        Path: `/tests/Fixtures/test-data.bash`
+        
+        ### `VAR2`
+        
+        Default value: `val2bash`
+        
+        Path: `/tests/Fixtures/test-data.bash`
 
         EOD,
       ],

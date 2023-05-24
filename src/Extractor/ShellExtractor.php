@@ -42,7 +42,7 @@ class ShellExtractor extends AbstractExtractor {
   /**
    * {@inheritdoc}
    */
-  protected function extractVariablesFromFile($file):void {
+  protected function extractVariablesFromFile($file): void {
     $lines = Utils::getLinesFromFiles([$file]);
 
     foreach ($lines as $num => $line) {
@@ -56,6 +56,8 @@ class ShellExtractor extends AbstractExtractor {
       if (!empty($this->variables[$var->getName()])) {
         continue;
       }
+
+      $var->setPath($file);
 
       if ($var->getIsAssignment()) {
         $default_value = $this->extractVariableValue($line, $this->config->get('unset'));
@@ -214,6 +216,7 @@ class ShellExtractor extends AbstractExtractor {
           return FALSE;
         }
       }
+
       return TRUE;
     });
 

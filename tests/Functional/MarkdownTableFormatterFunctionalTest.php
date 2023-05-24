@@ -51,6 +51,45 @@ class MarkdownTableFormatterFunctionalTest extends FormatterFunctionalTestBase {
         EOD,
       ],
 
+      // Custom fields.
+      [
+        [
+          '--exclude-local',
+          '--format=md-table',
+          '--sort',
+          '--fields="name=Name;path=Path"',
+          '--path-strip-prefix=' . dirname(realpath(__DIR__ . '/..')),
+          $this->fixtureFile('test-data.bash'),
+          $this->fixtureFile('test-data.sh'),
+        ],
+        <<<'EOD'
+        | Name    | Path                           |
+        |---------|--------------------------------|
+        | VAR1    | /tests/Fixtures/test-data.sh   |
+        | VAR10   | /tests/Fixtures/test-data.sh   |
+        | VAR11   | /tests/Fixtures/test-data.bash |
+        | VAR12   | /tests/Fixtures/test-data.sh   |
+        | VAR13   | /tests/Fixtures/test-data.sh   |
+        | VAR14   | /tests/Fixtures/test-data.sh   |
+        | VAR15   | /tests/Fixtures/test-data.sh   |
+        | VAR17   | /tests/Fixtures/test-data.sh   |
+        | VAR2    | /tests/Fixtures/test-data.bash |
+        | VAR3    | /tests/Fixtures/test-data.sh   |
+        | VAR33   | /tests/Fixtures/test-data.sh   |
+        | VAR34   | /tests/Fixtures/test-data.sh   |
+        | VAR4    | /tests/Fixtures/test-data.sh   |
+        | VAR5    | /tests/Fixtures/test-data.sh   |
+        | VAR6    | /tests/Fixtures/test-data.sh   |
+        | VAR7    | /tests/Fixtures/test-data.sh   |
+        | VAR8    | /tests/Fixtures/test-data.sh   |
+        | VAR9    | /tests/Fixtures/test-data.sh   |
+        | VARENV1 | /tests/Fixtures/test-data.sh   |
+        | VARENV2 | /tests/Fixtures/test-data.sh   |
+        | VARENV3 | /tests/Fixtures/test-data.sh   |
+        | VARENV4 | /tests/Fixtures/test-data.sh   |
+        EOD,
+      ],
+
       // Wrapped in inline code.
       [
         [

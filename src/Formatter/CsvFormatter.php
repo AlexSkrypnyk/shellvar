@@ -38,10 +38,12 @@ class CsvFormatter extends AbstractFormatter {
   protected function doFormat(): string {
     $csv = fopen('php://temp/maxmemory:' . (5 * 1024 * 1024), 'r+');
 
-    fputcsv($csv, ['Name', 'Default value', 'Description'], $this->config->get('csv-separator') ?? ',');
+    $header = $this->config->get('fields');
+
+    fputcsv($csv, array_values($header), $this->config->get('csv-separator') ?? ',');
 
     foreach ($this->variables as $variable) {
-      fputcsv($csv, $variable->toArray(), $this->config->get('csv-separator') ?? ',');
+      fputcsv($csv, $variable->toArray(array_keys($header)), $this->config->get('csv-separator') ?? ',');
     }
 
     rewind($csv);

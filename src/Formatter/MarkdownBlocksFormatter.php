@@ -27,7 +27,7 @@ class MarkdownBlocksFormatter extends AbstractMarkdownFormatter {
       new InputOption(
         name: 'md-block-template-file',
         mode: InputOption::VALUE_REQUIRED,
-        description: "A path to a Markdown template file used for Markdown blocks (md-blocks) output format.\n{{ name }}, {{ description }} and {{ default_value }} tokens can be used within the template."
+        description: "A path to a Markdown template file used for Markdown blocks (md-blocks) output format.\n{{ name }}, {{ description }}, {{ default_value }} and {{ path }} tokens can be used within the template."
       ),
     ]);
   }
@@ -46,14 +46,21 @@ class MarkdownBlocksFormatter extends AbstractMarkdownFormatter {
   protected function doFormat(): string {
     $content = '';
 
+    $fields = [
+      'name',
+      'default_value',
+      'description',
+      'path',
+    ];
+
     foreach ($this->variables as $variable) {
       $placeholders_tokens = array_map(function ($v) {
         return '{{ ' . $v . ' }}';
-      }, array_keys($variable->toArray()));
+      }, array_keys($variable->toArray($fields)));
 
       $placeholders_values = array_map(function ($v) {
         return str_replace("\n", "<br />", $v);
-      }, $variable->toArray());
+      }, $variable->toArray($fields));
 
       $placeholders = array_combine($placeholders_tokens, $placeholders_values);
       $content .= str_replace("\n\n\n", "\n", strtr($this->config->get('md-block-template-file'), $placeholders));
