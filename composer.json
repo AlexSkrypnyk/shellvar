@@ -39,7 +39,8 @@
     "scripts": {
         "lint": "vendor/bin/phpcs -s --standard=Drupal shell-variables-extractor src tests",
         "lint:fix": "vendor/bin/phpcbf -s --standard=Drupal shell-variables-extractor src tests",
-        "test": "phpunit tests"
+        "test": "phpunit tests",
+        "build": "box validate && box compile"
     },
     "config": {
         "allow-plugins": {
