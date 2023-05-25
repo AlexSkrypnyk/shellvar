@@ -168,9 +168,14 @@ abstract class AbstractFormatter implements FormatterInterface, FactoryDiscovera
    */
   protected function processPathStripPrefix(array $variables, string $prefix): array {
     foreach ($variables as $variable) {
-      if (str_starts_with($variable->getPath(), $prefix)) {
-        $variable->setPath(str_replace($prefix, '', $variable->getPath()));
+      $updated_paths = [];
+      foreach ($variable->getPaths() as $path) {
+        if (str_starts_with($path, $prefix)) {
+          $path = str_replace($prefix, '', $path);
+        }
+        $updated_paths[] = $path;
       }
+      $variable->setPaths($updated_paths);
     }
 
     return $variables;

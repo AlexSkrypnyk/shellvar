@@ -52,12 +52,7 @@ class ShellExtractor extends AbstractExtractor {
         continue;
       }
 
-      // Only use the very first occurrence.
-      if (!empty($this->variables[$var->getName()])) {
-        continue;
-      }
-
-      $var->setPath($file);
+      $var->addPath($file);
 
       if ($var->getIsAssignment()) {
         $default_value = $this->extractVariableValue($line, $this->config->get('unset'));
@@ -72,7 +67,12 @@ class ShellExtractor extends AbstractExtractor {
         $var->setDescription($description);
       }
 
-      $this->variables[$var->getName()] = $var;
+      if (!empty($this->variables[$var->getName()])) {
+        $this->variables[$var->getName()]->merge($var);
+      }
+      else {
+        $this->variables[$var->getName()] = $var;
+      }
     }
   }
 

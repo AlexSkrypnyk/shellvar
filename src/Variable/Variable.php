@@ -31,11 +31,11 @@ class Variable {
   protected $defaultValue = NULL;
 
   /**
-   * Path to the file where the variable is defined.
+   * Path to the files where the variable is defined.
    *
-   * @var string
+   * @var array
    */
-  protected $path;
+  protected $paths;
 
   /**
    * Whether the variable is an assignment.
@@ -142,12 +142,27 @@ class Variable {
    * @return string
    *   Path to the file where the variable is defined.
    */
-  public function getPath(): string {
-    return $this->path;
+  public function getPaths(): array {
+    return $this->paths;
   }
 
   /**
    * Set path to the file where the variable is defined.
+   *
+   * @param array $paths
+   *   Array of path to the files where the variable is defined.
+   *
+   * @return Variable
+   *   The variable instance.
+   */
+  public function setPaths(array $paths): Variable {
+    $this->paths = $paths;
+
+    return $this;
+  }
+
+  /**
+   * Add path to the file where the variable is defined.
    *
    * @param string $path
    *   Path to the file where the variable is defined.
@@ -155,8 +170,8 @@ class Variable {
    * @return Variable
    *   The variable instance.
    */
-  public function setPath(string $path): Variable {
-    $this->path = $path;
+  public function addPath(string $path): Variable {
+    $this->paths[] = $path;
 
     return $this;
   }
@@ -212,6 +227,18 @@ class Variable {
   }
 
   /**
+   * Merge provided variable into the current one.
+   *
+   * @param Variable $variable
+   *   The variable to merge.
+   */
+  public function merge(Variable $variable) {
+    $paths = array_merge($this->getPaths(), $variable->getPaths());
+    $paths = array_unique($paths);
+    $this->setPaths($paths);
+  }
+
+  /**
    * Convert internal variables to array representation.
    *
    * @param array $fields
@@ -224,10 +251,11 @@ class Variable {
    */
   public function toArray(array $fields = ['name', 'default_value', 'description']): array {
     $values = [
-      'name' => $this->name,
-      'default_value' => $this->defaultValue,
-      'description' => $this->description,
-      'path' => $this->path,
+      'name' => $this->getName(),
+      'default_value' => $this->getDefaultValue(),
+      'description' => $this->getDescription(),
+      'paths' => implode(', ', $this->getPaths()),
+      'path' => count($this->getPaths()) > 0 ? $this->getPaths()[0] : '',
     ];
 
     $values = array_merge(array_flip($fields), $values);

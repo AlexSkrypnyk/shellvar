@@ -82,10 +82,12 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
   protected function processInlineCodeVars(array $variables, array $tokens = []): array {
     foreach ($variables as $variable) {
       $variable->setName('`' . $variable->getName() . '`');
-      $variable->setPath('`' . $variable->getPath() . '`');
-      if (!empty($variable->getDefaultValue())) {
-        $variable->setDefaultValue('`' . $variable->getDefaultValue() . '`');
+
+      $updated_paths = [];
+      foreach ($variable->getPaths() as $path) {
+        $updated_paths[] = '`' . $path . '`';
       }
+      $variable->setPaths($updated_paths);
 
       // Process all additional code items.
       foreach ($tokens as $token) {

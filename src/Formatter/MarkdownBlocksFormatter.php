@@ -54,6 +54,7 @@ class MarkdownBlocksFormatter extends AbstractMarkdownFormatter {
       'default_value',
       'description',
       'path',
+      'paths',
     ];
 
     $template = $this->config->get('md-block-template-file') ?: static::getDefaultTemplate();
