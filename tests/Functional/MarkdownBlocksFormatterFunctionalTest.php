@@ -38,13 +38,15 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
 
         ### VAR11
 
-        Description without a leading space that goes on multiple lines and has a `VAR7`, `$VAR8`, $VAR9, VAR10 and VAR12 variable reference.
+        Description without a leading space that goes on<br />multiple lines and has a `VAR7`, `$VAR8`, $VAR9, VAR10 and VAR12 variable reference.
 
         Default value: val11
 
         ### VAR12
 
-        Description without a leading space that goes on multiple lines.<br />And has a comment with no content.
+        Description without a leading space that goes on<br />multiple lines.
+        
+        And has a comment with no content.
 
         Default value: val12
 
@@ -124,7 +126,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
 
         ### VARENV4
 
-        Comment 2 from script without a leading space that goes on multiple lines.
+        Comment 2 from script without a leading space that goes on<br />multiple lines.
 
         Default value: UNSET
 
@@ -153,13 +155,15 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
 
         ### `VAR11`
 
-        Description without a leading space that goes on multiple lines and has a `VAR7`, `$VAR8`, $VAR9, VAR10 and VAR12 variable reference.
+        Description without a leading space that goes on<br />multiple lines and has a `VAR7`, `$VAR8`, $VAR9, VAR10 and VAR12 variable reference.
 
         Default value: `val11`
 
         ### `VAR12`
 
-        Description without a leading space that goes on multiple lines.<br />And has a comment with no content.
+        Description without a leading space that goes on<br />multiple lines.
+        
+        And has a comment with no content.
 
         Default value: `val12`
 
@@ -239,7 +243,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
 
         ### `VARENV4`
 
-        Comment 2 from script without a leading space that goes on multiple lines.
+        Comment 2 from script without a leading space that goes on<br />multiple lines.
 
         Default value: `UNSET`
 
@@ -267,13 +271,15 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
 
         ### `VAR11`
 
-        Description without a leading space that goes on multiple lines and has a `VAR7`, `$VAR8`, $VAR9, VAR10 and VAR12 variable reference.
+        Description without a leading space that goes on<br />multiple lines and has a `VAR7`, `$VAR8`, $VAR9, VAR10 and VAR12 variable reference.
 
         Default value: `val11`
 
         ### `VAR12`
 
-        Description without a leading space that goes on multiple lines.<br />And has a comment with no content.
+        Description without a leading space that goes on<br />multiple lines.
+        
+        And has a comment with no content.
 
         Default value: `val12`
 
@@ -353,7 +359,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
 
         ### `VARENV4`
 
-        Comment `2` from script without a leading space that goes on multiple lines.
+        Comment `2` from script without a leading space that goes on<br />multiple lines.
 
         Default value: `UNSET`
 
@@ -383,13 +389,15 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
 
         ### `VAR11`
 
-        Description without a leading space that goes on multiple lines and has a `VAR7`, `$VAR8`, $VAR9, VAR10 and VAR12 variable reference.
+        Description without a leading space that goes on<br />multiple lines and has a `VAR7`, `$VAR8`, $VAR9, VAR10 and VAR12 variable reference.
 
         Default value: `val11`
 
         ### `VAR12`
 
-        Description without a leading space that goes on multiple lines.<br />And has a comment with no content.
+        Description without a leading space that goes on<br />multiple lines.
+        
+        And has a comment with no content.
 
         Default value: `val12`
 
@@ -469,7 +477,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
 
         ### `VARENV4`
 
-        Comment 2 from script without a leading space that goes on multiple lines.
+        Comment 2 from script without a leading space that goes on<br />multiple lines.
 
         Default value: `UNSET`
 
@@ -490,7 +498,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
         <<<'EOD'
         ### `VAR11`
 
-        Description from bash without a leading space that goes on multiple lines.
+        Description from bash without a leading space that goes on<br />multiple lines.
 
         Default value: `val11bash`
 
@@ -509,6 +517,39 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
         EOD,
       ],
 
+      // List.
+      [
+        [
+          '--exclude-local',
+          '--sort',
+          '--format=md-blocks',
+          '--md-no-inline-code-wrap-numbers',
+          $this->fixtureFile('test-data-list.sh'),
+        ],
+        <<<'EOD'
+        ### `VAR1`
+
+        Description without a leading space that goes on<br />multiple lines.
+        
+        And has a comment with no content.
+        
+        Default value: `val1`
+        
+        ### `VAR2`
+        
+        List header.
+        - "item1" - list item1.
+        - "item2" - list item2.<br />Second line of list item2.
+        - "item3" - list item3.
+
+        Multiple lines after a list item.<br />Second line.
+
+        And a third line.
+        
+        Default value: `val2`
+
+        EOD,
+      ],
     ];
   }
 

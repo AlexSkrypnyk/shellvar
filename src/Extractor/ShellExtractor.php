@@ -220,15 +220,7 @@ class ShellExtractor extends AbstractExtractor {
       return TRUE;
     });
 
-    array_walk($comment_lines, function (&$value) {
-      $value = empty($value) ? "\n" : trim($value);
-    });
-
-    $output = implode(' ', $comment_lines);
-    $output = str_replace([" \n ", " \n", "\n "], "\n", $output);
-    $output = trim($output, "\n");
-
-    return $output;
+    return implode("\n", $comment_lines);
   }
 
 }

@@ -51,4 +51,16 @@ class CsvFormatter extends AbstractFormatter {
     return stream_get_contents($csv);
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  protected function processDescription(string $description): string {
+    $description = parent::processDescription($description);
+
+    // Remove a single new line.
+    $description = preg_replace('/(?<!\n)\n(?!\n)/', ' ', $description);
+
+    return $description;
+  }
+
 }

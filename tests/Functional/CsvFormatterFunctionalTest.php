@@ -29,6 +29,7 @@ class CsvFormatterFunctionalTest extends FormatterFunctionalTestBase {
               VAR10;val10;"Description without a leading space."
               VAR11;val11;"Description without a leading space that goes on multiple lines and has a `VAR7`, `$VAR8`, $VAR9, VAR10 and VAR12 variable reference."
               VAR12;val12;"Description without a leading space that goes on multiple lines.
+              
               And has a comment with no content."
               VAR13;val13;"And has an empty line before it without a content."
               VAR14;val14;
@@ -102,6 +103,7 @@ class CsvFormatterFunctionalTest extends FormatterFunctionalTestBase {
         VAR10;val10;"Description without a leading space."
         VAR11;val11;"Description without a leading space that goes on multiple lines and has a `VAR7`, `$VAR8`, $VAR9, VAR10 and VAR12 variable reference."
         VAR12;val12;"Description without a leading space that goes on multiple lines.
+        
         And has a comment with no content."
         VAR13;val13;"And has an empty line before it without a content."
         VAR15;val16;
@@ -163,6 +165,7 @@ class CsvFormatterFunctionalTest extends FormatterFunctionalTestBase {
         VAR10;val10;"Description without a leading space."
         VAR11;val11bash;"Description from bash without a leading space that goes on multiple lines."
         VAR12;val12;"Description without a leading space that goes on multiple lines.
+        
         And has a comment with no content."
         VAR13;val13;"And has an empty line before it without a content."
         VAR14;val14;
@@ -199,6 +202,7 @@ class CsvFormatterFunctionalTest extends FormatterFunctionalTestBase {
         VAR10;val10;"Description without a leading space."
         VAR11;val11bash;"Description from bash without a leading space that goes on multiple lines."
         VAR12;val12;"Description without a leading space that goes on multiple lines.
+        
         And has a comment with no content."
         VAR13;val13;"And has an empty line before it without a content."
         VAR14;val14;
