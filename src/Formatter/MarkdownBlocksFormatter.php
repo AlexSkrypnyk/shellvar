@@ -64,9 +64,7 @@ class MarkdownBlocksFormatter extends AbstractMarkdownFormatter {
         return '{{ ' . $v . ' }}';
       }, array_keys($variable->toArray($fields)));
 
-      $placeholders_values = array_map(function ($v) {
-        return str_replace("\n", "<br />", $v);
-      }, $variable->toArray($fields));
+      $placeholders_values = $variable->toArray($fields);
 
       $placeholders = array_combine($placeholders_tokens, $placeholders_values);
       $content .= str_replace("\n\n\n", "\n", strtr($template, $placeholders));

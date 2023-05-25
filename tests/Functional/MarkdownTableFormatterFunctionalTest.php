@@ -30,8 +30,8 @@ class MarkdownTableFormatterFunctionalTest extends FormatterFunctionalTestBase {
         |---------|---------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
         | VAR1    | UNSET         |                                                                                                                                                                                            |
         | VAR10   | val10         | Description without a leading space.                                                                                                                                                       |
-        | VAR11   | val11         | Description without a leading space that goes on multiple lines and has a `VAR7`, `$VAR8`, $VAR9, VAR10 and VAR12 variable reference.                                                      |
-        | VAR12   | val12         | Description without a leading space that goes on multiple lines.<br />And has a comment with no content.                                                                                   |
+        | VAR11   | val11         | Description without a leading space that goes on<br />multiple lines and has a `VAR7`, `$VAR8`, $VAR9, VAR10 and VAR12 variable reference.                                                 |
+        | VAR12   | val12         | Description without a leading space that goes on<br />multiple lines.<br /><br />And has a comment with no content.                                                                        |
         | VAR13   | val13         | And has an empty line before it without a content.                                                                                                                                         |
         | VAR14   | val14         |                                                                                                                                                                                            |
         | VAR15   | val16         |                                                                                                                                                                                            |
@@ -49,7 +49,7 @@ class MarkdownTableFormatterFunctionalTest extends FormatterFunctionalTestBase {
         | VARENV1 | valenv1       |                                                                                                                                                                                            |
         | VARENV2 | UNSET         |                                                                                                                                                                                            |
         | VARENV3 | valenv3       | Comment from script with reference to composer.lock and `composer.lock` again and somespecialtoken and `somespecialtoken` again and testorg/test-package and `testorg/test-package` again. |
-        | VARENV4 | UNSET         | Comment 2 from script without a leading space that goes on multiple lines.                                                                                                                 |
+        | VARENV4 | UNSET         | Comment 2 from script without a leading space that goes on<br />multiple lines.                                                                                                            |
         EOD,
       ],
 
@@ -108,8 +108,8 @@ class MarkdownTableFormatterFunctionalTest extends FormatterFunctionalTestBase {
         |-----------|---------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
         | `VAR1`    | `UNSET`       |                                                                                                                                                                                            |
         | `VAR10`   | `val10`       | Description without a leading space.                                                                                                                                                       |
-        | `VAR11`   | `val11`       | Description without a leading space that goes on multiple lines and has a `VAR7`, `$VAR8`, $VAR9, VAR10 and VAR12 variable reference.                                                      |
-        | `VAR12`   | `val12`       | Description without a leading space that goes on multiple lines.<br />And has a comment with no content.                                                                                   |
+        | `VAR11`   | `val11`       | Description without a leading space that goes on<br />multiple lines and has a `VAR7`, `$VAR8`, $VAR9, VAR10 and VAR12 variable reference.                                                 |
+        | `VAR12`   | `val12`       | Description without a leading space that goes on<br />multiple lines.<br /><br />And has a comment with no content.                                                                        |
         | `VAR13`   | `val13`       | And has an empty line before it without a content.                                                                                                                                         |
         | `VAR14`   | `val14`       |                                                                                                                                                                                            |
         | `VAR15`   | `val16`       |                                                                                                                                                                                            |
@@ -127,7 +127,7 @@ class MarkdownTableFormatterFunctionalTest extends FormatterFunctionalTestBase {
         | `VARENV1` | `valenv1`     |                                                                                                                                                                                            |
         | `VARENV2` | `UNSET`       |                                                                                                                                                                                            |
         | `VARENV3` | `valenv3`     | Comment from script with reference to composer.lock and `composer.lock` again and somespecialtoken and `somespecialtoken` again and testorg/test-package and `testorg/test-package` again. |
-        | `VARENV4` | `UNSET`       | Comment 2 from script without a leading space that goes on multiple lines.                                                                                                                 |
+        | `VARENV4` | `UNSET`       | Comment 2 from script without a leading space that goes on<br />multiple lines.                                                                                                            |
         EOD,
       ],
 
@@ -144,8 +144,8 @@ class MarkdownTableFormatterFunctionalTest extends FormatterFunctionalTestBase {
         |-----------|---------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
         | `VAR1`    | `UNSET`       |                                                                                                                                                                                            |
         | `VAR10`   | `val10`       | Description without a leading space.                                                                                                                                                       |
-        | `VAR11`   | `val11`       | Description without a leading space that goes on multiple lines and has a `VAR7`, `$VAR8`, $VAR9, VAR10 and VAR12 variable reference.                                                      |
-        | `VAR12`   | `val12`       | Description without a leading space that goes on multiple lines.<br />And has a comment with no content.                                                                                   |
+        | `VAR11`   | `val11`       | Description without a leading space that goes on<br />multiple lines and has a `VAR7`, `$VAR8`, $VAR9, VAR10 and VAR12 variable reference.                                                 |
+        | `VAR12`   | `val12`       | Description without a leading space that goes on<br />multiple lines.<br /><br />And has a comment with no content.                                                                        |
         | `VAR13`   | `val13`       | And has an empty line before it without a content.                                                                                                                                         |
         | `VAR14`   | `val14`       |                                                                                                                                                                                            |
         | `VAR15`   | `val16`       |                                                                                                                                                                                            |
@@ -163,7 +163,7 @@ class MarkdownTableFormatterFunctionalTest extends FormatterFunctionalTestBase {
         | `VARENV1` | `valenv1`     |                                                                                                                                                                                            |
         | `VARENV2` | `UNSET`       |                                                                                                                                                                                            |
         | `VARENV3` | `valenv3`     | Comment from script with reference to composer.lock and `composer.lock` again and somespecialtoken and `somespecialtoken` again and testorg/test-package and `testorg/test-package` again. |
-        | `VARENV4` | `UNSET`       | Comment `2` from script without a leading space that goes on multiple lines.                                                                                                               |
+        | `VARENV4` | `UNSET`       | Comment `2` from script without a leading space that goes on<br />multiple lines.                                                                                                          |
         EOD,
       ],
 
@@ -182,8 +182,8 @@ class MarkdownTableFormatterFunctionalTest extends FormatterFunctionalTestBase {
         |-----------|---------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
         | `VAR1`    | `UNSET`       |                                                                                                                                                                                                  |
         | `VAR10`   | `val10`       | Description without a leading space.                                                                                                                                                             |
-        | `VAR11`   | `val11`       | Description without a leading space that goes on multiple lines and has a `VAR7`, `$VAR8`, $VAR9, VAR10 and VAR12 variable reference.                                                            |
-        | `VAR12`   | `val12`       | Description without a leading space that goes on multiple lines.<br />And has a comment with no content.                                                                                         |
+        | `VAR11`   | `val11`       | Description without a leading space that goes on<br />multiple lines and has a `VAR7`, `$VAR8`, $VAR9, VAR10 and VAR12 variable reference.                                                       |
+        | `VAR12`   | `val12`       | Description without a leading space that goes on<br />multiple lines.<br /><br />And has a comment with no content.                                                                              |
         | `VAR13`   | `val13`       | And has an empty line before it without a content.                                                                                                                                               |
         | `VAR14`   | `val14`       |                                                                                                                                                                                                  |
         | `VAR15`   | `val16`       |                                                                                                                                                                                                  |
@@ -201,7 +201,7 @@ class MarkdownTableFormatterFunctionalTest extends FormatterFunctionalTestBase {
         | `VARENV1` | `valenv1`     |                                                                                                                                                                                                  |
         | `VARENV2` | `UNSET`       |                                                                                                                                                                                                  |
         | `VARENV3` | `valenv3`     | Comment from script with reference to `composer.lock` and `composer.lock` again and `somespecialtoken` and `somespecialtoken` again and `testorg/test-package` and `testorg/test-package` again. |
-        | `VARENV4` | `UNSET`       | Comment 2 from script without a leading space that goes on multiple lines.                                                                                                                       |
+        | `VARENV4` | `UNSET`       | Comment 2 from script without a leading space that goes on<br />multiple lines.                                                                                                                  |
         EOD,
       ],
     ];

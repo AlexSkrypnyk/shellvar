@@ -44,9 +44,12 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
   /**
    * {@inheritdoc}
    */
-  public function processConfig($config):void {
+  public function processConfig($config): void {
     parent::processConfig($config);
-    $config->set('md-inline-code-extra-file', Utils::getNonEmptyLinesFromFiles(Utils::resolvePaths($config->get('md-inline-code-extra-file'))));
+
+    if (!empty($config->get('md-inline-code-extra-file'))) {
+      $config->set('md-inline-code-extra-file', Utils::getNonEmptyLinesFromFiles(Utils::resolvePaths($config->get('md-inline-code-extra-file'))));
+    }
   }
 
   /**
@@ -66,6 +69,100 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
     if ($this->config->get('md-link-vars')) {
       $this->variables = $this->processLinks($this->variables);
     }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function processDescription(string $description): string {
+    $description = parent::processDescription($description);
+
+    $br = '<br />';
+    $nl = "\n";
+
+    $lines = explode($nl, $description);
+
+    // @code
+    // List header<NL>
+    // <NL>
+    // - Item<NL>
+    // - Item<NL>
+    //   Line<NL>
+    // - Item<NL>
+    // <NL>
+    // Not a list line1<NL>
+    // Line2<NL>
+    //
+    // turns into:
+    //
+    // List header<NL>
+    // <NL>
+    // - Item<NL>
+    // - Item<BR>Line<NL>
+    // - Item<NL>
+    // <NL>
+    // Not a list line1<BR>Line2<NL>
+    // @endcode
+    $in_list = FALSE;
+    foreach ($lines as $k => $line) {
+      // Last line - do nothing.
+      if ($k == count($lines) - 1) {
+        continue;
+      }
+      // Current line is empty and previous line is empty - preserve NL.
+      elseif ($k > 0 && empty($line[$k])) {
+        $lines[$k - 1] = str_replace($br, '<NEWLINE>', $lines[$k - 1]);
+        $lines[$k] = $lines[$k] . '<NEWLINE>';
+        $in_list = FALSE;
+      }
+      elseif ($this->isListItem($line)) {
+        if ($k > 0) {
+          $lines[$k - 1] = str_replace($br, '<NEWLINE>', $lines[$k - 1]);
+        }
+        $lines[$k] = $lines[$k] . '<NEWLINE>';
+        if ($k > 1 && $lines[$k - 1] == '<NEWLINE>') {
+          $lines[$k - 2] = str_replace($br, '<NEWLINE>', $lines[$k - 2]);
+        }
+        $in_list = TRUE;
+      }
+      else {
+        // If previous line was a list item and this is empty - preserve NL.
+        if ($in_list && empty($line[$k])) {
+          $lines[$k] = $lines[$k] . '<NEWLINE>';
+          $in_list = FALSE;
+        }
+        // If previous line was a list item and this is not a list item -
+        // this line is a part of the list item - replace NL with BR.
+        elseif ($in_list && !$this->isListItem($line[$k])) {
+          $lines[$k - 1] = str_replace('<NEWLINE>', $br, $lines[$k - 1]);
+          $lines[$k] = trim($lines[$k]) . '<NEWLINE>';
+          $in_list = TRUE;
+        }
+        else {
+          $lines[$k] = $lines[$k] . $br;
+          $in_list = FALSE;
+        }
+      }
+    }
+
+    $description = implode('', $lines);
+
+    $description = str_replace('<NEWLINE>', $nl, $description);
+
+    return $description;
+  }
+
+  /**
+   * Check if the string is a list item.
+   *
+   * @param string $string
+   *   A string to check.
+   *
+   * @return bool
+   *   TRUE if the string is a list item, FALSE otherwise.
+   */
+  protected function isListItem($string): bool {
+    return str_starts_with($string, '- ') || str_starts_with($string, ' - ') || str_starts_with($string, '* ') || str_starts_with($string, ' * ');
   }
 
   /**

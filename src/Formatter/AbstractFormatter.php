@@ -117,6 +117,8 @@ abstract class AbstractFormatter implements FormatterInterface, FactoryDiscovera
     if ($this->config->get('path-strip-prefix')) {
       $this->variables = $this->processPathStripPrefix($this->variables, $this->config->get('path-strip-prefix'));
     }
+
+    $this->variables = $this->processDescriptions($this->variables);
   }
 
   /**
@@ -179,6 +181,42 @@ abstract class AbstractFormatter implements FormatterInterface, FactoryDiscovera
     }
 
     return $variables;
+  }
+
+  /**
+   * Process descriptions.
+   *
+   * @param \AlexSkrypnyk\ShellVariablesExtractor\Variable\Variable[] $variables
+   *   A list of variables to process.
+   *
+   * @return \AlexSkrypnyk\ShellVariablesExtractor\Variable\Variable[]
+   *   A list of processed variables.
+   */
+  protected function processDescriptions(array $variables): array {
+    foreach ($variables as $variable) {
+      $description = $variable->getDescription();
+      $description = $this->processDescription($description);
+      $variable->setDescription($description);
+    }
+
+    return $variables;
+  }
+
+  /**
+   * Process description.
+   *
+   * @param string $description
+   *   A description to process.
+   *
+   * @return string
+   *   A processed description.
+   */
+  protected function processDescription(string $description): string {
+    $description = trim($description);
+    // Replace multiple empty lines with a single one.
+    $description = preg_replace('/(\n){3,}/', "\n\n", $description);
+
+    return $description;
   }
 
 }

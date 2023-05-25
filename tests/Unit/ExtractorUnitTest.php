@@ -193,17 +193,15 @@ class ExtractorUnitTest extends UnitTestBase {
       [['# first second', 'VAR1'], 1, [], 'first second'],
       [[' ', '# first second', 'VAR1'], 2, [], 'first second'],
       [['# zero', ' ', '# first second', 'VAR1'], 3, [], 'first second'],
-      [['# zero', ' ', '# first second', '#', '# third', 'VAR1'], 5, [], 'first second' . "\n" . 'third'],
-      [['# zero', ' ', '# first second', '#', '# third', '# forth', 'VAR1'], 6, [], 'first second' . "\n" . 'third forth'],
-
-      [['# zero', ' ', '# first second', '#', '# third', '# forth', 'VAR1'], 6, [], 'first second' . "\n" . 'third forth'],
-
+      [['# zero', ' ', '# first second', '#', '# third', 'VAR1'], 5, [], "first second\n" . "\n" . 'third'],
+      [['# zero', ' ', '# first second', '#', '# third', '# forth', 'VAR1'], 6, [], "first second\n" . "\n" . "third\n" . 'forth'],
+      //
       // Description prefixes.
-      [['# zero', ' ', '#;< first second', '# third', '# forth', 'VAR1'], 5, ['#;<'], 'third forth'],
+      [['# zero', ' ', '#;< first second', '# third', '# forth', 'VAR1'], 5, ['#;<'], "third\n" . 'forth'],
       [['# zero', ' ', '#;< first second', '#;> third', '# forth', 'VAR1'], 5, ['#;<', '#;>'], 'forth'],
       [['# zero', ' ', '#;< first second', '#;> third', '# forth', 'VAR1'], 5, [';<', ';>'], 'forth'],
       // Special case: removing the skipped prefix should avoid additional line.
-      [['# zero', ' ', '# first second', '#', '#;> third', '# forth', 'VAR1'], 6, [';<', ';>'], 'first second' . "\n" . 'forth'],
+      [['# zero', ' ', '# first second', '#', '#;> third', '# forth', 'VAR1'], 6, [';<', ';>'], "first second\n" . "\n" . 'forth'],
     ];
   }
 
