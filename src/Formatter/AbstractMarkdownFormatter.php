@@ -3,6 +3,7 @@
 namespace AlexSkrypnyk\ShellVariablesExtractor\Formatter;
 
 use AlexSkrypnyk\ShellVariablesExtractor\Utils;
+use AlexSkrypnyk\ShellVariablesExtractor\Variable\Variable;
 use Symfony\Component\Console\Input\InputOption;
 
 /**
@@ -177,6 +178,10 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
    *   A list of processed variables.
    */
   protected function processInlineCodeVars(array $variables, array $tokens = []): array {
+    $var_tokens = array_map(function ($v) {
+      return ltrim($v, '$');
+    }, array_keys($variables));
+
     foreach ($variables as $variable) {
       $variable->setName('`' . $variable->getName() . '`');
 
@@ -190,12 +195,30 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
       }
       $variable->setPaths($updated_paths);
 
-      // Process all additional code items.
+      // Update description: variable tokens and string tokens.
+      $description = $variable->getDescription();
+      foreach ($var_tokens as $var_token) {
+        $description = preg_replace(
+          '/(?<!`)\$' . preg_quote($var_token, '/') . '\b(?!`)/',
+          '`$' . $var_token . '`',
+          $description
+        );
+
+        $description = preg_replace(
+          '/(?<!`)\$\{' . preg_quote($var_token, '/') . '}(?!`)/',
+          '`${' . $var_token . '}`',
+          $description
+        );
+      }
       foreach ($tokens as $token) {
         $token = trim($token);
-        $a = preg_replace('/\b((?<!`)' . preg_quote($token, '/') . ')\b/', '`${1}`', $variable->getDescription());
-        $variable->setDescription($a);
+
+        $description = preg_replace_callback('/(`.*?`)|\b' . preg_quote($token, '/') . '\b/', function ($matches) use ($token) {
+          return $matches[0] == $token ? "`$token`" : $matches[0];
+        }, $description);
       }
+
+      $variable->setDescription($description);
     }
 
     return $variables;

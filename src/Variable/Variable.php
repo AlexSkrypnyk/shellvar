@@ -156,7 +156,10 @@ class Variable {
    *   The variable instance.
    */
   public function setPaths(array $paths): Variable {
-    $this->paths = $paths;
+    $this->paths = [];
+    foreach ($paths as $path) {
+      $this->addPath($path);
+    }
 
     return $this;
   }
@@ -171,7 +174,7 @@ class Variable {
    *   The variable instance.
    */
   public function addPath(string $path): Variable {
-    $this->paths[] = realpath($path);
+    $this->paths[] = $path;
 
     return $this;
   }

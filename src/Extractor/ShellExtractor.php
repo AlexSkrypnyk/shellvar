@@ -52,7 +52,7 @@ class ShellExtractor extends AbstractExtractor {
         continue;
       }
 
-      $var->addPath($file);
+      $var->addPath(realpath($file));
 
       if ($var->getIsAssignment()) {
         $default_value = $this->extractVariableValue($line, $this->config->get('unset'));
