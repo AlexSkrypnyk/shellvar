@@ -485,22 +485,26 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
           '--md-block-template-file=' . $this->fixtureFile('test-template-path.md'),
           '--path-strip-prefix=' . dirname(realpath(__DIR__ . '/..')),
           '--md-no-inline-code-wrap-numbers',
-          $this->fixtureFile('test-data.bash'),
+          $this->fixtureDir() . '/multipath',
         ],
         <<<'EOD'
         ### `VAR11`
 
         Description from bash without a leading space that goes on multiple lines.
-        
+
         Default value: `val11bash`
-        
-        Path: `/tests/Fixtures/test-data.bash`
-        
+
+        Path: `/tests/Fixtures/multipath/test-data.bash`
+
+        Paths: `/tests/Fixtures/multipath/test-data.bash`
+
         ### `VAR2`
-        
+
         Default value: `val2bash`
-        
-        Path: `/tests/Fixtures/test-data.bash`
+
+        Path: `/tests/Fixtures/multipath/test-data.bash`
+
+        Paths: `/tests/Fixtures/multipath/test-data.bash`, `/tests/Fixtures/multipath/test-data.sh`
 
         EOD,
       ],

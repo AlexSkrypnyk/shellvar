@@ -155,7 +155,7 @@ class CsvFormatterFunctionalTest extends FormatterFunctionalTestBase {
         [
           '--exclude-local',
           '--sort',
-          $this->fixtureDir(),
+          $this->fixtureDir() . '/dir',
         ],
         <<<'EOD'
         Name;"Default value";Description

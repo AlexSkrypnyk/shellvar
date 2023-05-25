@@ -83,6 +83,10 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
     foreach ($variables as $variable) {
       $variable->setName('`' . $variable->getName() . '`');
 
+      if (!empty($variable->getDefaultValue())) {
+        $variable->setDefaultValue('`' . $variable->getDefaultValue() . '`');
+      }
+
       $updated_paths = [];
       foreach ($variable->getPaths() as $path) {
         $updated_paths[] = '`' . $path . '`';

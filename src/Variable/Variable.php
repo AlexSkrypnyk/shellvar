@@ -171,7 +171,7 @@ class Variable {
    *   The variable instance.
    */
   public function addPath(string $path): Variable {
-    $this->paths[] = $path;
+    $this->paths[] = realpath($path);
 
     return $this;
   }
