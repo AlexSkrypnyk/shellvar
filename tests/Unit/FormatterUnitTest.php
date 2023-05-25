@@ -4,6 +4,7 @@ namespace AlexSkrypnyk\Tests\Unit;
 
 use AlexSkrypnyk\ShellVariablesExtractor\Config\Config;
 use AlexSkrypnyk\ShellVariablesExtractor\Formatter\MarkdownBlocksFormatter;
+use AlexSkrypnyk\ShellVariablesExtractor\Variable\Variable;
 
 /**
  * Class FormatterUnitTest.
@@ -184,6 +185,162 @@ class FormatterUnitTest extends UnitTestBase {
         EOD,
       ],
     ];
+  }
+
+  /**
+   * Tests the processInlineCodeVars() method.
+   *
+   * @dataProvider dataProviderProcessInlineCodeVars
+   */
+  public function testProcessInlineCodeVars($variables, $tokens, $expected) {
+    $formatter = new MarkdownBlocksFormatter((new Config()));
+    $actual = $this->callProtectedMethod($formatter, 'processInlineCodeVars', [$variables, $tokens]);
+    $this->assertEquals($expected, $actual);
+  }
+
+  public function dataProviderProcessInlineCodeVars() {
+    return [
+      [[], [], []],
+      [[], ['token1' => 'replacement1'], []],
+
+      [
+        [
+          $this->fixtureVariable('VAR1', $this->fixtureFile('test-data.sh'), 'Description', 'val1'),
+        ],
+        [],
+        [
+          $this->fixtureVariable('`VAR1`', '`' . $this->fixtureFile('test-data.sh') . '`', 'Description', '`val1`'),
+        ],
+      ],
+      [
+        [
+          $this->fixtureVariable('VAR1', $this->fixtureFile('test-data.sh'), 'Description', 'val1'),
+          $this->fixtureVariable('VAR2', $this->fixtureFile('test-data.sh'), 'Description', 'val2'),
+        ],
+        [],
+        [
+          $this->fixtureVariable('`VAR1`', '`' . $this->fixtureFile('test-data.sh') . '`', 'Description', '`val1`'),
+          $this->fixtureVariable('`VAR2`', '`' . $this->fixtureFile('test-data.sh') . '`', 'Description', '`val2`'),
+        ],
+      ],
+
+      // Simple tokens.
+      [
+        [
+          $this->fixtureVariable('VAR1', $this->fixtureFile('test-data.sh'), 'Description token1 token2 string', 'val1'),
+        ],
+        [
+          'token1',
+          'token2',
+        ],
+        [
+          $this->fixtureVariable('`VAR1`', '`' . $this->fixtureFile('test-data.sh') . '`', 'Description `token1` `token2` string', '`val1`'),
+        ],
+      ],
+      [
+        [
+          $this->fixtureVariable('VAR1token1', $this->fixtureFile('test-data.sh'), 'Description token1 token2 string', 'val1token1'),
+        ],
+        [
+          'token1',
+          'token2',
+        ],
+        [
+          $this->fixtureVariable('`VAR1token1`', '`' . $this->fixtureFile('test-data.sh') . '`', 'Description `token1` `token2` string', '`val1token1`'),
+        ],
+      ],
+      [
+        [
+          $this->fixtureVariable('token1', $this->fixtureFile('test-data.sh'), 'Description token1 token2 string', 'token1'),
+        ],
+        [
+          'token1',
+          'token2',
+        ],
+        [
+          $this->fixtureVariable('`token1`', '`' . $this->fixtureFile('test-data.sh') . '`', 'Description `token1` `token2` string', '`token1`'),
+        ],
+      ],
+
+      // Tokens and replacements.
+      [
+        [
+          '$VAR1' => $this->fixtureVariable('VAR1', $this->fixtureFile('test-data.sh'), 'Description token1 `token2` string VAR2, `VAR2`, $VAR2, `$VAR2`, ${VAR2}, `${VAR2}`, {VAR2}, `{VAR2}`.', 'val1'),
+          '$VAR2' => $this->fixtureVariable('VAR2', $this->fixtureFile('test-data.sh'), 'Description token1 string', 'val2'),
+        ],
+        [
+          'token1',
+          'token2',
+        ],
+        [
+          // VAR2 is a string and not a variable. For VAR2 string to be
+          // considered a variable to be wrapped in inline code, it should be
+          // written as $VAR2 or ${VAR2}.
+          '$VAR1' => $this->fixtureVariable('`VAR1`', '`' . $this->fixtureFile('test-data.sh') . '`', 'Description `token1` `token2` string VAR2, `VAR2`, `$VAR2`, `$VAR2`, `${VAR2}`, `${VAR2}`, {VAR2}, `{VAR2}`.', '`val1`'),
+          '$VAR2' => $this->fixtureVariable('`VAR2`', '`' . $this->fixtureFile('test-data.sh') . '`', 'Description `token1` string', '`val2`'),
+        ],
+      ],
+
+      // Tokens and replacements with suffixes and prefixes.
+      [
+        [
+          '$VAR1' => $this->fixtureVariable('VAR1', $this->fixtureFile('test-data.sh'), 'Description prefixtoken1 token1 token1suffix prefixtoken1suffix `token2` string $VAR2, ${VAR2}, PREFIX_VAR2_SUFFIX, `PREFIX_VAR2_SUFFIX`, $PREFIX_VAR2_SUFFIX, `$PREFIX_VAR2_SUFFIX`, ${PREFIX_VAR2_SUFFIX}, `${PREFIX_VAR2_SUFFIX}`, {PREFIX_VAR2_SUFFIX}, `{PREFIX_VAR2_SUFFIX}`.', 'val1'),
+          '$VAR2' => $this->fixtureVariable('VAR2', $this->fixtureFile('test-data.sh'), 'Description prefix_token1 token1 `token1` token1_suffix prefix_token1_suffix string', 'val2'),
+        ],
+        [
+          'token1',
+          'token2',
+        ],
+        [
+          '$VAR1' => $this->fixtureVariable('`VAR1`', '`' . $this->fixtureFile('test-data.sh') . '`', 'Description prefixtoken1 `token1` token1suffix prefixtoken1suffix `token2` string `$VAR2`, `${VAR2}`, PREFIX_VAR2_SUFFIX, `PREFIX_VAR2_SUFFIX`, $PREFIX_VAR2_SUFFIX, `$PREFIX_VAR2_SUFFIX`, ${PREFIX_VAR2_SUFFIX}, `${PREFIX_VAR2_SUFFIX}`, {PREFIX_VAR2_SUFFIX}, `{PREFIX_VAR2_SUFFIX}`.', '`val1`'),
+          '$VAR2' => $this->fixtureVariable('`VAR2`', '`' . $this->fixtureFile('test-data.sh') . '`', 'Description prefix_token1 `token1` `token1` token1_suffix prefix_token1_suffix string', '`val2`'),
+        ],
+      ],
+
+      // Tokens and replacements with prefixes only.
+      [
+        [
+          '$VAR1' => $this->fixtureVariable('VAR1', $this->fixtureFile('test-data.sh'), 'PREFIX_VAR2, `PREFIX_VAR2`, $PREFIX_VAR2, `$PREFIX_VAR2`, ${PREFIX_VAR2}, `${PREFIX_VAR2}`, {PREFIX_VAR2}, `{PREFIX_VAR2}`', 'val1'),
+          '$VAR2' => $this->fixtureVariable('VAR2', $this->fixtureFile('test-data.sh'), 'Description prefix_token1 token1 `token1` token1_suffix prefix_token1_suffix string', 'val2'),
+        ],
+        [
+          'token1',
+          'token2',
+        ],
+        [
+          '$VAR1' => $this->fixtureVariable('`VAR1`', '`' . $this->fixtureFile('test-data.sh') . '`', 'PREFIX_VAR2, `PREFIX_VAR2`, $PREFIX_VAR2, `$PREFIX_VAR2`, ${PREFIX_VAR2}, `${PREFIX_VAR2}`, {PREFIX_VAR2}, `{PREFIX_VAR2}`', '`val1`'),
+          '$VAR2' => $this->fixtureVariable('`VAR2`', '`' . $this->fixtureFile('test-data.sh') . '`', 'Description prefix_token1 `token1` `token1` token1_suffix prefix_token1_suffix string', '`val2`'),
+        ],
+      ],
+
+      // Tokens and replacements with suffixes only.
+      [
+        [
+          '$VAR1' => $this->fixtureVariable('VAR1', $this->fixtureFile('test-data.sh'), '$VAR2, `$VAR2`, ${VAR2}, `${VAR2}`, VAR2_SUFFIX, `VAR2_SUFFIX`, $VAR2_SUFFIX, `$VAR2_SUFFIX`, ${VAR2_SUFFIX}, `${VAR2_SUFFIX}`, {VAR2_SUFFIX}, `{VAR2_SUFFIX}`', 'val1'),
+          '$VAR2' => $this->fixtureVariable('VAR2', $this->fixtureFile('test-data.sh'), 'Description prefix_token1 token1 `token1` token1_suffix prefix_token1_suffix string', 'val2'),
+        ],
+        [
+          'token1',
+          'token2',
+        ],
+        [
+          '$VAR1' => $this->fixtureVariable('`VAR1`', '`' . $this->fixtureFile('test-data.sh') . '`', '`$VAR2`, `$VAR2`, `${VAR2}`, `${VAR2}`, VAR2_SUFFIX, `VAR2_SUFFIX`, $VAR2_SUFFIX, `$VAR2_SUFFIX`, ${VAR2_SUFFIX}, `${VAR2_SUFFIX}`, {VAR2_SUFFIX}, `{VAR2_SUFFIX}`', '`val1`'),
+          '$VAR2' => $this->fixtureVariable('`VAR2`', '`' . $this->fixtureFile('test-data.sh') . '`', 'Description prefix_token1 `token1` `token1` token1_suffix prefix_token1_suffix string', '`val2`'),
+        ],
+      ],
+    ];
+  }
+
+  /**
+   * Fixture variable.
+   */
+  protected function fixtureVariable($name, $path, $description = '', $default = '') {
+    $var = new Variable($name);
+    $var->addPath($path);
+    $var->setDescription($description);
+    $var->setDefaultValue($default);
+
+    return $var;
   }
 
 }
