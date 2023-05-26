@@ -107,7 +107,7 @@ abstract class AbstractExtractor implements ExtractorInterface, ConsoleAwareInte
         if (is_readable($path . '/.env')) {
           $files[] = $path . '/.env';
         }
-        $files = array_merge($files, glob($path . '/*.{bash,sh}', GLOB_BRACE));
+        $files = array_merge($files, glob($path . '/.*.{bash,sh}', GLOB_BRACE), glob($path . '/*.{bash,sh}', GLOB_BRACE));
       }
     }
 
