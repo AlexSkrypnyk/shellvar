@@ -3,7 +3,6 @@
 namespace AlexSkrypnyk\ShellVariablesExtractor\Formatter;
 
 use AlexSkrypnyk\ShellVariablesExtractor\Utils;
-use AlexSkrypnyk\ShellVariablesExtractor\Variable\Variable;
 use Symfony\Component\Console\Input\InputOption;
 
 /**
@@ -12,6 +11,10 @@ use Symfony\Component\Console\Input\InputOption;
  * Abstract formatter class to be extended by all Markdown formatters.
  */
 abstract class AbstractMarkdownFormatter extends AbstractFormatter {
+
+  const VARIABLE_LINK_CASE_PRESERVE = 'preserve';
+  const VARIABLE_LINK_CASE_LOWER = 'lower';
+  const VARIABLE_LINK_CASE_UPPER = 'upper';
 
   /**
    * {@inheritdoc}
@@ -22,6 +25,12 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
         name: 'md-link-vars',
         mode: InputOption::VALUE_NONE,
         description: 'Link variables within usages to their definitions in the Markdown output format.'
+      ),
+      new InputOption(
+        name: 'md-link-vars-anchor-case',
+        mode: InputOption::VALUE_REQUIRED,
+        description: 'The case of the anchors when linking variables. Can be one of "preserve", "lower" or "upper".',
+        default: static::VARIABLE_LINK_CASE_PRESERVE
       ),
       new InputOption(
         name: 'md-no-inline-code-wrap-vars',
@@ -68,7 +77,7 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
     }
 
     if ($this->config->get('md-link-vars')) {
-      $this->variables = $this->processLinks($this->variables);
+      $this->variables = $this->processLinks($this->variables, $this->config->get('md-link-vars-anchor-case'));
     }
   }
 
@@ -246,38 +255,41 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
    *
    * @param \AlexSkrypnyk\ShellVariablesExtractor\Variable\Variable[] $variables
    *   A list of variables to process.
+   * @param string $anchor_case
+   *   Anchor case.
    *
    * @return \AlexSkrypnyk\ShellVariablesExtractor\Variable\Variable[]
    *   A list of processed variables.
    */
-  protected function processLinks(array $variables): array {
-    $variables_sorted = $variables;
-    krsort($variables_sorted, SORT_NATURAL);
+  protected function processLinks(array $variables, $anchor_case = self::VARIABLE_LINK_CASE_PRESERVE): array {
+    $var_tokens = array_map(function ($v) {
+      return ltrim($v, '$');
+    }, array_keys($variables));
 
-    foreach ($variables as $k => $variable) {
-      // Replace in description.
-      $replaced = [];
-      foreach (array_keys($variables_sorted) as $other_name) {
-        if (!str_contains($variable->getDescription(), $other_name)) {
-          continue;
-        }
+    foreach ($variables as $variable) {
+      $description = $variable->getDescription();
 
-        $already_added = (bool) count(array_filter($replaced, function ($v) use ($other_name) {
-          return str_contains($v, $other_name);
-        }));
+      foreach ($var_tokens as $var_token) {
+        $href = '#' . ($anchor_case == self::VARIABLE_LINK_CASE_PRESERVE ? urlencode($var_token) : ($anchor_case == self::VARIABLE_LINK_CASE_UPPER ? urlencode(strtoupper($var_token)) : urlencode(strtolower($var_token))));
 
-        if ($already_added) {
-          continue;
-        }
+        $description = preg_replace([
+          '/(?<!`)\$\b' . preg_quote($var_token, '/') . '\b(?!`)/',
+          '/(?<!`)\$\{\b' . preg_quote($var_token, '/') . '\b\}(?!`)/',
+        ], [
+          '[$' . $var_token . '](' . $href . ')',
+          '[${' . $var_token . '}](' . $href . ')',
+        ], $description);
 
-        $other_name_slug = strtolower(preg_replace('/[^a-zA-Z0-9]/', '_', $other_name));
-        $replacement = sprintf('[$%s](#%s)', $other_name, $other_name_slug);
-
-        $variable->setDescription(preg_replace('/`?\$?' . $other_name . '`?/', $replacement, $variable->getDescription()));
-        $replaced[] = $other_name;
+        $description = preg_replace([
+          '/`\$\b' . preg_quote($var_token, '/') . '\b`/',
+          '/`\$\{\b' . preg_quote($var_token, '/') . '\b\}`/',
+        ], [
+          '[`$' . $var_token . '`](' . $href . ')',
+          '[`${' . $var_token . '}`](' . $href . ')',
+        ], $description);
       }
 
-      $variables[$k] = $variable;
+      $variable->setDescription($description);
     }
 
     return $variables;
