@@ -36,7 +36,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           name: ${{ steps.get-version.outputs.version }}
           tag: ${{ steps.get-version.outputs.version }}
-          body: 'Next stable release.'
           # This will update existing tags if any
           allowUpdates: true
           artifacts: build/shell-variables-extractor.phar
