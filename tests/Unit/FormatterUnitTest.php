@@ -3,6 +3,7 @@
 namespace AlexSkrypnyk\Tests\Unit;
 
 use AlexSkrypnyk\ShellVariablesExtractor\Config\Config;
+use AlexSkrypnyk\ShellVariablesExtractor\Formatter\AbstractMarkdownFormatter;
 use AlexSkrypnyk\ShellVariablesExtractor\Formatter\MarkdownBlocksFormatter;
 use AlexSkrypnyk\ShellVariablesExtractor\Variable\Variable;
 
@@ -198,6 +199,9 @@ class FormatterUnitTest extends UnitTestBase {
     $this->assertEquals($expected, $actual);
   }
 
+  /**
+   * Data provider for testProcessInlineCodeVars().
+   */
   public function dataProviderProcessInlineCodeVars() {
     return [
       [[], [], []],
@@ -328,6 +332,63 @@ class FormatterUnitTest extends UnitTestBase {
           '$VAR2' => $this->fixtureVariable('`VAR2`', '`' . $this->fixtureFile('test-data.sh') . '`', 'Description prefix_token1 `token1` `token1` token1_suffix prefix_token1_suffix string', '`val2`'),
         ],
       ],
+    ];
+  }
+
+  /**
+   * Tests the processLinks() method.
+   *
+   * @dataProvider dataProviderProcessLinks
+   */
+  public function testProcessLinks($variables, $anchor_case, $expected) {
+    $formatter = new MarkdownBlocksFormatter((new Config()));
+    $actual = $this->callProtectedMethod($formatter, 'processLinks', [$variables, $anchor_case]);
+    $this->assertEquals($expected, $actual);
+  }
+
+  /**
+   * Data provider for testProcessLinks().
+   */
+  public function dataProviderProcessLinks() {
+    return [
+      [[], AbstractMarkdownFormatter::VARIABLE_LINK_CASE_PRESERVE, []],
+
+      [
+        [
+          '$VAR1' => $this->fixtureVariable('VAR1', $this->fixtureFile('test-data.sh'), 'Description $VAR2, `$VAR2`, ${VAR2}, `${VAR2}`, VAR2', 'val1'),
+          '$VAR2' => $this->fixtureVariable('VAR2', $this->fixtureFile('test-data.sh')),
+        ],
+        AbstractMarkdownFormatter::VARIABLE_LINK_CASE_PRESERVE,
+        [
+          '$VAR1' => $this->fixtureVariable('VAR1', $this->fixtureFile('test-data.sh'), 'Description [$VAR2](#VAR2), [`$VAR2`](#VAR2), [${VAR2}](#VAR2), [`${VAR2}`](#VAR2), VAR2', 'val1'),
+          '$VAR2' => $this->fixtureVariable('VAR2', $this->fixtureFile('test-data.sh')),
+        ],
+      ],
+
+      [
+        [
+          '$VAR1' => $this->fixtureVariable('VAR1', $this->fixtureFile('test-data.sh'), 'Description $VAR2, `$VAR2`, $PREFIXVAR2, $PREFIX_VAR2, $VAR2SUFFIX, $VAR2_SUFFIX, $PREFIXVAR2SUFFIX, $PREFIX_VAR2_SUFFIX', 'val1'),
+          '$VAR2' => $this->fixtureVariable('VAR2', $this->fixtureFile('test-data.sh')),
+        ],
+        AbstractMarkdownFormatter::VARIABLE_LINK_CASE_PRESERVE,
+        [
+          '$VAR1' => $this->fixtureVariable('VAR1', $this->fixtureFile('test-data.sh'), 'Description [$VAR2](#VAR2), [`$VAR2`](#VAR2), $PREFIXVAR2, $PREFIX_VAR2, $VAR2SUFFIX, $VAR2_SUFFIX, $PREFIXVAR2SUFFIX, $PREFIX_VAR2_SUFFIX', 'val1'),
+          '$VAR2' => $this->fixtureVariable('VAR2', $this->fixtureFile('test-data.sh')),
+        ],
+      ],
+
+      [
+        [
+          '$VAR1' => $this->fixtureVariable('VAR1', $this->fixtureFile('test-data.sh'), 'Description $VAR2, `$VAR2`, $PREFIXVAR2, $PREFIX_VAR2, $VAR2SUFFIX, $VAR2_SUFFIX, $PREFIXVAR2SUFFIX, $PREFIX_VAR2_SUFFIX', 'val1'),
+          '$VAR2' => $this->fixtureVariable('VAR2', $this->fixtureFile('test-data.sh')),
+        ],
+        AbstractMarkdownFormatter::VARIABLE_LINK_CASE_LOWER,
+        [
+          '$VAR1' => $this->fixtureVariable('VAR1', $this->fixtureFile('test-data.sh'), 'Description [$VAR2](#var2), [`$VAR2`](#var2), $PREFIXVAR2, $PREFIX_VAR2, $VAR2SUFFIX, $VAR2_SUFFIX, $PREFIXVAR2SUFFIX, $PREFIX_VAR2_SUFFIX', 'val1'),
+          '$VAR2' => $this->fixtureVariable('VAR2', $this->fixtureFile('test-data.sh')),
+        ],
+      ],
+
     ];
   }
 

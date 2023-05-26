@@ -36,7 +36,7 @@ VAR2="${VAR1}"
 # Parameter expansion.
 VAR3=${val3:-abc}
 # Parameter expansion with a default value using
-# another variable.
+# another variable $VAR3.
 #
 # Continuation of the multi-line comment.
 VAR4=${val4:-$VAR3}
@@ -53,7 +53,8 @@ Name;"Default value";Description
 VAR1;val1;"Assignment to scalar value."
 VAR2;VAR1;"Assignment to another variable."
 VAR3;abc;"Parameter expansion."
-VAR4;VAR3;"Parameter expansion with a default value using another variable.
+VAR4;VAR3;"Parameter expansion with a default value using another variable $VAR3.
+
 Continuation of the multi-line comment."
 ```
 
@@ -64,22 +65,22 @@ Continuation of the multi-line comment."
 ```
 
 ```markdown
-| Name | Default value | Description                                                                                                   |
-|------|---------------|---------------------------------------------------------------------------------------------------------------|
-| VAR1 | val1          | Assignment to scalar value.                                                                                   |
-| VAR2 | VAR1          | Assignment to another variable.                                                                               |
-| VAR3 | abc           | Parameter expansion.                                                                                          |
-| VAR4 | VAR3          | Parameter expansion with a default value using another variable.<br />Continuation of the multi-line comment. |
+| Name   | Default value | Description                                                                                                                      |
+|--------|---------------|----------------------------------------------------------------------------------------------------------------------------------|
+| `VAR1` | `val1`        | Assignment to scalar value.                                                                                                      |
+| `VAR2` | `VAR1`        | Assignment to another variable.                                                                                                  |
+| `VAR3` | `abc`         | Parameter expansion.                                                                                                             |
+| `VAR4` | `VAR3`        | Parameter expansion with a default value using<br />another variable `$VAR3`.<br /><br />Continuation of the multi-line comment. |
 ```
 
 which renders as
 
-| Name | Default value | Description                                                                                                   |
-|------|---------------|---------------------------------------------------------------------------------------------------------------|
-| VAR1 | val1          | Assignment to scalar value.                                                                                   |
-| VAR2 | VAR1          | Assignment to another variable.                                                                               |
-| VAR3 | abc           | Parameter expansion.                                                                                          |
-| VAR4 | VAR3          | Parameter expansion with a default value using another variable.<br />Continuation of the multi-line comment. |
+| Name   | Default value | Description                                                                                                                      |
+|--------|---------------|----------------------------------------------------------------------------------------------------------------------------------|
+| `VAR1` | `val1`        | Assignment to scalar value.                                                                                                      |
+| `VAR2` | `VAR1`        | Assignment to another variable.                                                                                                  |
+| `VAR3` | `abc`         | Parameter expansion.                                                                                                             |
+| `VAR4` | `VAR3`        | Parameter expansion with a default value using<br />another variable `$VAR3`.<br /><br />Continuation of the multi-line comment. |
 
 
 ### Markdown blocks
@@ -109,7 +110,8 @@ Default value: `abc`
 
 ### `VAR4`
 
-Parameter expansion with a default value using another variable.<br />
+Parameter expansion with a default value using<br />another variable `$VAR3`.
+
 Continuation of the multi-line comment.
 
 Default value: `VAR3`
@@ -140,10 +142,110 @@ Default value: `abc`
 
 ### `VAR4`
 
-Parameter expansion with a default value using another variable.<br />
+Parameter expansion with a default value using<br />another variable `$VAR3`.
+
 Continuation of the multi-line comment.
 
 Default value: `VAR3`
+
+</td></tr></table>
+
+### Advanced: Markdown blocks with links and custom template
+
+```bash
+./vendor/bin/shell-variables-extractor --format=md-blocks --md-link-vars --md-block-template-file=path/to/template.md path/to/script.sh
+```
+
+```markdown
+### `VAR1`
+
+Assignment to scalar value.
+
+Default value: `val1`
+
+Path: `/Users/o_o/www/shell-variables-extractor/1.sh`
+
+Paths: `/Users/o_o/www/shell-variables-extractor/1.sh`
+
+### `VAR2`
+
+Assignment to another variable.
+
+Default value: `VAR1`
+
+Path: `/Users/o_o/www/shell-variables-extractor/1.sh`
+
+Paths: `/Users/o_o/www/shell-variables-extractor/1.sh`
+
+### `VAR3`
+
+Parameter expansion.
+
+Default value: `abc`
+
+Path: `/Users/o_o/www/shell-variables-extractor/1.sh`
+
+Paths: `/Users/o_o/www/shell-variables-extractor/1.sh`
+
+### `VAR4`
+
+Parameter expansion with a default value using<br />another variable [`$VAR3`](#VAR3).
+
+Continuation of the multi-line comment.
+
+Default value: `VAR3`
+
+Path: `/Users/o_o/www/shell-variables-extractor/1.sh`
+
+Paths: `/Users/o_o/www/shell-variables-extractor/1.sh`
+
+```
+
+which renders as
+
+<table><tr><td>
+
+### `VAR1`
+
+Assignment to scalar value.
+
+Default value: `val1`
+
+Path: `/Users/o_o/www/shell-variables-extractor/1.sh`
+
+Paths: `/Users/o_o/www/shell-variables-extractor/1.sh`
+
+### `VAR2`
+
+Assignment to another variable.
+
+Default value: `VAR1`
+
+Path: `/Users/o_o/www/shell-variables-extractor/1.sh`
+
+Paths: `/Users/o_o/www/shell-variables-extractor/1.sh`
+
+### `VAR3`
+
+Parameter expansion.
+
+Default value: `abc`
+
+Path: `/Users/o_o/www/shell-variables-extractor/1.sh`
+
+Paths: `/Users/o_o/www/shell-variables-extractor/1.sh`
+
+### `VAR4`
+
+Parameter expansion with a default value using<br />another variable [`$VAR3`](#VAR3).
+
+Continuation of the multi-line comment.
+
+Default value: `VAR3`
+
+Path: `/Users/o_o/www/shell-variables-extractor/1.sh`
+
+Paths: `/Users/o_o/www/shell-variables-extractor/1.sh`
 
 </td></tr></table>
 
@@ -180,6 +282,7 @@ like so: `--exclude-prefix=VAR1 --exclude-prefix=VAR2` etc.
 | `--path-strip-prefix=PREFIX`       | Strip the provided prefix from the path.                                                                                                                                                                  |                                                                  |
 | `--csv-separator=SEPARATOR`        | Separator for the CSV output format.                                                                                                                                                                      | `;`                                                              |
 | `--md-link-vars`                   | Link variables within usages to their definitions in the Markdown output format.                                                                                                                          |                                                                  |
+| `--md-link-vars-anchor-case        | The case of the anchors when linking variables. Can be one of "preserve", "lower" or "upper".                                                                                                             | `preserve`                                                       |
 | `--md-no-inline-code-wrap-vars`    | Do not wrap variables to show them as inline code in the Markdown output format.                                                                                                                          |                                                                  |
 | `--md-no-inline-code-wrap-numbers` | Do not wrap numbers to show them as inline code in the Markdown output format.                                                                                                                            |                                                                  |
 | `--md-inline-code-extra-file=FILE` | A path to a file that contains additional strings to be formatted as inline code in the Markdown output format. Multiple values allowed.                                                                  |                                                                  |

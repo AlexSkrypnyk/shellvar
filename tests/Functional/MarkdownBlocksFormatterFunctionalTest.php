@@ -550,6 +550,34 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
 
         EOD,
       ],
+
+      // Links.
+      [
+        [
+          '--exclude-local',
+          '--sort',
+          '--format=md-blocks',
+          '--md-link-vars',
+          '--md-link-vars-anchor-case=lower',
+          $this->fixtureFile('test-data-links.sh'),
+        ],
+        <<<'EOD'
+        ### `VAR1`
+        
+        Reference to VAR1, `VAR1`, [`$VAR1`](#var1) and [`$VAR1`](#var1).
+        
+        Reference to VAR1_SUFFIX, `VAR1_SUFFIX`, $VAR1_SUFFIX and `$VAR1_SUFFIX`
+        
+        Reference to PREFIX_VAR1, `PREFIX_VAR1`, $PREFIX_VAR1 and `$PREFIX_VAR1`
+        
+        Reference to PREFIX_VAR1_SUFFIX, `PREFIX_VAR1_SUFFIX`, $PREFIX_VAR1_SUFFIX and `$PREFIX_VAR1_SUFFIX`
+        
+        Reference to PREFIX_VAR2_SUFFIX, `PREFIX_VAR2_SUFFIX`, $PREFIX_VAR2_SUFFIX and `$PREFIX_VAR2_SUFFIX`
+        
+        Default value: `UNSET`
+
+        EOD,
+      ],
     ];
   }
 
