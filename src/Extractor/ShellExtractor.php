@@ -43,6 +43,7 @@ class ShellExtractor extends AbstractExtractor {
    * {@inheritdoc}
    */
   protected function extractVariablesFromFile($file): void {
+    $skip = $this->config->get('skip-text');
     $lines = Utils::getLinesFromFiles([$file]);
 
     foreach ($lines as $num => $line) {
@@ -64,6 +65,10 @@ class ShellExtractor extends AbstractExtractor {
 
       $description = $this->extractVariableDescription($lines, $num, $this->config->get('skip-description-prefix'));
       if ($description) {
+        if ($skip && str_contains($description, $skip)) {
+          continue;
+        }
+
         $var->setDescription($description);
       }
 

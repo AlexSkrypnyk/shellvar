@@ -261,6 +261,7 @@ like so: `--exclude-prefix=VAR1 --exclude-prefix=VAR2` etc.
 | Name                               | Description                                                                          | Default value |
 |------------------------------------|--------------------------------------------------------------------------------------|---------------|
 | `paths`                            | File or directory to scan. Multiple files separated by space.                        |               |
+| `--skip-text=SKIP`                 | Skip variable extraction if the comment has this specified text.                     | `@skip`       |
 | `--skip-description-prefix=PREFIX` | Skip description lines that start with the provided prefix. Multiple values allowed. |               |
 
 ### Filtering

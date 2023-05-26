@@ -578,6 +578,43 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
 
         EOD,
       ],
+
+      // Skip - default.
+      [
+        [
+          '--exclude-local',
+          '--sort',
+          '--format=md-blocks',
+          $this->fixtureFile('test-data-skip-text.sh'),
+        ],
+        <<<'EOD'
+        ### `VAR2`
+
+        Description from bash without a leading space that goes on<br />multiple lines.<br />@docs-skip
+
+        Default value: `val2`
+
+        EOD,
+      ],
+
+      // Skip - custom.
+      [
+        [
+          '--exclude-local',
+          '--sort',
+          '--format=md-blocks',
+          '--skip-text=docs-skip',
+          $this->fixtureFile('test-data-skip-text.sh'),
+        ],
+        <<<'EOD'
+        ### `VAR1`
+
+        @skip
+
+        Default value: `val1`
+
+        EOD,
+      ],
     ];
   }
 
