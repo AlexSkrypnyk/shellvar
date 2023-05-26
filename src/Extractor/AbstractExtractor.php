@@ -49,6 +49,12 @@ abstract class AbstractExtractor implements ExtractorInterface, ConsoleAwareInte
   public static function getConsoleOptions(): array {
     return [
       new InputOption(
+        name: 'skip-text',
+        mode: InputOption::VALUE_REQUIRED,
+        description: 'Skip variable extraction if the comment has this specified text.',
+        default: '@skip'
+      ),
+      new InputOption(
         name: 'skip-description-prefix',
         mode: InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
         description: 'Skip description lines that start with the provided prefix.',
@@ -62,6 +68,7 @@ abstract class AbstractExtractor implements ExtractorInterface, ConsoleAwareInte
    */
   protected function processConfig(Config $config): void {
     $config->set('paths', $this->scanPaths(Utils::resolvePaths($config->get('paths', []))));
+    $config->set('skip-text', $config->get('skip-text', '@skip'));
   }
 
   /**
