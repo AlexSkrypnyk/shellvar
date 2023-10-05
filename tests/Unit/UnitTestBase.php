@@ -2,7 +2,8 @@
 
 namespace AlexSkrypnyk\Tests\Unit;
 
-use AlexSkrypnyk\Tests\Traits\HelperTrait;
+use AlexSkrypnyk\Tests\Traits\ReflectionTrait;
+use AlexSkrypnyk\Tests\Traits\MockTrait;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -12,7 +13,8 @@ use PHPUnit\Framework\TestCase;
  */
 abstract class UnitTestBase extends TestCase {
 
-  use HelperTrait;
+  use MockTrait;
+  use ReflectionTrait;
 
   /**
    * Get path to a fixture file.
