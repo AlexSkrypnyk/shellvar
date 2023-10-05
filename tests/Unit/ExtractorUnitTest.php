@@ -19,7 +19,7 @@ class ExtractorUnitTest extends UnitTestBase {
    *
    * @dataProvider dataProviderExtractVariable
    */
-  public function testExtractVariable($line, $expected) {
+  public function testExtractVariable(string $line, ?Variable $expected) : void {
     $extractor = $this->prepareMock(ShellExtractor::class);
     $actual = $this->callProtectedMethod($extractor, 'extractVariable', [$line]);
     $this->assertEquals($expected, $actual);
@@ -28,7 +28,7 @@ class ExtractorUnitTest extends UnitTestBase {
   /**
    * Data provider for testExtractVariable().
    */
-  public function dataProviderExtractVariable() {
+  public function dataProviderExtractVariable() : array {
     return [
       ['', NULL],
       [' ', NULL],
@@ -109,7 +109,7 @@ class ExtractorUnitTest extends UnitTestBase {
    *
    * @dataProvider dataProviderExtractVariableValue
    */
-  public function testExtractVariableValue($line, $expected) {
+  public function testExtractVariableValue(string $line, string|int $expected) : void {
     $extractor = $this->prepareMock(ShellExtractor::class);
     $actual = $this->callProtectedMethod($extractor, 'extractVariableValue', [$line, 'TESTUNSET']);
     $this->assertEquals($expected, $actual);
@@ -121,7 +121,7 @@ class ExtractorUnitTest extends UnitTestBase {
    * Note that we only assert for assignment expressions. Non-assignment
    * expressions would not reach this method.
    */
-  public function dataProviderExtractVariableValue() {
+  public function dataProviderExtractVariableValue() : array {
     return [
       ['VAR1=', 'TESTUNSET'],
       ['VAR1= ', 'TESTUNSET'],
@@ -175,7 +175,7 @@ class ExtractorUnitTest extends UnitTestBase {
    *
    * @dataProvider dataProviderExtractVariableDescription
    */
-  public function testExtractVariableDescription($lines, $line_num, $skip_prefix, $expected) {
+  public function testExtractVariableDescription(array $lines, int $line_num, array $skip_prefix, string $expected) : void {
     $extractor = $this->prepareMock(ShellExtractor::class);
     $actual = $this->callProtectedMethod($extractor, 'extractVariableDescription', [$lines, $line_num, $skip_prefix]);
     $this->assertEquals($expected, $actual);
@@ -184,7 +184,7 @@ class ExtractorUnitTest extends UnitTestBase {
   /**
    * Data provider for testExtractVariableDescription().
    */
-  public function dataProviderExtractVariableDescription() {
+  public function dataProviderExtractVariableDescription() : array {
     return [
       [[], 0, [], ''],
       [[], 10, [], ''],

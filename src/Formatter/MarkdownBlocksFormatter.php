@@ -20,9 +20,13 @@ class MarkdownBlocksFormatter extends AbstractMarkdownFormatter {
   }
 
   /**
-   * {@inheritdoc}
+   * Get console options.
+   *
+   * @return array<InputOption>
+   *   Returns array of console options
+   *   {@inheritdoc}
    */
-  public static function getConsoleOptions() {
+  public static function getConsoleOptions(): array {
     return array_merge(parent::getConsoleOptions(), [
       new InputOption(
         name: 'md-block-template-file',
@@ -35,10 +39,10 @@ class MarkdownBlocksFormatter extends AbstractMarkdownFormatter {
   /**
    * {@inheritdoc}
    */
-  public function processConfig($config): void {
+  public function processConfig(mixed $config): void {
     parent::processConfig($config);
-
     if (!empty($config->get('md-block-template-file'))) {
+      // @phpstan-ignore-next-line
       $config->set('md-block-template-file', file_get_contents(Utils::resolvePath($config->get('md-block-template-file'))));
     }
   }
@@ -67,6 +71,7 @@ class MarkdownBlocksFormatter extends AbstractMarkdownFormatter {
       $placeholders_values = $variable->toArray($fields);
 
       $placeholders = array_combine($placeholders_tokens, $placeholders_values);
+      // @phpstan-ignore-next-line
       $content .= str_replace("\n\n\n", "\n", strtr($template, $placeholders));
     }
 

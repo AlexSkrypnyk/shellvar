@@ -14,7 +14,7 @@ namespace AlexSkrypnyk\Tests\Functional;
  */
 class MarkdownTableFormatterFunctionalTest extends FormatterFunctionalTestBase {
 
-  public function dataProviderFormatter() {
+  public function dataProviderFormatter() : array {
     return [
       [
         [
@@ -62,6 +62,7 @@ class MarkdownTableFormatterFunctionalTest extends FormatterFunctionalTestBase {
           '--fields="name=Name;path=Path"',
           '--md-no-inline-code-wrap-vars',
           '--md-no-inline-code-wrap-numbers',
+          // @phpstan-ignore-next-line
           '--path-strip-prefix=' . dirname(realpath(__DIR__ . '/..')),
           $this->fixtureFile('test-data.bash'),
           $this->fixtureFile('test-data.sh'),

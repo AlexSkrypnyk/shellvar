@@ -17,7 +17,7 @@ abstract class UnitTestBase extends TestCase {
   /**
    * Get path to a fixture file.
    */
-  protected function fixtureFile($filename) {
+  protected function fixtureFile(string $filename) : string {
     $path = $this->fixtureDir() . DIRECTORY_SEPARATOR . $filename;
     if (!is_readable($path)) {
       throw new \RuntimeException(sprintf('Unable to find fixture file %s.', $path));
@@ -29,7 +29,7 @@ abstract class UnitTestBase extends TestCase {
   /**
    * Get path to a fixture directory.
    */
-  protected function fixtureDir() {
+  protected function fixtureDir() : string {
     return 'tests/Fixtures';
   }
 

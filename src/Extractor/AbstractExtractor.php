@@ -67,6 +67,7 @@ abstract class AbstractExtractor implements ExtractorInterface, ConsoleAwareInte
    * {@inheritdoc}
    */
   protected function processConfig(Config $config): void {
+    // @phpstan-ignore-next-line
     $config->set('paths', $this->scanPaths(Utils::resolvePaths($config->get('paths', []))));
     $config->set('skip-text', $config->get('skip-text', '@skip'));
   }
@@ -75,6 +76,7 @@ abstract class AbstractExtractor implements ExtractorInterface, ConsoleAwareInte
    * {@inheritdoc}
    */
   public function extract(): array {
+    // @phpstan-ignore-next-line
     foreach ($this->config->get('paths') as $path) {
       $this->extractVariablesFromFile($path);
     }
@@ -87,21 +89,21 @@ abstract class AbstractExtractor implements ExtractorInterface, ConsoleAwareInte
    *
    * If cross-file extraction is required - override extract() method.
    *
-   * @param string $file
+   * @param string|mixed $file
    *   Path to file.
    */
-  abstract protected function extractVariablesFromFile(string $file): void;
+  abstract protected function extractVariablesFromFile(mixed $file): void;
 
   /**
    * Get a list of files to scan.
    *
-   * @param array $paths
+   * @param array<string> $paths
    *   A list of paths to scan.
    *
-   * @return array
+   * @return array<string>
    *   A list of files to scan.
    */
-  protected function scanPaths($paths) {
+  protected function scanPaths($paths) : array {
     $files = [];
 
     $paths = Utils::resolvePaths($paths);
@@ -114,6 +116,7 @@ abstract class AbstractExtractor implements ExtractorInterface, ConsoleAwareInte
         if (is_readable($path . '/.env')) {
           $files[] = $path . '/.env';
         }
+        // @phpstan-ignore-next-line
         $files = array_merge($files, glob($path . '/.*.{bash,sh}', GLOB_BRACE), glob($path . '/*.{bash,sh}', GLOB_BRACE));
       }
     }

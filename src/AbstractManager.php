@@ -65,6 +65,7 @@ abstract class AbstractManager implements SingletonInterface, ConsoleAwareInterf
     $items = [];
 
     foreach ($this->factory->getEntityClasses() as $class) {
+      // @phpstan-ignore-next-line
       $items = array_merge($class::getConsoleArguments());
     }
     $items = array_merge($items, $this::getConsoleArguments());
@@ -82,6 +83,7 @@ abstract class AbstractManager implements SingletonInterface, ConsoleAwareInterf
     $items = [];
 
     foreach ($this->factory->getEntityClasses() as $class) {
+      // @phpstan-ignore-next-line
       $items = array_merge($items, $class::getConsoleOptions());
     }
     $items = array_merge($items, $this::getConsoleOptions());

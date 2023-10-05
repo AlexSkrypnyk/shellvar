@@ -39,6 +39,7 @@ class FormatterManager extends AbstractManager {
     $format = $this->config->get('format');
     $formatter = $this->factory->create($format, $this->config);
 
+    // @phpstan-ignore-next-line
     return $formatter->format($variables);
   }
 

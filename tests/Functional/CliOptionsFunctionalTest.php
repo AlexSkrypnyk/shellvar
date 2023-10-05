@@ -18,14 +18,14 @@ class CliOptionsFunctionalTest extends FunctionalTestBase {
    * @dataProvider dataProviderMain
    * @runInSeparateProcess
    */
-  public function testMain($args, $expected_code, $expected_output) {
+  public function testMain(array|string $args, string|int $expected_code, string $expected_output) : void {
     $args = is_array($args) ? $args : [$args];
     $result = $this->runScript($args, TRUE);
     $this->assertEquals($expected_code, $result['code']);
     $this->assertStringContainsString($expected_output, $result['output']);
   }
 
-  public function dataProviderMain() {
+  public function dataProviderMain() : array {
     return [
       [
         '--help',

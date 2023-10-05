@@ -12,7 +12,7 @@ trait SingletonTrait {
   /**
    * Hold the class instances.
    *
-   * @var array
+   * @var array<object>
    */
   protected static $instances = [];
 
@@ -32,7 +32,7 @@ trait SingletonTrait {
   /**
    * Reset the instance.
    */
-  public static function resetInstance() {
+  public static function resetInstance() : void {
     $cls = static::class;
 
     if (isset(self::$instances[$cls])) {

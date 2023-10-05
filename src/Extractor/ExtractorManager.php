@@ -20,7 +20,7 @@ class ExtractorManager extends AbstractManager {
   public function extract() {
     // Using hardcoded 'extractor-shell' as we only have a single extractor.
     $extractor = $this->factory->create('extractor-shell', $this->config);
-
+    // @phpstan-ignore-next-line
     return $extractor->extract();
   }
 

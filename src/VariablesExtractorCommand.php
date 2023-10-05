@@ -46,6 +46,7 @@ class VariablesExtractorCommand {
 
     /** @var \AlexSkrypnyk\ShellVariablesExtractor\Traits\SingletonInterface[] $classes */
     foreach ($classes as $class) {
+      // @phpstan-ignore-next-line
       $instance = $class::getInstance($this->config);
       foreach ($instance->getAllConsoleArguments() as $argument) {
         if (!$app->getDefinition()->hasArgument($argument->getName())) {

@@ -12,4 +12,17 @@
             <directory suffix=".php">./test</directory>
         </testsuite>
     </testsuites>
+
+    <coverage includeUncoveredFiles="true"
+              pathCoverage="false"
+              ignoreDeprecatedCodeUnits="true"
+              disableCodeCoverageIgnore="false">
+        <include>
+            <directory>src</directory>
+        </include>
+        <report>
+            <html outputDirectory=".coverage-html" lowUpperBound="50" highLowerBound="90"/>
+            <cobertura outputFile="cobertura.xml"/>
+        </report>
+    </coverage>
 </phpunit>

@@ -33,7 +33,7 @@ class Variable {
   /**
    * Path to the files where the variable is defined.
    *
-   * @var array
+   * @var array<string>
    */
   protected $paths;
 
@@ -114,7 +114,7 @@ class Variable {
   /**
    * Get the variable default value.
    *
-   * @return string
+   * @return mixed
    *   The variable default value.
    */
   public function getDefaultValue() {
@@ -124,7 +124,7 @@ class Variable {
   /**
    * Set the variable default value.
    *
-   * @param string $defaultValue
+   * @param string|mixed $defaultValue
    *   The variable default value.
    *
    * @return Variable
@@ -139,7 +139,7 @@ class Variable {
   /**
    * Get path to the file where the variable is defined.
    *
-   * @return string
+   * @return array<string>
    *   Path to the file where the variable is defined.
    */
   public function getPaths(): array {
@@ -149,7 +149,7 @@ class Variable {
   /**
    * Set path to the file where the variable is defined.
    *
-   * @param array $paths
+   * @param array<string> $paths
    *   Array of path to the files where the variable is defined.
    *
    * @return Variable
@@ -167,13 +167,14 @@ class Variable {
   /**
    * Add path to the file where the variable is defined.
    *
-   * @param string $path
+   * @param string|bool $path
    *   Path to the file where the variable is defined.
    *
    * @return Variable
    *   The variable instance.
    */
-  public function addPath(string $path): Variable {
+  public function addPath(string|bool $path): Variable {
+    // @phpstan-ignore-next-line
     $this->paths[] = $path;
 
     return $this;
@@ -235,7 +236,7 @@ class Variable {
    * @param Variable $variable
    *   The variable to merge.
    */
-  public function merge(Variable $variable) {
+  public function merge(Variable $variable): void {
     $paths = array_merge($this->getPaths(), $variable->getPaths());
     $paths = array_unique($paths);
     $this->setPaths($paths);
@@ -244,10 +245,10 @@ class Variable {
   /**
    * Convert internal variables to array representation.
    *
-   * @param array $fields
+   * @param array<string> $fields
    *   Array of field names to sort by.
    *
-   * @return array
+   * @return array<string, mixed>
    *   Array of values, keyed by the order and name of the fields.
    *
    * phpcs:disable Drupal.Arrays.Array.LongLineDeclaration

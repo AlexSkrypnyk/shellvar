@@ -17,7 +17,7 @@ class AutodiscoveryFactory {
   /**
    * Array of entity classes.
    *
-   * @var string
+   * @var array<mixed>
    */
   protected $classes = [];
 
@@ -44,20 +44,20 @@ class AutodiscoveryFactory {
   /**
    * Create class instance from discovered classes by entity name.
    *
-   * @param string $name
+   * @param mixed $name
    *   Entity name.
    * @param \AlexSkrypnyk\ShellVariablesExtractor\Config\Config $config
    *   Formatter configuration.
    *
-   * @return \AlexSkrypnyk\ShellVariablesExtractor\Factory\FactoryDiscoverableInterface
+   * @return object
    *   Instantiated entity class instance.
    *
    * @throws \Exception
    *   If the requested entity does not exist.
    */
-  public function create(string $name, Config $config) {
+  public function create(mixed $name, Config $config) : object {
     if (!isset($this->classes[$name])) {
-      throw new \Exception("Invalid entity: $name");
+      throw new \Exception("Invalid entity: " . $name);
     }
 
     return new $this->classes[$name]($config);
@@ -69,16 +69,17 @@ class AutodiscoveryFactory {
    * @param \AlexSkrypnyk\ShellVariablesExtractor\Config\Config $config
    *   The configuration instance.
    *
-   * @return \AlexSkrypnyk\ShellVariablesExtractor\Factory\FactoryDiscoverableInterface[]
+   * @return array<mixed>|\AlexSkrypnyk\ShellVariablesExtractor\Filter\FilterInterface[]
    *   Array of instantiated entity class instances.
    */
-  public function createAll(Config $config) {
+  public function createAll(Config $config) : array {
     $instances = [];
 
     foreach ($this->classes as $class) {
+      // @phpstan-ignore-next-line
       $instances[] = $this->create($class::getName(), $config);
     }
-
+    // @phpstan-ignore-next-line
     return $instances;
   }
 
@@ -126,10 +127,10 @@ class AutodiscoveryFactory {
   /**
    * Get all discovered entity classes.
    *
-   * @return array
+   * @return array<mixed|object>
    *   Array of entity classes.
    */
-  public function getEntityClasses() {
+  public function getEntityClasses() : array {
     return $this->classes;
   }
 

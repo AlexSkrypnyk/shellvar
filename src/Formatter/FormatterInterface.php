@@ -12,6 +12,9 @@ interface FormatterInterface {
   /**
    * Format variables data.
    *
+   * @param array<mixed> $variables
+   *   Variables.
+   *
    * @return string
    *   A formatted variables data as a string.
    */

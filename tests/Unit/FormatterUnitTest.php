@@ -21,7 +21,7 @@ class FormatterUnitTest extends UnitTestBase {
    *
    * @dataProvider dataProviderProcessDescription
    */
-  public function testProcessDescription($string, $expected) {
+  public function testProcessDescription(string $string, string $expected) : void {
     $formatter = new MarkdownBlocksFormatter((new Config()));
     $actual = $this->callProtectedMethod($formatter, 'processDescription', [$string]);
     $this->assertEquals($expected, $actual);
@@ -30,7 +30,7 @@ class FormatterUnitTest extends UnitTestBase {
   /**
    * Data provider for testExtractVariable().
    */
-  public function dataProviderProcessDescription() {
+  public function dataProviderProcessDescription() : array {
     return [
       ['', ''],
       [' ', ''],
@@ -193,7 +193,7 @@ class FormatterUnitTest extends UnitTestBase {
    *
    * @dataProvider dataProviderProcessInlineCodeVars
    */
-  public function testProcessInlineCodeVars($variables, $tokens, $expected) {
+  public function testProcessInlineCodeVars(array $variables, array $tokens, array $expected) : void {
     $formatter = new MarkdownBlocksFormatter((new Config()));
     $actual = $this->callProtectedMethod($formatter, 'processInlineCodeVars', [$variables, $tokens]);
     $this->assertEquals($expected, $actual);
@@ -202,7 +202,7 @@ class FormatterUnitTest extends UnitTestBase {
   /**
    * Data provider for testProcessInlineCodeVars().
    */
-  public function dataProviderProcessInlineCodeVars() {
+  public function dataProviderProcessInlineCodeVars() : array {
     return [
       [[], [], []],
       [[], ['token1' => 'replacement1'], []],
@@ -340,7 +340,7 @@ class FormatterUnitTest extends UnitTestBase {
    *
    * @dataProvider dataProviderProcessLinks
    */
-  public function testProcessLinks($variables, $anchor_case, $expected) {
+  public function testProcessLinks(array $variables, string $anchor_case, array $expected) : void {
     $formatter = new MarkdownBlocksFormatter((new Config()));
     $actual = $this->callProtectedMethod($formatter, 'processLinks', [$variables, $anchor_case]);
     $this->assertEquals($expected, $actual);
@@ -349,7 +349,7 @@ class FormatterUnitTest extends UnitTestBase {
   /**
    * Data provider for testProcessLinks().
    */
-  public function dataProviderProcessLinks() {
+  public function dataProviderProcessLinks() : array {
     return [
       [[], AbstractMarkdownFormatter::VARIABLE_LINK_CASE_PRESERVE, []],
 
@@ -395,7 +395,7 @@ class FormatterUnitTest extends UnitTestBase {
   /**
    * Fixture variable.
    */
-  protected function fixtureVariable($name, $path, $description = '', $default = '') {
+  protected function fixtureVariable(string $name, string $path, string $description = '', string $default = '') : Variable {
     $var = new Variable($name);
     $var->addPath($path);
     $var->setDescription($description);

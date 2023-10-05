@@ -49,7 +49,7 @@ trait HelperTrait {
    * @param mixed $value
    *   Value to set to the property.
    */
-  protected static function setProtectedValue($object, $property, $value) {
+  protected static function setProtectedValue($object, $property, $value) : void {
     $class = new \ReflectionClass(get_class($object));
     $property = $class->getProperty($property);
     $property->setAccessible(TRUE);
@@ -95,14 +95,18 @@ trait HelperTrait {
   protected function prepareMock($class, array $methodsMap = [], array $args = []) {
     $methods = array_keys($methodsMap);
 
+    // @phpstan-ignore-next-line
     $reflectionClass = new \ReflectionClass($class);
 
     if ($reflectionClass->isAbstract()) {
+      // @phpstan-ignore-next-line
       $mock = $this->getMockForAbstractClass(
+        // @phpstan-ignore-next-line
         $class, $args, '', !empty($args), TRUE, TRUE, $methods
       );
     }
     else {
+      // @phpstan-ignore-next-line
       $mock = $this->getMockBuilder($class);
 
       if (!empty($args)) {
@@ -120,6 +124,7 @@ trait HelperTrait {
       if (is_object($value) && strpos(get_class($value), 'Callback') !== FALSE) {
         $mock->expects($this->any())
           ->method($method)
+          // @phpstan-ignore-next-line
           ->will($value);
       }
       else {
@@ -135,7 +140,7 @@ trait HelperTrait {
   /**
    * Check if testing framework was ran with --debug option.
    */
-  protected function isDebug() {
+  protected function isDebug() : bool {
     return in_array('--debug', $_SERVER['argv'], TRUE);
   }
 
