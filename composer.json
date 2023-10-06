@@ -52,7 +52,7 @@
         "test": "phpunit tests --no-coverage",
         "test:coverage": "XDEBUG_MODE=coverage phpunit tests",
         "build": [
-            "sudo chmod -R 775 vendor/bin/",
+            "sudo chmod -R 777 vendor/",
             "@composer bin box require --dev humbug/box",
             "box validate",
             "box compile"
