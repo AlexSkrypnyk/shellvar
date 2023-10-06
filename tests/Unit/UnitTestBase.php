@@ -2,8 +2,8 @@
 
 namespace AlexSkrypnyk\Tests\Unit;
 
-use AlexSkrypnyk\Tests\Traits\ReflectionTrait;
 use AlexSkrypnyk\Tests\Traits\MockTrait;
+use AlexSkrypnyk\Tests\Traits\ReflectionTrait;
 use PHPUnit\Framework\TestCase;
 
 /**
