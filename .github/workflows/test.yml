@@ -31,7 +31,7 @@ jobs:
         chmod +x ./box
         sudo mv ./box /usr/local/bin
     - name: Build Application PHAR
-      run: composer build
+      run: composer build 
     - name: Self-test
-      run: ./build/shell-variables-extractor.phar --help | grep -q "Extract variables from shell scripts."
+      run: ./.build/shell-variables-extractor.phar --help | grep -q "Extract variables from shell scripts."
     
