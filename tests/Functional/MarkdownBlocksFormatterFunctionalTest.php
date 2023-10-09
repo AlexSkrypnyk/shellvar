@@ -14,7 +14,7 @@ namespace AlexSkrypnyk\Tests\Functional;
  */
 class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase {
 
-  public function dataProviderFormatter() {
+  public function dataProviderFormatter() : array {
     return [
       [
         [
@@ -491,6 +491,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
           '--sort',
           '--format=md-blocks',
           '--md-block-template-file=' . $this->fixtureFile('test-template-path.md'),
+          // @phpstan-ignore-next-line
           '--path-strip-prefix=' . dirname(realpath(__DIR__ . '/..')),
           '--md-no-inline-code-wrap-numbers',
           $this->fixtureDir() . '/multipath',

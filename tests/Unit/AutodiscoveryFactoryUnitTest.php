@@ -15,7 +15,7 @@ class AutodiscoveryFactoryUnitTest extends UnitTestBase {
   /**
    * Test that the autodiscovery can discover only items set to be discovered.
    */
-  public function testDiscovery() {
+  public function testDiscovery() : void {
     $autodiscovery = new AutodiscoveryFactory('tests/Fixtures');
     $discovered_classes = $autodiscovery->getEntityClasses();
     $this->assertEquals([
@@ -29,7 +29,7 @@ class AutodiscoveryFactoryUnitTest extends UnitTestBase {
   /**
    * Test that the autodiscovery can discover only items of a certain type.
    */
-  public function testDiscoveryTyped() {
+  public function testDiscoveryTyped() : void {
     $autodiscovery = new AutodiscoveryFactory('tests/Fixtures/Discovery1');
     $discovered_classes = $autodiscovery->getEntityClasses();
     $this->assertEquals([
@@ -48,18 +48,20 @@ class AutodiscoveryFactoryUnitTest extends UnitTestBase {
   /**
    * Test creating a single auto discovered entity.
    */
-  public function testCreate() {
+  public function testCreate() : void {
     $autodiscovery = new AutodiscoveryFactory('tests/Fixtures');
     $discovered = $autodiscovery->create('DummyDiscoverable11', new Config());
+    // @phpstan-ignore-next-line
     $this->assertEquals('DummyDiscoverable11', $discovered::getName());
     $discovered = $autodiscovery->create('DummyDiscoverable12', new Config());
+    // @phpstan-ignore-next-line
     $this->assertEquals('DummyDiscoverable12', $discovered::getName());
   }
 
   /**
    * Test creating all auto discovered entities.
    */
-  public function testCreateAll() {
+  public function testCreateAll() : void {
     $config = new Config();
     $autodiscovery = new AutodiscoveryFactory('tests/Fixtures');
     $discovered_all = $autodiscovery->createAll($config);
@@ -76,7 +78,7 @@ class AutodiscoveryFactoryUnitTest extends UnitTestBase {
   /**
    * Test that exception is thrown when an invalid autodiscovery is requested.
    */
-  public function testException() {
+  public function testException() : void {
     $this->expectException(\Exception::class);
     $this->expectExceptionMessage('Invalid entity: non-existent');
     $autodiscovery = new AutodiscoveryFactory('tests/Fixtures');

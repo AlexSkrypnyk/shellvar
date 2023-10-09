@@ -14,7 +14,7 @@ namespace AlexSkrypnyk\Tests\Functional;
  */
 class CsvFormatterFunctionalTest extends FormatterFunctionalTestBase {
 
-  public function dataProviderFormatter() {
+  public function dataProviderFormatter() : array {
     return [
       // Extract all variables.
       [
@@ -58,6 +58,7 @@ class CsvFormatterFunctionalTest extends FormatterFunctionalTestBase {
           '--exclude-local',
           '--sort',
           '--fields="name=Name;path=Path"',
+          // @phpstan-ignore-next-line
           '--path-strip-prefix=' . dirname(realpath(__DIR__ . '/..')),
           $this->fixtureFile('test-data.bash'),
           $this->fixtureFile('test-data.sh'),

@@ -29,16 +29,22 @@ abstract class AbstractFormatter implements FormatterInterface, FactoryDiscovera
   }
 
   /**
-   * {@inheritdoc}
+   * Get console arguments.
+   *
+   * @return array<mixed>
+   *   {@inheritdoc}
    */
   public static function getConsoleArguments(): array {
     return [];
   }
 
   /**
-   * {@inheritdoc}
+   * Returns Console Options.
+   *
+   * @return array<InputOption>
+   *   {@inheritdoc}
    */
-  public static function getConsoleOptions() {
+  public static function getConsoleOptions() : array {
     return [
       new InputOption(
         name: 'fields',
@@ -72,6 +78,7 @@ abstract class AbstractFormatter implements FormatterInterface, FactoryDiscovera
     $header = $config->get('fields');
 
     if ($header && !is_array($header)) {
+      // @phpstan-ignore-next-line
       $pairs = explode(';', $header);
       $result = [];
       foreach ($pairs as $pair) {
@@ -87,6 +94,7 @@ abstract class AbstractFormatter implements FormatterInterface, FactoryDiscovera
    * {@inheritdoc}
    */
   public function format(array $variables): string {
+    // @phpstan-ignore-next-line
     $this->setVariables($variables);
 
     $this->processVariables();
@@ -111,10 +119,12 @@ abstract class AbstractFormatter implements FormatterInterface, FactoryDiscovera
     }
 
     if ($this->config->get('unset')) {
+      // @phpstan-ignore-next-line
       $this->variables = $this->processUnset($this->variables, $this->config->get('unset'));
     }
 
     if ($this->config->get('path-strip-prefix')) {
+      // @phpstan-ignore-next-line
       $this->variables = $this->processPathStripPrefix($this->variables, $this->config->get('path-strip-prefix'));
     }
 
@@ -196,6 +206,7 @@ abstract class AbstractFormatter implements FormatterInterface, FactoryDiscovera
     foreach ($variables as $variable) {
       $description = $variable->getDescription();
       $description = $this->processDescription($description);
+      // @phpstan-ignore-next-line
       $variable->setDescription($description);
     }
 
@@ -208,10 +219,10 @@ abstract class AbstractFormatter implements FormatterInterface, FactoryDiscovera
    * @param string $description
    *   A description to process.
    *
-   * @return string
+   * @return string|null
    *   A processed description.
    */
-  protected function processDescription(string $description): string {
+  protected function processDescription(string $description): string|null {
     $description = trim($description);
     // Replace multiple empty lines with a single one.
     $description = preg_replace('/(\n){3,}/', "\n\n", $description);

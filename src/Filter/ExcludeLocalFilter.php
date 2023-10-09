@@ -43,6 +43,7 @@ class ExcludeLocalFilter extends AbstractFilter {
    * {@inheritdoc}
    */
   public function filter(array $variables): array {
+    // @phpstan-ignore-next-line
     return array_filter($variables, function (Variable $variable) {
       return $variable->getName() != strtolower($variable->getName());
     });

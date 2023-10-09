@@ -27,18 +27,22 @@ class FilterManager extends AbstractManager {
    */
   public function __construct(Config $config) {
     parent::__construct($config);
-
     $this->filters = $this->factory->createAll($this->getConfig());
-
     usort($this->filters, function (FilterInterface $a, FilterInterface $b) {
       return $b::getPriority() <=> $a::getPriority();
     });
   }
 
   /**
-   * Filter variables using discovered filters.
+   * Filters variables.
+   *
+   * @param array<mixed> $variables
+   *   Variables list.
+   *
+   * @return array<mixed>
+   *   Filter variables using discovered filters.
    */
-  public function filter(array $variables) {
+  public function filter(array $variables) : array {
     foreach ($this->filters as $filter) {
       $variables = $filter->filter($variables);
     }

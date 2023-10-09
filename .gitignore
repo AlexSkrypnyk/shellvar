@@ -1,6 +1,11 @@
-/build
+/.build
+/.coverage-html
 /composer.lock
 /node_modules
 /package-json.lock
 /vendor
+/vendor-bin
 /yarn.lock
+/.phpunit.cache
+/cobertura.xml
+.phpunit.result.cache

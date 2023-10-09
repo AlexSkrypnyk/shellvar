@@ -14,18 +14,19 @@ class Utils {
   /**
    * Get lines from files.
    *
-   * @param array $paths
+   * @param array<string> $paths
    *   A list of paths to files.
    * @param bool $remove_empty
    *   Whether to remove empty lines.
    *
-   * @return array
+   * @return array<string>
    *   A list of lines, merged into one array.
    */
-  public static function getLinesFromFiles($paths, $remove_empty = FALSE) {
+  public static function getLinesFromFiles(array $paths, $remove_empty = FALSE) : array {
     $lines = [];
 
     foreach ($paths as $path) {
+      // @phpstan-ignore-next-line
       $lines = array_merge($lines, preg_split("/(\r\n|\n|\r)/", file_get_contents($path)));
     }
 
@@ -35,26 +36,26 @@ class Utils {
   /**
    * Get non-empty lines from files.
    *
-   * @param array $paths
+   * @param array<string> $paths
    *   A list of paths to files.
    *
-   * @return array
+   * @return array<string>
    *   A list of lines, merged into one array.
    */
-  public static function getNonEmptyLinesFromFiles($paths) {
+  public static function getNonEmptyLinesFromFiles(array $paths) : array {
     return static::getLinesFromFiles($paths, TRUE);
   }
 
   /**
    * Resolve paths.
    *
-   * @param array $paths
+   * @param array<string> $paths
    *   A list of paths to resolve.
    *
-   * @return array
+   * @return array<string>
    *   A list of resolved paths.
    */
-  public static function resolvePaths($paths) {
+  public static function resolvePaths(array $paths): array {
     $resolved_paths = [];
 
     foreach ($paths as $path) {

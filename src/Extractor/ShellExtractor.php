@@ -2,8 +2,8 @@
 
 namespace AlexSkrypnyk\ShellVariablesExtractor\Extractor;
 
-use AlexSkrypnyk\ShellVariablesExtractor\Variable\Variable;
 use AlexSkrypnyk\ShellVariablesExtractor\Utils;
+use AlexSkrypnyk\ShellVariablesExtractor\Variable\Variable;
 
 /**
  * Class ShellExtractor.
@@ -44,6 +44,7 @@ class ShellExtractor extends AbstractExtractor {
    */
   protected function extractVariablesFromFile($file): void {
     $skip = $this->config->get('skip-text');
+    // @phpstan-ignore-next-line
     $lines = Utils::getLinesFromFiles([$file]);
 
     foreach ($lines as $num => $line) {
@@ -53,6 +54,7 @@ class ShellExtractor extends AbstractExtractor {
         continue;
       }
 
+      // @phpstan-ignore-next-line
       $var->addPath(realpath($file));
 
       if ($var->getIsAssignment()) {
@@ -65,6 +67,7 @@ class ShellExtractor extends AbstractExtractor {
 
       $description = $this->extractVariableDescription($lines, $num, $this->config->get('skip-description-prefix'));
       if ($description) {
+        // @phpstan-ignore-next-line
         if ($skip && str_contains($description, $skip)) {
           continue;
         }
@@ -137,13 +140,13 @@ class ShellExtractor extends AbstractExtractor {
    *
    * @param string $line
    *   A line to extract a variable value from.
-   * @param string $default_value
+   * @param mixed $default_value
    *   The default value to return if a value was not extracted.
    *
-   * @return string
+   * @return string|mixed
    *   A variable value.
    */
-  protected function extractVariableValue($line, string $default_value) {
+  protected function extractVariableValue($line, mixed $default_value) {
     [, $value] = explode('=', $line, 2);
 
     $value = trim($value);
@@ -163,13 +166,14 @@ class ShellExtractor extends AbstractExtractor {
         // use 'abc'; in case of ${var:-}, use 'var', but as a variable to make
         // sure that it is not confused with a scalar value ($var vs 'var').
         return trim($matches[2] ?? '$' . $matches[1], '"');
+        // @phpstan-ignore-next-line
       }, $value);
 
       if ($replaced === 0) {
         break;
       }
     }
-
+    // @phpstan-ignore-next-line
     $value = trim($value, '"');
 
     if (str_starts_with($value, '$')) {
@@ -190,11 +194,11 @@ class ShellExtractor extends AbstractExtractor {
   /**
    * Extract variable description from multiple lines.
    *
-   * @param array $lines
+   * @param array<string> $lines
    *   A list of lines to extract a variable description from.
    * @param int $line_num
    *   A line number to start from.
-   * @param array $skip_prefixes
+   * @param mixed $skip_prefixes
    *   A list of prefixes to skip.
    * @param string $comment_separator
    *   A comment delimiter.
@@ -202,7 +206,7 @@ class ShellExtractor extends AbstractExtractor {
    * @return string
    *   A variable description.
    */
-  protected function extractVariableDescription($lines, $line_num, array $skip_prefixes = [], $comment_separator = self::COMMENT_SEPARATOR) {
+  protected function extractVariableDescription(array $lines, $line_num, mixed $skip_prefixes = [], $comment_separator = self::COMMENT_SEPARATOR) {
     $comment_lines = [];
 
     $line_num = min($line_num, count($lines) - 1);
@@ -216,7 +220,9 @@ class ShellExtractor extends AbstractExtractor {
     $comment_lines = array_reverse($comment_lines);
 
     $comment_lines = array_filter($comment_lines, function ($value) use ($skip_prefixes, $comment_separator) {
+      // @phpstan-ignore-next-line
       foreach ($skip_prefixes as $prefix) {
+        // @phpstan-ignore-next-line
         if (str_starts_with($value, ltrim($prefix, $comment_separator))) {
           return FALSE;
         }

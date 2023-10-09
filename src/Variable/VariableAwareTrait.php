@@ -18,8 +18,11 @@ trait VariableAwareTrait {
 
   /**
    * Get the variables.
+   *
+   * @return array<Variable>
+   *   Returns list of AlexSkrypnyk\ShellVariablesExtractor\Variable\Variable
    */
-  public function getVariables(): array {
+  public function getVariables() : array {
     return $this->variables;
   }
 

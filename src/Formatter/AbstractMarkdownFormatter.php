@@ -2,6 +2,7 @@
 
 namespace AlexSkrypnyk\ShellVariablesExtractor\Formatter;
 
+use AlexSkrypnyk\ShellVariablesExtractor\Config\Config;
 use AlexSkrypnyk\ShellVariablesExtractor\Utils;
 use Symfony\Component\Console\Input\InputOption;
 
@@ -17,9 +18,12 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
   const VARIABLE_LINK_CASE_UPPER = 'upper';
 
   /**
-   * {@inheritdoc}
+   * Get console options.
+   *
+   * @return array<InputOption>
+   *   {@inheritdoc}
    */
-  public static function getConsoleOptions() {
+  public static function getConsoleOptions() : array {
     return array_merge(parent::getConsoleOptions(), [
       new InputOption(
         name: 'md-link-vars',
@@ -52,12 +56,17 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
   }
 
   /**
-   * {@inheritdoc}
+   * AbstractFormatter constructor.
+   *
+   * @param \AlexSkrypnyk\ShellVariablesExtractor\Config\Config $config
+   *   The configuration.
+   *   {@inheritdoc}.
    */
-  public function processConfig($config): void {
+  public function processConfig(Config $config): void {
     parent::processConfig($config);
 
     if (!empty($config->get('md-inline-code-extra-file'))) {
+      // @phpstan-ignore-next-line
       $config->set('md-inline-code-extra-file', Utils::getNonEmptyLinesFromFiles(Utils::resolvePaths($config->get('md-inline-code-extra-file'))));
     }
   }
@@ -69,6 +78,7 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
     parent::processVariables();
 
     if (!$this->config->get('md-no-inline-code-wrap-vars')) {
+      // @phpstan-ignore-next-line
       $this->variables = $this->processInlineCodeVars($this->variables, $this->config->get('md-inline-code-extra-file'));
     }
 
@@ -77,6 +87,7 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
     }
 
     if ($this->config->get('md-link-vars')) {
+      // @phpstan-ignore-next-line
       $this->variables = $this->processLinks($this->variables, $this->config->get('md-link-vars-anchor-case'));
     }
   }
@@ -89,7 +100,7 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
 
     $br = '<br />';
     $nl = "\n";
-
+    // @phpstan-ignore-next-line
     $lines = explode($nl, $description);
 
     // @code
@@ -210,12 +221,14 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
         $description = preg_replace(
           '/(?<!`)\$' . preg_quote($var_token, '/') . '\b(?!`)/',
           '`$' . $var_token . '`',
+          // @phpstan-ignore-next-line
           $description
         );
 
         $description = preg_replace(
           '/(?<!`)\$\{' . preg_quote($var_token, '/') . '}(?!`)/',
           '`${' . $var_token . '}`',
+          // @phpstan-ignore-next-line
           $description
         );
       }
@@ -224,9 +237,10 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
 
         $description = preg_replace_callback('/(`.*?`)|\b' . preg_quote($token, '/') . '\b/', function ($matches) use ($token) {
           return $matches[0] == $token ? "`$token`" : $matches[0];
+           // @phpstan-ignore-next-line
         }, $description);
       }
-
+      // @phpstan-ignore-next-line
       $variable->setDescription($description);
     }
 
@@ -244,6 +258,7 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
    */
   protected function processInlineCodeNumbers(array $variables): array {
     foreach ($variables as $variable) {
+      // @phpstan-ignore-next-line
       $variable->setDescription(preg_replace('/\b((?<!`)[0-9]+)\b/', '`${1}`', $variable->getDescription()));
     }
 
@@ -278,6 +293,7 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
         ], [
           '[$' . $var_token . '](' . $href . ')',
           '[${' . $var_token . '}](' . $href . ')',
+          // @phpstan-ignore-next-line
         ], $description);
 
         $description = preg_replace([
@@ -286,9 +302,10 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
         ], [
           '[`$' . $var_token . '`](' . $href . ')',
           '[`${' . $var_token . '}`](' . $href . ')',
+          // @phpstan-ignore-next-line
         ], $description);
       }
-
+      // @phpstan-ignore-next-line
       $variable->setDescription($description);
     }
 

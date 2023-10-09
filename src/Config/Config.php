@@ -12,19 +12,27 @@ class Config implements ConfigInterface {
   /**
    * The configuration values.
    *
-   * @var array
+   * @var array<string|array|mixed>
    */
   protected $values = [];
 
   /**
    * Config constructor.
+   *
+   * @param array<string|array|mixed> $arguments
+   *   Config arguments.
    */
   public function __construct(...$arguments) {
     $this->values = array_merge(...$arguments);
   }
 
   /**
-   * {@inheritdoc}
+   * Get config value.
+   *
+   * @param string $name
+   *   Config name.
+   * @param string|array|mixed $default
+   *   Config value.
    */
   public function get($name, $default = NULL): mixed {
     return $this->values[$name] ?? $default;
@@ -41,8 +49,14 @@ class Config implements ConfigInterface {
 
   /**
    * Set values from all arguments.
+   *
+   * @param array<string|array|mixed> $arguments
+   *   Arguments to set.
+   *
+   * @return void
+   *   Returns nothing.
    */
-  public function setAll(...$arguments) {
+  public function setAll(...$arguments) : void {
     $this->values = array_merge(...$arguments);
   }
 

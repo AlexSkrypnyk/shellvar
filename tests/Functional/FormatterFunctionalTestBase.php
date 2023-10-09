@@ -17,12 +17,12 @@ abstract class FormatterFunctionalTestBase extends FunctionalTestBase {
   /**
    * @dataProvider dataProviderFormatter
    */
-  public function testFormatter($args, $expected_output) {
+  public function testFormatter(array|string $args, string $expected_output): void {
     $args = is_array($args) ? $args : [$args];
     $result = $this->runScript($args, TRUE);
     $this->assertEquals($expected_output, $result['output']);
   }
 
-  abstract public function dataProviderFormatter();
+  abstract public function dataProviderFormatter() : array;
 
 }

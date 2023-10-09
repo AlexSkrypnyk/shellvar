@@ -1,10 +1,30 @@
-# Shell variables extractor
 
-Helps to maintain up-to-date documentation about variables in shell scripts.
 
+<p align="center">
+  <a href="" rel="noopener">
+  <img width=200px height=200px src="https://placehold.jp/000000/ffffff/200x200.png?text=Yourproject&css=%7B%22border-radius%22%3A%22%20100px%22%7D" alt="Yourproject logo"></a>
+</p>
+
+<h1 align="center">Shell variables extractor</h1>
+
+<div align="center">
+
+[![GitHub Issues](https://img.shields.io/github/issues/AlexSkrypnyk/shell-variables-extractor.svg)](https://github.com/AlexSkrypnyk/shell-variables-extractor/issues)
+[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/AlexSkrypnyk/shell-variables-extractor.svg)](https://github.com/AlexSkrypnyk/shell-variables-extractor/pulls)
 [![Tests](https://github.com/AlexSkrypnyk/shell-variables-extractor/actions/workflows/test.yml/badge.svg)](https://github.com/AlexSkrypnyk/shell-variables-extractor/actions/workflows/test.yml)
+[![codecov](https://codecov.io/gh/AlexSkrypnyk/shell-variables-extractor/graph/badge.svg?token=7WEB1IXBYT)](https://codecov.io/gh/AlexSkrypnyk/shell-variables-extractor)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/AlexSkrypnyk/shell-variables-extractor)
 ![LICENSE](https://img.shields.io/github/license/AlexSkrypnyk/shell-variables-extractor)
+![Renovate](https://img.shields.io/badge/renovate-enabled-green?logo=renovatebot)
+
+</div>
+
+---
+
+<p align="center">
+    <br>
+    Helps to maintain up-to-date documentation about variables in shell scripts.
+</p>
 
 ## Features
 

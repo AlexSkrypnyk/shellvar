@@ -38,6 +38,7 @@ class ExcludeFromFileFilter extends AbstractFilter {
    */
   protected function processConfig(Config $config):void {
     parent::processConfig($config);
+    // @phpstan-ignore-next-line
     $config->set('exclude-from-file', Utils::getNonEmptyLinesFromFiles(Utils::resolvePaths($config->get('exclude-from-file', []))));
   }
 
@@ -45,6 +46,7 @@ class ExcludeFromFileFilter extends AbstractFilter {
    * {@inheritdoc}
    */
   public function filter(array $variables): array {
+    // @phpstan-ignore-next-line
     return array_diff_key($variables, array_flip($this->config->get('exclude-from-file')));
   }
 

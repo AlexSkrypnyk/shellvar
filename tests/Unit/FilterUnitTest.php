@@ -20,18 +20,20 @@ class FilterUnitTest extends UnitTestBase {
    *
    * @dataProvider dataProviderFilterExcludedPrefixedVars
    */
-  public function testFilterExcludedPrefixedVars($var_names, $prefixes, $expected) {
+  public function testFilterExcludedPrefixedVars(array $var_names, array $prefixes, array $expected) : void {
     $vars = [];
     foreach ($var_names as $var_name) {
       $vars[] = new Variable($var_name);
     }
 
     $config = (new Config())->set('exclude-prefix', $prefixes);
+    // @phpstan-ignore-next-line
     $filter = new ExcludePrefixFilter($config);
     $actual = $filter->filter($vars);
 
     $actual_names = [];
     foreach ($actual as $item) {
+      // @phpstan-ignore-next-line
       $actual_names[] = $item->getName();
     }
 
@@ -41,7 +43,7 @@ class FilterUnitTest extends UnitTestBase {
   /**
    * Data provider for testFilterExcludedPrefixedVars().
    */
-  public function dataProviderFilterExcludedPrefixedVars() {
+  public function dataProviderFilterExcludedPrefixedVars() : array {
     return [
       [[], [], []],
       [['VAR1'], [], ['VAR1']],
