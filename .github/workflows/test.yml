@@ -1,37 +1,29 @@
-name: test
+name: Test
 
 on:
-  push:
+  pull_request:
     branches:
       - main
       - 'feature/**'
+  push:
+    branches:
+      - main
 
 jobs:
-  test:
+  test-php:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/cache@v3
-      with:
-        path: /tmp/composer-cache
-        key: ${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
-    - uses: php-actions/composer@v6
-    - run: composer lint
-    - run: composer test:coverage
-    - uses: codecov/codecov-action@v3
-      env:
-        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-      with:
-        files: ./cobertura.xml
-        fail_ci_if_error: true
-    - name: Install Box
-      run: |
-        export BOX_VERSION="4.3.8" 
-        wget "https://github.com/humbug/box/releases/download/${BOX_VERSION}/box.phar" --quiet -O ./box
-        chmod +x ./box
-        sudo mv ./box /usr/local/bin
-    - name: Build Application PHAR
-      run: composer build 
-    - name: Self-test
-      run: ./.build/shell-variables-extractor.phar --help | grep -q "Extract variables from shell scripts."
-    
+      - uses: actions/checkout@v4
+      - uses: actions/cache@v3
+        with:
+          path: /tmp/composer-cache
+          key: ${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
+      - uses: php-actions/composer@v6
+      - run: composer lint
+      - run: composer test:coverage
+      - uses: codecov/codecov-action@v3
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        with:
+          files: ./cobertura.xml
+          fail_ci_if_error: true

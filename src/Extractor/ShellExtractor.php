@@ -41,6 +41,8 @@ class ShellExtractor extends AbstractExtractor {
 
   /**
    * {@inheritdoc}
+   *
+   * @SuppressWarnings(PHPMD.CyclomaticComplexity)
    */
   protected function extractVariablesFromFile($file): void {
     $skip = $this->config->get('skip-text');

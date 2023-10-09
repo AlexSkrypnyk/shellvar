@@ -12,6 +12,8 @@ use AlexSkrypnyk\ShellVariablesExtractor\Variable\Variable;
  * Unit tests for the Filter class.
  *
  * phpcs:disable Drupal.Arrays.Array.LongLineDeclaration
+ *
+ * @coversDefaultClass \AlexSkrypnyk\ShellVariablesExtractor\Filter\ExcludePrefixFilter
  */
 class FilterUnitTest extends UnitTestBase {
 
@@ -19,6 +21,8 @@ class FilterUnitTest extends UnitTestBase {
    * Tests the filterExcludedPrefixedVars() method.
    *
    * @dataProvider dataProviderFilterExcludedPrefixedVars
+   * @covers ::filter
+   * @covers \AlexSkrypnyk\ShellVariablesExtractor\Filter\AbstractFilter::__construct
    */
   public function testFilterExcludedPrefixedVars(array $var_names, array $prefixes, array $expected) : void {
     $vars = [];
@@ -43,7 +47,7 @@ class FilterUnitTest extends UnitTestBase {
   /**
    * Data provider for testFilterExcludedPrefixedVars().
    */
-  public function dataProviderFilterExcludedPrefixedVars() : array {
+  public static function dataProviderFilterExcludedPrefixedVars() : array {
     return [
       [[], [], []],
       [['VAR1'], [], ['VAR1']],

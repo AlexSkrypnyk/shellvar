@@ -2,6 +2,8 @@
 
 namespace AlexSkrypnyk\Tests\Functional;
 
+use AlexSkrypnyk\Tests\Unit\UnitTestBase;
+
 /**
  * Class CsvFormatterFunctionalTest.
  *
@@ -14,14 +16,14 @@ namespace AlexSkrypnyk\Tests\Functional;
  */
 class CsvFormatterFunctionalTest extends FormatterFunctionalTestBase {
 
-  public function dataProviderFormatter() : array {
+  public static function dataProviderFormatter() : array {
     return [
       // Extract all variables.
       [
         [
           '--exclude-local',
           '--sort',
-          $this->fixtureFile('test-data.sh'),
+          UnitTestBase::fixtureFile('test-data.sh'),
         ],
         <<<'EOD'
               Name;"Default value";Description
@@ -60,8 +62,8 @@ class CsvFormatterFunctionalTest extends FormatterFunctionalTestBase {
           '--fields="name=Name;path=Path"',
           // @phpstan-ignore-next-line
           '--path-strip-prefix=' . dirname(realpath(__DIR__ . '/..')),
-          $this->fixtureFile('test-data.bash'),
-          $this->fixtureFile('test-data.sh'),
+          UnitTestBase::fixtureFile('test-data.bash'),
+          UnitTestBase::fixtureFile('test-data.sh'),
         ],
         <<<'EOD'
               Name;Path
@@ -94,9 +96,9 @@ class CsvFormatterFunctionalTest extends FormatterFunctionalTestBase {
       [
         [
           '--exclude-local',
-          '--exclude-from-file=' . $this->fixtureFile('test-data-excluded.txt'),
+          '--exclude-from-file=' . UnitTestBase::fixtureFile('test-data-excluded.txt'),
           '--sort',
-          $this->fixtureFile('test-data.sh'),
+          UnitTestBase::fixtureFile('test-data.sh'),
         ],
         <<<'EOD'
         Name;"Default value";Description
@@ -129,10 +131,10 @@ class CsvFormatterFunctionalTest extends FormatterFunctionalTestBase {
       [
         [
           '--exclude-local',
-          '--exclude-from-file=' . $this->fixtureFile('test-data-excluded.txt'),
+          '--exclude-from-file=' . UnitTestBase::fixtureFile('test-data-excluded.txt'),
           '--exclude-prefix=VAR1',
           '--sort',
-          $this->fixtureFile('test-data.sh'),
+          UnitTestBase::fixtureFile('test-data.sh'),
         ],
         <<<'EOD'
         Name;"Default value";Description
@@ -158,7 +160,7 @@ class CsvFormatterFunctionalTest extends FormatterFunctionalTestBase {
         [
           '--exclude-local',
           '--sort',
-          $this->fixtureDir() . '/dir',
+          UnitTestBase::fixtureDir() . '/dir',
         ],
         <<<'EOD'
         Name;"Default value";Description
@@ -194,8 +196,8 @@ class CsvFormatterFunctionalTest extends FormatterFunctionalTestBase {
         [
           '--exclude-local',
           '--sort',
-          $this->fixtureFile('test-data.bash'),
-          $this->fixtureFile('test-data.sh'),
+          UnitTestBase::fixtureFile('test-data.bash'),
+          UnitTestBase::fixtureFile('test-data.sh'),
         ],
         <<<'EOD'
         Name;"Default value";Description

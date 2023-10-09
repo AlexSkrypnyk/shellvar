@@ -1,9 +1,6 @@
 #!/usr/bin/env php
 <?php
 
-use AlexSkrypnyk\ShellVariablesExtractor\VariablesExtractorCommand;
-use Symfony\Component\Console\SingleCommandApplication;
-
 foreach ([$GLOBALS['_composer_autoload_path'] ?? NULL, __DIR__ . '/../../autoload.php', __DIR__ . '/../vendor/autoload.php', __DIR__ . '/vendor/autoload.php'] as $file) {
   if ($file && file_exists($file)) {
     require_once $file;

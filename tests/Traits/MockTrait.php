@@ -29,7 +29,7 @@ trait MockTrait {
    * @SuppressWarnings(PHPMD.CyclomaticComplexity)
    */
   protected function prepareMock(string $class, array $methodsMap = [], array|bool $args = []): MockObject {
-    $methods = array_keys($methodsMap);
+    $methods = array_filter(array_keys($methodsMap));
 
     if (!class_exists($class)) {
       throw new \InvalidArgumentException("Class $class does not exist");
