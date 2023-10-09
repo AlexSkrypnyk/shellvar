@@ -2,6 +2,8 @@
 
 namespace AlexSkrypnyk\Tests\Functional;
 
+use AlexSkrypnyk\Tests\Unit\UnitTestBase;
+
 /**
  * Class MarkdownTableFormatterFunctionalTest.
  *
@@ -14,7 +16,7 @@ namespace AlexSkrypnyk\Tests\Functional;
  */
 class MarkdownTableFormatterFunctionalTest extends FormatterFunctionalTestBase {
 
-  public function dataProviderFormatter() : array {
+  public static function dataProviderFormatter() : array {
     return [
       [
         [
@@ -23,7 +25,7 @@ class MarkdownTableFormatterFunctionalTest extends FormatterFunctionalTestBase {
           '--md-no-inline-code-wrap-vars',
           '--md-no-inline-code-wrap-numbers',
           '--sort',
-          $this->fixtureFile('test-data.sh'),
+          UnitTestBase::fixtureFile('test-data.sh'),
         ],
         <<<'EOD'
         | Name    | Default value | Description                                                                                                                                                                                |
@@ -64,8 +66,8 @@ class MarkdownTableFormatterFunctionalTest extends FormatterFunctionalTestBase {
           '--md-no-inline-code-wrap-numbers',
           // @phpstan-ignore-next-line
           '--path-strip-prefix=' . dirname(realpath(__DIR__ . '/..')),
-          $this->fixtureFile('test-data.bash'),
-          $this->fixtureFile('test-data.sh'),
+          UnitTestBase::fixtureFile('test-data.bash'),
+          UnitTestBase::fixtureFile('test-data.sh'),
         ],
         <<<'EOD'
         | Name    | Path                           |
@@ -102,7 +104,7 @@ class MarkdownTableFormatterFunctionalTest extends FormatterFunctionalTestBase {
           '--format=md-table',
           '--sort',
           '--md-no-inline-code-wrap-numbers',
-          $this->fixtureFile('test-data.sh'),
+          UnitTestBase::fixtureFile('test-data.sh'),
         ],
         <<<'EOD'
         | Name      | Default value | Description                                                                                                                                                                                |
@@ -138,7 +140,7 @@ class MarkdownTableFormatterFunctionalTest extends FormatterFunctionalTestBase {
           '--exclude-local',
           '--format=md-table',
           '--sort',
-          $this->fixtureFile('test-data.sh'),
+          UnitTestBase::fixtureFile('test-data.sh'),
         ],
         <<<'EOD'
         | Name      | Default value | Description                                                                                                                                                                                |
@@ -175,8 +177,8 @@ class MarkdownTableFormatterFunctionalTest extends FormatterFunctionalTestBase {
           '--format=md-table',
           '--sort',
           '--md-no-inline-code-wrap-numbers',
-          '--md-inline-code-extra-file=' . $this->fixtureFile('test-data-ticks-included.txt'),
-          $this->fixtureFile('test-data.sh'),
+          '--md-inline-code-extra-file=' . UnitTestBase::fixtureFile('test-data-ticks-included.txt'),
+          UnitTestBase::fixtureFile('test-data.sh'),
         ],
         <<<'EOD'
         | Name      | Default value | Description                                                                                                                                                                                      |

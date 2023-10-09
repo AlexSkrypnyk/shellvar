@@ -16,6 +16,8 @@ abstract class FormatterFunctionalTestBase extends FunctionalTestBase {
 
   /**
    * @dataProvider dataProviderFormatter
+   * @covers       \AlexSkrypnyk\ShellVariablesExtractor\Formatter\AbstractFormatter::doFormat
+   * @covers       \AlexSkrypnyk\ShellVariablesExtractor\Formatter\AbstractFormatter::processDescription
    */
   public function testFormatter(array|string $args, string $expected_output): void {
     $args = is_array($args) ? $args : [$args];
@@ -23,6 +25,6 @@ abstract class FormatterFunctionalTestBase extends FunctionalTestBase {
     $this->assertEquals($expected_output, $result['output']);
   }
 
-  abstract public function dataProviderFormatter() : array;
+  abstract public static function dataProviderFormatter(): array;
 
 }

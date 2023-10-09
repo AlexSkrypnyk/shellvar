@@ -94,6 +94,8 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
 
   /**
    * {@inheritdoc}
+   *
+   * @SuppressWarnings(PHPMD.CyclomaticComplexity)
    */
   protected function processDescription(string $description): string {
     $description = parent::processDescription($description);

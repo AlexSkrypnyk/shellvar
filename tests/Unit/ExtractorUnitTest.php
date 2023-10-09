@@ -11,6 +11,8 @@ use AlexSkrypnyk\ShellVariablesExtractor\Variable\Variable;
  * Unit tests for the Extractor class.
  *
  * phpcs:disable Drupal.Arrays.Array.LongLineDeclaration
+ *
+ * @coversDefaultClass \AlexSkrypnyk\ShellVariablesExtractor\Extractor\ShellExtractor
  */
 class ExtractorUnitTest extends UnitTestBase {
 
@@ -18,6 +20,7 @@ class ExtractorUnitTest extends UnitTestBase {
    * Tests the extractVariable() method.
    *
    * @dataProvider dataProviderExtractVariable
+   * @covers ::extractVariable
    */
   public function testExtractVariable(string $line, ?Variable $expected) : void {
     $extractor = $this->prepareMock(ShellExtractor::class);
@@ -28,7 +31,7 @@ class ExtractorUnitTest extends UnitTestBase {
   /**
    * Data provider for testExtractVariable().
    */
-  public function dataProviderExtractVariable() : array {
+  public static function dataProviderExtractVariable() : array {
     return [
       ['', NULL],
       [' ', NULL],
@@ -108,6 +111,7 @@ class ExtractorUnitTest extends UnitTestBase {
    * Tests the extractVariableValue() method.
    *
    * @dataProvider dataProviderExtractVariableValue
+   * @covers ::extractVariableValue
    */
   public function testExtractVariableValue(string $line, string|int $expected) : void {
     $extractor = $this->prepareMock(ShellExtractor::class);
@@ -121,7 +125,7 @@ class ExtractorUnitTest extends UnitTestBase {
    * Note that we only assert for assignment expressions. Non-assignment
    * expressions would not reach this method.
    */
-  public function dataProviderExtractVariableValue() : array {
+  public static function dataProviderExtractVariableValue() : array {
     return [
       ['VAR1=', 'TESTUNSET'],
       ['VAR1= ', 'TESTUNSET'],
@@ -174,6 +178,7 @@ class ExtractorUnitTest extends UnitTestBase {
    * Tests the extractVariableValue() method.
    *
    * @dataProvider dataProviderExtractVariableDescription
+   * @covers ::extractVariableDescription
    */
   public function testExtractVariableDescription(array $lines, int $line_num, array $skip_prefix, string $expected) : void {
     $extractor = $this->prepareMock(ShellExtractor::class);
@@ -184,7 +189,7 @@ class ExtractorUnitTest extends UnitTestBase {
   /**
    * Data provider for testExtractVariableDescription().
    */
-  public function dataProviderExtractVariableDescription() : array {
+  public static function dataProviderExtractVariableDescription() : array {
     return [
       [[], 0, [], ''],
       [[], 10, [], ''],

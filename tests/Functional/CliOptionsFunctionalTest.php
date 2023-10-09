@@ -7,14 +7,15 @@ namespace AlexSkrypnyk\Tests\Functional;
  *
  * Functional tests for CLI options.
  *
- * @group scripts
- *
  * phpcs:disable Drupal.Commenting.DocComment.MissingShort
  * phpcs:disable Drupal.Commenting.FunctionComment.Missing
+ *
+ * @coversDefaultClass \AlexSkrypnyk\ShellVariablesExtractor\VariablesExtractorCommand
  */
 class CliOptionsFunctionalTest extends FunctionalTestBase {
 
   /**
+   * @covers ::execute
    * @dataProvider dataProviderMain
    * @runInSeparateProcess
    */
@@ -25,7 +26,7 @@ class CliOptionsFunctionalTest extends FunctionalTestBase {
     $this->assertStringContainsString($expected_output, $result['output']);
   }
 
-  public function dataProviderMain() : array {
+  public static function dataProviderMain() : array {
     return [
       [
         '--help',

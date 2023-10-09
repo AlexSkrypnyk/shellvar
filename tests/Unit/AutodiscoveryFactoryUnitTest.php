@@ -9,11 +9,16 @@ use AlexSkrypnyk\ShellVariablesExtractor\Factory\AutodiscoveryFactory;
  * Class AutodiscoveryFactoryUnitTest.
  *
  * Unit tests for theAutodiscoveryFactory class.
+ *
+ * @coversDefaultClass \AlexSkrypnyk\ShellVariablesExtractor\Factory\AutodiscoveryFactory
  */
 class AutodiscoveryFactoryUnitTest extends UnitTestBase {
 
   /**
    * Test that the autodiscovery can discover only items set to be discovered.
+   *
+   * @covers ::__construct
+   * @covers ::getEntityClasses
    */
   public function testDiscovery() : void {
     $autodiscovery = new AutodiscoveryFactory('tests/Fixtures');
@@ -28,6 +33,10 @@ class AutodiscoveryFactoryUnitTest extends UnitTestBase {
 
   /**
    * Test that the autodiscovery can discover only items of a certain type.
+   *
+   * @covers ::discoverOwn
+   * @covers ::registerEntityClass
+   * @covers ::getEntityClasses
    */
   public function testDiscoveryTyped() : void {
     $autodiscovery = new AutodiscoveryFactory('tests/Fixtures/Discovery1');
@@ -47,6 +56,8 @@ class AutodiscoveryFactoryUnitTest extends UnitTestBase {
 
   /**
    * Test creating a single auto discovered entity.
+   *
+   * @covers ::create
    */
   public function testCreate() : void {
     $autodiscovery = new AutodiscoveryFactory('tests/Fixtures');
@@ -60,6 +71,8 @@ class AutodiscoveryFactoryUnitTest extends UnitTestBase {
 
   /**
    * Test creating all auto discovered entities.
+   *
+   * @covers ::createAll
    */
   public function testCreateAll() : void {
     $config = new Config();
@@ -77,6 +90,8 @@ class AutodiscoveryFactoryUnitTest extends UnitTestBase {
 
   /**
    * Test that exception is thrown when an invalid autodiscovery is requested.
+   *
+   * @covers ::create
    */
   public function testException() : void {
     $this->expectException(\Exception::class);

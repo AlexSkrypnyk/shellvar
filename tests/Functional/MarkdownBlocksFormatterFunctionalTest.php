@@ -2,6 +2,8 @@
 
 namespace AlexSkrypnyk\Tests\Functional;
 
+use AlexSkrypnyk\Tests\Unit\UnitTestBase;
+
 /**
  * Class MarkdownTableFormatterFunctionalTest.
  *
@@ -14,7 +16,7 @@ namespace AlexSkrypnyk\Tests\Functional;
  */
 class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase {
 
-  public function dataProviderFormatter() : array {
+  public static function dataProviderFormatter() : array {
     return [
       [
         [
@@ -23,7 +25,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
           '--format=md-blocks',
           '--md-no-inline-code-wrap-vars',
           '--md-no-inline-code-wrap-numbers',
-          $this->fixtureFile('test-data.sh'),
+          UnitTestBase::fixtureFile('test-data.sh'),
         ],
         <<<'EOD'
         ### VAR1
@@ -140,7 +142,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
           '--sort',
           '--format=md-blocks',
           '--md-no-inline-code-wrap-numbers',
-          $this->fixtureFile('test-data.sh'),
+          UnitTestBase::fixtureFile('test-data.sh'),
         ],
         <<<'EOD'
         ### `VAR1`
@@ -256,7 +258,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
           '--exclude-local',
           '--sort',
           '--format=md-blocks',
-          $this->fixtureFile('test-data.sh'),
+          UnitTestBase::fixtureFile('test-data.sh'),
         ],
         <<<'EOD'
         ### `VAR1`
@@ -373,8 +375,8 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
           '--sort',
           '--format=md-blocks',
           '--md-no-inline-code-wrap-numbers',
-          '--md-inline-code-extra-file=' . $this->fixtureFile('test-data-ticks-included.txt'),
-          $this->fixtureFile('test-data.sh'),
+          '--md-inline-code-extra-file=' . UnitTestBase::fixtureFile('test-data-ticks-included.txt'),
+          UnitTestBase::fixtureFile('test-data.sh'),
         ],
         <<<'EOD'
         ### `VAR1`
@@ -490,11 +492,11 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
           '--exclude-local',
           '--sort',
           '--format=md-blocks',
-          '--md-block-template-file=' . $this->fixtureFile('test-template-path.md'),
+          '--md-block-template-file=' . UnitTestBase::fixtureFile('test-template-path.md'),
           // @phpstan-ignore-next-line
           '--path-strip-prefix=' . dirname(realpath(__DIR__ . '/..')),
           '--md-no-inline-code-wrap-numbers',
-          $this->fixtureDir() . '/multipath',
+          UnitTestBase::fixtureDir() . '/multipath',
         ],
         <<<'EOD'
         ### `VAR11`
@@ -525,7 +527,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
           '--sort',
           '--format=md-blocks',
           '--md-no-inline-code-wrap-numbers',
-          $this->fixtureFile('test-data-list.sh'),
+          UnitTestBase::fixtureFile('test-data-list.sh'),
         ],
         <<<'EOD'
         ### `VAR1`
@@ -560,7 +562,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
           '--format=md-blocks',
           '--md-link-vars',
           '--md-link-vars-anchor-case=lower',
-          $this->fixtureFile('test-data-links.sh'),
+          UnitTestBase::fixtureFile('test-data-links.sh'),
         ],
         <<<'EOD'
         ### `VAR1`
@@ -586,7 +588,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
           '--exclude-local',
           '--sort',
           '--format=md-blocks',
-          $this->fixtureFile('test-data-skip-text.sh'),
+          UnitTestBase::fixtureFile('test-data-skip-text.sh'),
         ],
         <<<'EOD'
         ### `VAR2`
@@ -605,7 +607,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
           '--sort',
           '--format=md-blocks',
           '--skip-text=docs-skip',
-          $this->fixtureFile('test-data-skip-text.sh'),
+          UnitTestBase::fixtureFile('test-data-skip-text.sh'),
         ],
         <<<'EOD'
         ### `VAR1`
