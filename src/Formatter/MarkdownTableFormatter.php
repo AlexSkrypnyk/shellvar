@@ -29,7 +29,7 @@ class MarkdownTableFormatter extends AbstractMarkdownFormatter {
     // is rendered correctly.
     // @phpstan-ignore-next-line
     $csv = (new CsvFormatter($this->config, ';'))->format($this->variables);
-    // @phpstan-ignore-next-line
+
     return (new CsvTable($csv, ';'))->render(Markdown::class);
   }
 
