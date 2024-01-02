@@ -1,6 +1,6 @@
 <?php
 
-namespace AlexSkrypnyk\Tests\Functional;
+namespace AlexSkrypnyk\ShellVariablesExtractor\Tests\Functional;
 
 /**
  * Class FormatterFunctionalTestBase.

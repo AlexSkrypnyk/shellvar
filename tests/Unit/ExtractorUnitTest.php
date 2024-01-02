@@ -1,6 +1,6 @@
 <?php
 
-namespace AlexSkrypnyk\Tests\Unit;
+namespace AlexSkrypnyk\ShellVariablesExtractor\Tests\Unit;
 
 use AlexSkrypnyk\ShellVariablesExtractor\Extractor\ShellExtractor;
 use AlexSkrypnyk\ShellVariablesExtractor\Variable\Variable;

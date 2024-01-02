@@ -1,8 +1,8 @@
 <?php
 
-namespace AlexSkrypnyk\Tests\Functional;
+namespace AlexSkrypnyk\ShellVariablesExtractor\Tests\Functional;
 
-use AlexSkrypnyk\Tests\Unit\UnitTestBase;
+use AlexSkrypnyk\ShellVariablesExtractor\Tests\Unit\UnitTestBase;
 
 /**
  * Class CsvFormatterFunctionalTest.
