@@ -1,6 +1,6 @@
 <?php
 
-namespace AlexSkrypnyk\ShellVariablesExtractor;
+namespace AlexSkrypnyk\ShellVariablesExtractor\Command;
 
 use AlexSkrypnyk\ShellVariablesExtractor\Config\Config;
 use AlexSkrypnyk\ShellVariablesExtractor\Extractor\ExtractorManager;

@@ -10,7 +10,7 @@ namespace AlexSkrypnyk\ShellVariablesExtractor\Tests\Functional;
  * phpcs:disable Drupal.Commenting.DocComment.MissingShort
  * phpcs:disable Drupal.Commenting.FunctionComment.Missing
  *
- * @coversDefaultClass \AlexSkrypnyk\ShellVariablesExtractor\VariablesExtractorCommand
+ * @coversDefaultClass \AlexSkrypnyk\ShellVariablesExtractor\Command\VariablesExtractorCommand
  */
 class CliOptionsFunctionalTest extends FunctionalTestBase {
 
