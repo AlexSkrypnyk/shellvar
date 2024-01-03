@@ -17,22 +17,6 @@ use Symfony\Component\Console\Tester\CommandTester;
 abstract class FunctionalTestBase extends UnitTestBase {
 
   /**
-   * Command Tester.
-   *
-   * @var \Symfony\Component\Console\Tester\CommandTester
-   */
-  protected CommandTester $commandTester;
-
-  protected function setUp(): void {
-    parent::setUp();
-
-    $singleCommandApplication = new SingleCommandApplication();
-    $singleCommandApplication->setAutoExit(FALSE);
-    $singleCommandApplication->setCode([new VariablesExtractorCommand($singleCommandApplication), 'execute']);
-    $this->commandTester = new CommandTester($singleCommandApplication);
-  }
-
-  /**
    * Execute command.
    *
    * @param array<mixed> $input
@@ -44,8 +28,12 @@ abstract class FunctionalTestBase extends UnitTestBase {
    *   The code and output.
    */
   protected function runExecute(array $input, array $options = []): array {
-    $code = $this->commandTester->execute($input, $options);
-    $outputDisplay = $this->commandTester->getDisplay();
+    $singleCommandApplication = new SingleCommandApplication();
+    $singleCommandApplication->setAutoExit(FALSE);
+    $singleCommandApplication->setCode([new VariablesExtractorCommand($singleCommandApplication), 'execute']);
+    $commandTester = new CommandTester($singleCommandApplication);
+    $code = $commandTester->execute($input, $options);
+    $outputDisplay = $commandTester->getDisplay();
 
     return [
       'code' => $code,
