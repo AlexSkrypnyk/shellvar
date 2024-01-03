@@ -1,6 +1,6 @@
 <?php
 
-namespace AlexSkrypnyk\Tests\Traits;
+namespace AlexSkrypnyk\ShellVariablesExtractor\Tests\Traits;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub\Stub;

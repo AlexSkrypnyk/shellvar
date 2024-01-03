@@ -1,6 +1,6 @@
 <?php
 
-namespace AlexSkrypnyk\Tests\Functional;
+namespace AlexSkrypnyk\ShellVariablesExtractor\Tests\Functional;
 
 /**
  * Class CliOptionsFunctionalTest.
@@ -10,7 +10,7 @@ namespace AlexSkrypnyk\Tests\Functional;
  * phpcs:disable Drupal.Commenting.DocComment.MissingShort
  * phpcs:disable Drupal.Commenting.FunctionComment.Missing
  *
- * @coversDefaultClass \AlexSkrypnyk\ShellVariablesExtractor\VariablesExtractorCommand
+ * @coversDefaultClass \AlexSkrypnyk\ShellVariablesExtractor\Command\VariablesExtractorCommand
  */
 class CliOptionsFunctionalTest extends FunctionalTestBase {
 
@@ -21,7 +21,7 @@ class CliOptionsFunctionalTest extends FunctionalTestBase {
    */
   public function testMain(array|string $args, string|int $expected_code, string $expected_output) : void {
     $args = is_array($args) ? $args : [$args];
-    $result = $this->runScript($args, TRUE);
+    $result = $this->runExecute($args);
     $this->assertEquals($expected_code, $result['code']);
     $this->assertStringContainsString($expected_output, $result['output']);
   }
@@ -29,17 +29,12 @@ class CliOptionsFunctionalTest extends FunctionalTestBase {
   public static function dataProviderMain() : array {
     return [
       [
-        '--help',
+        ['--help' => TRUE],
         0,
         'Extract variables from shell scripts.',
       ],
       [
-        '-help',
-        0,
-        'Extract variables from shell scripts.',
-      ],
-      [
-        '-h',
+        ['-h' => TRUE],
         0,
         'Extract variables from shell scripts.',
       ],

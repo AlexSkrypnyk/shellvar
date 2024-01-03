@@ -1,6 +1,6 @@
 <?php
 
-namespace AlexSkrypnyk\Tests\Traits;
+namespace AlexSkrypnyk\ShellVariablesExtractor\Tests\Traits;
 
 /**
  * Trait ReflectionTrait.

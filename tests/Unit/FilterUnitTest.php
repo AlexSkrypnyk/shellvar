@@ -1,6 +1,6 @@
 <?php
 
-namespace AlexSkrypnyk\Tests\Unit;
+namespace AlexSkrypnyk\ShellVariablesExtractor\Tests\Unit;
 
 use AlexSkrypnyk\ShellVariablesExtractor\Config\Config;
 use AlexSkrypnyk\ShellVariablesExtractor\Filter\ExcludePrefixFilter;

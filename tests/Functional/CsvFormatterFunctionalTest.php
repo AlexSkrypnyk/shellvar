@@ -1,8 +1,8 @@
 <?php
 
-namespace AlexSkrypnyk\Tests\Functional;
+namespace AlexSkrypnyk\ShellVariablesExtractor\Tests\Functional;
 
-use AlexSkrypnyk\Tests\Unit\UnitTestBase;
+use AlexSkrypnyk\ShellVariablesExtractor\Tests\Unit\UnitTestBase;
 
 /**
  * Class CsvFormatterFunctionalTest.
@@ -21,9 +21,9 @@ class CsvFormatterFunctionalTest extends FormatterFunctionalTestBase {
       // Extract all variables.
       [
         [
-          '--exclude-local',
-          '--sort',
-          UnitTestBase::fixtureFile('test-data.sh'),
+          '--exclude-local' => TRUE,
+          '--sort' => TRUE,
+          'paths' => [UnitTestBase::fixtureFile('test-data.sh')],
         ],
         <<<'EOD'
               Name;"Default value";Description
@@ -57,13 +57,15 @@ class CsvFormatterFunctionalTest extends FormatterFunctionalTestBase {
       // Extract all variables, custom header.
       [
         [
-          '--exclude-local',
-          '--sort',
-          '--fields="name=Name;path=Path"',
+          '--exclude-local' => TRUE,
+          '--sort' => TRUE,
+          '--fields' => 'name=Name;path=Path',
           // @phpstan-ignore-next-line
-          '--path-strip-prefix=' . dirname(realpath(__DIR__ . '/..')),
-          UnitTestBase::fixtureFile('test-data.bash'),
-          UnitTestBase::fixtureFile('test-data.sh'),
+          '--path-strip-prefix' => dirname(realpath(__DIR__ . '/..')),
+          'paths' => [
+            UnitTestBase::fixtureFile('test-data.bash'),
+            UnitTestBase::fixtureFile('test-data.sh'),
+          ],
         ],
         <<<'EOD'
               Name;Path
@@ -95,10 +97,10 @@ class CsvFormatterFunctionalTest extends FormatterFunctionalTestBase {
       // Filter-out variables by exclude file.
       [
         [
-          '--exclude-local',
-          '--exclude-from-file=' . UnitTestBase::fixtureFile('test-data-excluded.txt'),
-          '--sort',
-          UnitTestBase::fixtureFile('test-data.sh'),
+          '--exclude-local' => TRUE,
+          '--exclude-from-file' => [UnitTestBase::fixtureFile('test-data-excluded.txt')],
+          '--sort' => TRUE,
+          'paths' => [UnitTestBase::fixtureFile('test-data.sh')],
         ],
         <<<'EOD'
         Name;"Default value";Description
@@ -130,11 +132,11 @@ class CsvFormatterFunctionalTest extends FormatterFunctionalTestBase {
       // Filter-out variables by prefix.
       [
         [
-          '--exclude-local',
-          '--exclude-from-file=' . UnitTestBase::fixtureFile('test-data-excluded.txt'),
-          '--exclude-prefix=VAR1',
-          '--sort',
-          UnitTestBase::fixtureFile('test-data.sh'),
+          '--exclude-local' => TRUE,
+          '--exclude-from-file' => [UnitTestBase::fixtureFile('test-data-excluded.txt')],
+          '--exclude-prefix' => ['VAR1'],
+          '--sort' => TRUE,
+          'paths' => [UnitTestBase::fixtureFile('test-data.sh')],
         ],
         <<<'EOD'
         Name;"Default value";Description
@@ -158,9 +160,9 @@ class CsvFormatterFunctionalTest extends FormatterFunctionalTestBase {
       // Extract all variables from a directory.
       [
         [
-          '--exclude-local',
-          '--sort',
-          UnitTestBase::fixtureDir() . '/dir',
+          '--exclude-local' => TRUE,
+          '--sort' => TRUE,
+          'paths' => [UnitTestBase::fixtureDir() . '/dir'],
         ],
         <<<'EOD'
         Name;"Default value";Description
@@ -194,10 +196,12 @@ class CsvFormatterFunctionalTest extends FormatterFunctionalTestBase {
       // Extract all variables from multiple files.
       [
         [
-          '--exclude-local',
-          '--sort',
-          UnitTestBase::fixtureFile('test-data.bash'),
-          UnitTestBase::fixtureFile('test-data.sh'),
+          '--exclude-local' => TRUE,
+          '--sort' => TRUE,
+          'paths' => [
+            UnitTestBase::fixtureFile('test-data.bash'),
+            UnitTestBase::fixtureFile('test-data.sh'),
+          ],
         ],
         <<<'EOD'
         Name;"Default value";Description

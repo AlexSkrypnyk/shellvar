@@ -1,8 +1,13 @@
 <?php
 
-namespace AlexSkrypnyk\Tests\Functional;
+declare(strict_types = 1);
 
-use AlexSkrypnyk\Tests\Unit\UnitTestBase;
+namespace AlexSkrypnyk\ShellVariablesExtractor\Tests\Functional;
+
+use AlexSkrypnyk\ShellVariablesExtractor\Command\VariablesExtractorCommand;
+use AlexSkrypnyk\ShellVariablesExtractor\Tests\Unit\UnitTestBase;
+use Symfony\Component\Console\SingleCommandApplication;
+use Symfony\Component\Console\Tester\CommandTester;
 
 /**
  * Class FunctionalTestBase.
@@ -12,55 +17,27 @@ use AlexSkrypnyk\Tests\Unit\UnitTestBase;
 abstract class FunctionalTestBase extends UnitTestBase {
 
   /**
-   * Script to include.
+   * Execute command.
    *
-   * @var string
-   */
-  protected $script = 'shell-variables-extractor';
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function setUp(): void {
-    parent::setUp();
-    $this->validateScript();
-  }
-
-  /**
-   * Validate that the script file is readable.
-   */
-  protected function validateScript(): void {
-    if (!is_readable($this->script)) {
-      throw new \RuntimeException(sprintf('Unable to include script file %s.', $this->script));
-    }
-  }
-
-  /**
-   * Run script with optional arguments.
+   * @param array<mixed> $input
+   *   Command input.
+   * @param array<mixed> $options
+   *   Command options.
    *
-   * @param array $args
-   *   Optional array of arguments to pass to the script.
-   * @param bool $verbose
-   *   Optional flag to enable verbose output in the script.
-   *
-   * @return array
-   *   Array with the following keys:
-   *   - code: (int) Exit code.
-   *   - output: (string) Output.
+   * @return array{'code': int, 'output': string}
+   *   The code and output.
    */
-  protected function runScript(array $args = [], $verbose = FALSE): array {
-    if ($verbose) {
-      $args[] = '--verbose';
-    }
-
-    $command = sprintf('php %s %s', $this->script, implode(' ', $args));
-    $output = [];
-    $result_code = 1;
-    exec($command, $output, $result_code);
+  protected function runExecute(array $input, array $options = []): array {
+    $singleCommandApplication = new SingleCommandApplication();
+    $singleCommandApplication->setAutoExit(FALSE);
+    $singleCommandApplication->setCode([new VariablesExtractorCommand($singleCommandApplication), 'execute']);
+    $commandTester = new CommandTester($singleCommandApplication);
+    $code = $commandTester->execute($input, $options);
+    $outputDisplay = $commandTester->getDisplay();
 
     return [
-      'code' => $result_code,
-      'output' => implode(PHP_EOL, $output),
+      'code' => $code,
+      'output' => $outputDisplay,
     ];
   }
 

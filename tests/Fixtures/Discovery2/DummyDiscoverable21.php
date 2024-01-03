@@ -1,6 +1,6 @@
 <?php
 
-namespace AlexSkrypnyk\Tests\Fixtures\Discovery2;
+namespace AlexSkrypnyk\ShellVariablesExtractor\Tests\Fixtures\Discovery2;
 
 use AlexSkrypnyk\ShellVariablesExtractor\Factory\FactoryDiscoverableInterface;
 

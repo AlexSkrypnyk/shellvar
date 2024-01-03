@@ -5,7 +5,7 @@
  * Main entry point for the application.
  */
 
-use AlexSkrypnyk\ShellVariablesExtractor\VariablesExtractorCommand;
+use AlexSkrypnyk\ShellVariablesExtractor\Command\VariablesExtractorCommand;
 use Symfony\Component\Console\SingleCommandApplication;
 
 $app = new SingleCommandApplication();

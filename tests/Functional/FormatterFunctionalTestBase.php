@@ -1,6 +1,6 @@
 <?php
 
-namespace AlexSkrypnyk\Tests\Functional;
+namespace AlexSkrypnyk\ShellVariablesExtractor\Tests\Functional;
 
 /**
  * Class FormatterFunctionalTestBase.
@@ -18,11 +18,12 @@ abstract class FormatterFunctionalTestBase extends FunctionalTestBase {
    * @dataProvider dataProviderFormatter
    * @covers       \AlexSkrypnyk\ShellVariablesExtractor\Formatter\AbstractFormatter::doFormat
    * @covers       \AlexSkrypnyk\ShellVariablesExtractor\Formatter\AbstractFormatter::processDescription
+   * @runInSeparateProcess
    */
   public function testFormatter(array|string $args, string $expected_output): void {
     $args = is_array($args) ? $args : [$args];
-    $result = $this->runScript($args, TRUE);
-    $this->assertEquals($expected_output, $result['output']);
+    $result = $this->runExecute($args);
+    $this->assertEquals($expected_output . \PHP_EOL, $result['output']);
   }
 
   abstract public static function dataProviderFormatter(): array;
