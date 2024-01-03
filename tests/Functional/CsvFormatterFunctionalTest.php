@@ -64,7 +64,7 @@ class CsvFormatterFunctionalTest extends FormatterFunctionalTestBase {
           '--path-strip-prefix' => dirname(realpath(__DIR__ . '/..')),
           'paths' => [
             UnitTestBase::fixtureFile('test-data.bash'),
-            UnitTestBase::fixtureFile('test-data.sh')
+            UnitTestBase::fixtureFile('test-data.sh'),
           ],
         ],
         <<<'EOD'
@@ -200,7 +200,7 @@ class CsvFormatterFunctionalTest extends FormatterFunctionalTestBase {
           '--sort' => TRUE,
           'paths' => [
             UnitTestBase::fixtureFile('test-data.bash'),
-            UnitTestBase::fixtureFile('test-data.sh')
+            UnitTestBase::fixtureFile('test-data.sh'),
           ],
         ],
         <<<'EOD'
