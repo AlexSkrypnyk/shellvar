@@ -1,8 +1,13 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AlexSkrypnyk\ShellVariablesExtractor\Tests\Functional;
 
+use AlexSkrypnyk\ShellVariablesExtractor\Command\VariablesExtractorCommand;
 use AlexSkrypnyk\ShellVariablesExtractor\Tests\Unit\UnitTestBase;
+use Symfony\Component\Console\SingleCommandApplication;
+use Symfony\Component\Console\Tester\CommandTester;
 
 /**
  * Class FunctionalTestBase.
@@ -12,55 +17,39 @@ use AlexSkrypnyk\ShellVariablesExtractor\Tests\Unit\UnitTestBase;
 abstract class FunctionalTestBase extends UnitTestBase {
 
   /**
-   * Script to include.
+   * Command Tester.
    *
-   * @var string
+   * @var \Symfony\Component\Console\Tester\CommandTester
    */
-  protected $script = 'shell-variables-extractor';
+  protected CommandTester $commandTester;
 
-  /**
-   * {@inheritdoc}
-   */
   protected function setUp(): void {
     parent::setUp();
-    $this->validateScript();
+
+    $singleCommandApplication = new SingleCommandApplication();
+    $singleCommandApplication->setAutoExit(FALSE);
+    $singleCommandApplication->setCode([new VariablesExtractorCommand($singleCommandApplication), 'execute']);
+    $this->commandTester = new CommandTester($singleCommandApplication);
   }
 
   /**
-   * Validate that the script file is readable.
-   */
-  protected function validateScript(): void {
-    if (!is_readable($this->script)) {
-      throw new \RuntimeException(sprintf('Unable to include script file %s.', $this->script));
-    }
-  }
-
-  /**
-   * Run script with optional arguments.
+   * Execute command.
    *
-   * @param array $args
-   *   Optional array of arguments to pass to the script.
-   * @param bool $verbose
-   *   Optional flag to enable verbose output in the script.
+   * @param array<mixed> $input
+   *   Command input.
+   * @param array<mixed> $options
+   *   Command options.
    *
-   * @return array
-   *   Array with the following keys:
-   *   - code: (int) Exit code.
-   *   - output: (string) Output.
+   * @return array{'code': int, 'output': string}
+   *   The code and output.
    */
-  protected function runScript(array $args = [], $verbose = FALSE): array {
-    if ($verbose) {
-      $args[] = '--verbose';
-    }
-
-    $command = sprintf('php %s %s', $this->script, implode(' ', $args));
-    $output = [];
-    $result_code = 1;
-    exec($command, $output, $result_code);
+  protected function runExecute(array $input, array $options = []): array {
+    $code = $this->commandTester->execute($input, $options);
+    $outputDisplay = $this->commandTester->getDisplay();
 
     return [
-      'code' => $result_code,
-      'output' => implode(PHP_EOL, $output),
+      'code' => $code,
+      'output' => $outputDisplay,
     ];
   }
 

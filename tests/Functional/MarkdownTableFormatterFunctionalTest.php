@@ -20,12 +20,12 @@ class MarkdownTableFormatterFunctionalTest extends FormatterFunctionalTestBase {
     return [
       [
         [
-          '--exclude-local',
-          '--format=md-table',
-          '--md-no-inline-code-wrap-vars',
-          '--md-no-inline-code-wrap-numbers',
-          '--sort',
-          UnitTestBase::fixtureFile('test-data.sh'),
+          '--exclude-local' => TRUE,
+          '--format' => 'md-table',
+          '--md-no-inline-code-wrap-vars' => TRUE,
+          '--md-no-inline-code-wrap-numbers' => TRUE,
+          '--sort' => TRUE,
+          'paths' => [UnitTestBase::fixtureFile('test-data.sh')],
         ],
         <<<'EOD'
         | Name    | Default value | Description                                                                                                                                                                                |
@@ -58,16 +58,18 @@ class MarkdownTableFormatterFunctionalTest extends FormatterFunctionalTestBase {
       // Custom fields.
       [
         [
-          '--exclude-local',
-          '--format=md-table',
-          '--sort',
-          '--fields="name=Name;path=Path"',
-          '--md-no-inline-code-wrap-vars',
-          '--md-no-inline-code-wrap-numbers',
+          '--exclude-local' => TRUE,
+          '--format' => 'md-table',
+          '--sort' => TRUE,
+          '--fields' => 'name=Name;path=Path',
+          '--md-no-inline-code-wrap-vars' => TRUE,
+          '--md-no-inline-code-wrap-numbers' => TRUE,
           // @phpstan-ignore-next-line
-          '--path-strip-prefix=' . dirname(realpath(__DIR__ . '/..')),
-          UnitTestBase::fixtureFile('test-data.bash'),
-          UnitTestBase::fixtureFile('test-data.sh'),
+          '--path-strip-prefix' => dirname(realpath(__DIR__ . '/..')),
+          'paths' => [
+            UnitTestBase::fixtureFile('test-data.bash'),
+            UnitTestBase::fixtureFile('test-data.sh'),
+          ],
         ],
         <<<'EOD'
         | Name    | Path                           |
@@ -100,11 +102,11 @@ class MarkdownTableFormatterFunctionalTest extends FormatterFunctionalTestBase {
       // Wrapped in inline code.
       [
         [
-          '--exclude-local',
-          '--format=md-table',
-          '--sort',
-          '--md-no-inline-code-wrap-numbers',
-          UnitTestBase::fixtureFile('test-data.sh'),
+          '--exclude-local' => TRUE,
+          '--format' => 'md-table',
+          '--sort' => TRUE,
+          '--md-no-inline-code-wrap-numbers' => TRUE,
+          'paths' => [UnitTestBase::fixtureFile('test-data.sh')],
         ],
         <<<'EOD'
         | Name      | Default value | Description                                                                                                                                                                                |
@@ -137,10 +139,10 @@ class MarkdownTableFormatterFunctionalTest extends FormatterFunctionalTestBase {
       // Wrapped in inline code with numbers.
       [
         [
-          '--exclude-local',
-          '--format=md-table',
-          '--sort',
-          UnitTestBase::fixtureFile('test-data.sh'),
+          '--exclude-local' => TRUE,
+          '--format' => 'md-table',
+          '--sort' => TRUE,
+          'paths' => [UnitTestBase::fixtureFile('test-data.sh')],
         ],
         <<<'EOD'
         | Name      | Default value | Description                                                                                                                                                                                |
@@ -173,12 +175,12 @@ class MarkdownTableFormatterFunctionalTest extends FormatterFunctionalTestBase {
       // Wrapped in inline code with extras.
       [
         [
-          '--exclude-local',
-          '--format=md-table',
-          '--sort',
-          '--md-no-inline-code-wrap-numbers',
-          '--md-inline-code-extra-file=' . UnitTestBase::fixtureFile('test-data-ticks-included.txt'),
-          UnitTestBase::fixtureFile('test-data.sh'),
+          '--exclude-local' => TRUE,
+          '--format' => 'md-table',
+          '--sort' => TRUE,
+          '--md-no-inline-code-wrap-numbers' => TRUE,
+          '--md-inline-code-extra-file' => [UnitTestBase::fixtureFile('test-data-ticks-included.txt')],
+          'paths' => [UnitTestBase::fixtureFile('test-data.sh')],
         ],
         <<<'EOD'
         | Name      | Default value | Description                                                                                                                                                                                      |
