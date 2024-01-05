@@ -1,9 +1,9 @@
 <?php
 
-namespace AlexSkrypnyk\ShellVariablesExtractor\Filter;
+namespace AlexSkrypnyk\Shellvar\Filter;
 
-use AlexSkrypnyk\ShellVariablesExtractor\Config\Config;
-use AlexSkrypnyk\ShellVariablesExtractor\Utils;
+use AlexSkrypnyk\Shellvar\Config\Config;
+use AlexSkrypnyk\Shellvar\Utils;
 use Symfony\Component\Console\Input\InputOption;
 
 /**

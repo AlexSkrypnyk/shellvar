@@ -1,6 +1,6 @@
 <?php
 
-namespace AlexSkrypnyk\ShellVariablesExtractor;
+namespace AlexSkrypnyk\Shellvar;
 
 use Symfony\Component\Console\Exception\InvalidOptionException;
 

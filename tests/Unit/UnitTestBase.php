@@ -1,9 +1,9 @@
 <?php
 
-namespace AlexSkrypnyk\ShellVariablesExtractor\Tests\Unit;
+namespace AlexSkrypnyk\Shellvar\Tests\Unit;
 
-use AlexSkrypnyk\ShellVariablesExtractor\Tests\Traits\MockTrait;
-use AlexSkrypnyk\ShellVariablesExtractor\Tests\Traits\ReflectionTrait;
+use AlexSkrypnyk\Shellvar\Tests\Traits\MockTrait;
+use AlexSkrypnyk\Shellvar\Tests\Traits\ReflectionTrait;
 use PHPUnit\Framework\TestCase;
 
 /**

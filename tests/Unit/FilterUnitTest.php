@@ -1,10 +1,10 @@
 <?php
 
-namespace AlexSkrypnyk\ShellVariablesExtractor\Tests\Unit;
+namespace AlexSkrypnyk\Shellvar\Tests\Unit;
 
-use AlexSkrypnyk\ShellVariablesExtractor\Config\Config;
-use AlexSkrypnyk\ShellVariablesExtractor\Filter\ExcludePrefixFilter;
-use AlexSkrypnyk\ShellVariablesExtractor\Variable\Variable;
+use AlexSkrypnyk\Shellvar\Config\Config;
+use AlexSkrypnyk\Shellvar\Filter\ExcludePrefixFilter;
+use AlexSkrypnyk\Shellvar\Variable\Variable;
 
 /**
  * Class FilterUnitTest.
@@ -13,7 +13,7 @@ use AlexSkrypnyk\ShellVariablesExtractor\Variable\Variable;
  *
  * phpcs:disable Drupal.Arrays.Array.LongLineDeclaration
  *
- * @coversDefaultClass \AlexSkrypnyk\ShellVariablesExtractor\Filter\ExcludePrefixFilter
+ * @coversDefaultClass \AlexSkrypnyk\Shellvar\Filter\ExcludePrefixFilter
  */
 class FilterUnitTest extends UnitTestBase {
 
@@ -22,7 +22,7 @@ class FilterUnitTest extends UnitTestBase {
    *
    * @dataProvider dataProviderFilterExcludedPrefixedVars
    * @covers ::filter
-   * @covers \AlexSkrypnyk\ShellVariablesExtractor\Filter\AbstractFilter::__construct
+   * @covers \AlexSkrypnyk\Shellvar\Filter\AbstractFilter::__construct
    */
   public function testFilterExcludedPrefixedVars(array $var_names, array $prefixes, array $expected) : void {
     $vars = [];

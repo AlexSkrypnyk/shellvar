@@ -1,9 +1,9 @@
 <?php
 
-namespace AlexSkrypnyk\ShellVariablesExtractor\Filter;
+namespace AlexSkrypnyk\Shellvar\Filter;
 
-use AlexSkrypnyk\ShellVariablesExtractor\AbstractManager;
-use AlexSkrypnyk\ShellVariablesExtractor\Config\Config;
+use AlexSkrypnyk\Shellvar\AbstractManager;
+use AlexSkrypnyk\Shellvar\Config\Config;
 
 /**
  * Class FilterManager.
@@ -15,14 +15,14 @@ class FilterManager extends AbstractManager {
   /**
    * A list of discovered filters.
    *
-   * @var \AlexSkrypnyk\ShellVariablesExtractor\Filter\FilterInterface[]
+   * @var \AlexSkrypnyk\Shellvar\Filter\FilterInterface[]
    */
   protected $filters = [];
 
   /**
    * FilterManager constructor.
    *
-   * @param \AlexSkrypnyk\ShellVariablesExtractor\Config\Config $config
+   * @param \AlexSkrypnyk\Shellvar\Config\Config $config
    *   The configuration.
    */
   public function __construct(Config $config) {

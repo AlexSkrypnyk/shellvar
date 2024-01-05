@@ -1,8 +1,8 @@
 <?php
 
-namespace AlexSkrypnyk\ShellVariablesExtractor\Formatter;
+namespace AlexSkrypnyk\Shellvar\Formatter;
 
-use AlexSkrypnyk\ShellVariablesExtractor\AbstractManager;
+use AlexSkrypnyk\Shellvar\AbstractManager;
 use Symfony\Component\Console\Input\InputOption;
 
 /**
@@ -29,7 +29,7 @@ class FormatterManager extends AbstractManager {
   /**
    * Format provided variables using the format specified in config.
    *
-   * @param \AlexSkrypnyk\ShellVariablesExtractor\Variable\Variable[] $variables
+   * @param \AlexSkrypnyk\Shellvar\Variable\Variable[] $variables
    *   The variables to format.
    *
    * @return string

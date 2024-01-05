@@ -1,6 +1,6 @@
 <?php
 
-namespace AlexSkrypnyk\ShellVariablesExtractor\Tests\Functional;
+namespace AlexSkrypnyk\Shellvar\Tests\Functional;
 
 /**
  * Class FormatterFunctionalTestBase.
@@ -16,8 +16,8 @@ abstract class FormatterFunctionalTestBase extends FunctionalTestBase {
 
   /**
    * @dataProvider dataProviderFormatter
-   * @covers       \AlexSkrypnyk\ShellVariablesExtractor\Formatter\AbstractFormatter::doFormat
-   * @covers       \AlexSkrypnyk\ShellVariablesExtractor\Formatter\AbstractFormatter::processDescription
+   * @covers       \AlexSkrypnyk\Shellvar\Formatter\AbstractFormatter::doFormat
+   * @covers       \AlexSkrypnyk\Shellvar\Formatter\AbstractFormatter::processDescription
    * @runInSeparateProcess
    */
   public function testFormatter(array|string $args, string $expected_output): void {

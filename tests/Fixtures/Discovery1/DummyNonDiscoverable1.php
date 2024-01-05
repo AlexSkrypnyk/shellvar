@@ -1,6 +1,6 @@
 <?php
 
-namespace AlexSkrypnyk\ShellVariablesExtractor\Tests\Fixtures\Discovery1;
+namespace AlexSkrypnyk\Shellvar\Tests\Fixtures\Discovery1;
 
 /**
  * Class DummyNonDiscoverable.

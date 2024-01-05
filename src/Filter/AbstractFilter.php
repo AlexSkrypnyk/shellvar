@@ -1,10 +1,10 @@
 <?php
 
-namespace AlexSkrypnyk\ShellVariablesExtractor\Filter;
+namespace AlexSkrypnyk\Shellvar\Filter;
 
-use AlexSkrypnyk\ShellVariablesExtractor\Config\Config;
-use AlexSkrypnyk\ShellVariablesExtractor\Config\ConfigAwareTrait;
-use AlexSkrypnyk\ShellVariablesExtractor\ConsoleAwareInterface;
+use AlexSkrypnyk\Shellvar\Config\Config;
+use AlexSkrypnyk\Shellvar\Config\ConfigAwareTrait;
+use AlexSkrypnyk\Shellvar\ConsoleAwareInterface;
 
 /**
  * Class AbstractFilter.
@@ -18,7 +18,7 @@ abstract class AbstractFilter implements FilterInterface, ConsoleAwareInterface 
   /**
    * AbstractFilter constructor.
    *
-   * @param \AlexSkrypnyk\ShellVariablesExtractor\Config\Config $config
+   * @param \AlexSkrypnyk\Shellvar\Config\Config $config
    *   The configuration.
    */
   public function __construct(Config $config) {

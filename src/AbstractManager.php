@@ -1,11 +1,11 @@
 <?php
 
-namespace AlexSkrypnyk\ShellVariablesExtractor;
+namespace AlexSkrypnyk\Shellvar;
 
-use AlexSkrypnyk\ShellVariablesExtractor\Config\ConfigAwareTrait;
-use AlexSkrypnyk\ShellVariablesExtractor\Factory\AutodiscoveryFactory;
-use AlexSkrypnyk\ShellVariablesExtractor\Traits\SingletonInterface;
-use AlexSkrypnyk\ShellVariablesExtractor\Traits\SingletonTrait;
+use AlexSkrypnyk\Shellvar\Config\ConfigAwareTrait;
+use AlexSkrypnyk\Shellvar\Factory\AutodiscoveryFactory;
+use AlexSkrypnyk\Shellvar\Traits\SingletonInterface;
+use AlexSkrypnyk\Shellvar\Traits\SingletonTrait;
 
 /**
  * Class AbstractManager.
@@ -20,14 +20,14 @@ abstract class AbstractManager implements SingletonInterface, ConsoleAwareInterf
   /**
    * The entity factory.
    *
-   * @var \AlexSkrypnyk\ShellVariablesExtractor\Factory\AutodiscoveryFactory
+   * @var \AlexSkrypnyk\Shellvar\Factory\AutodiscoveryFactory
    */
   protected $factory;
 
   /**
    * AbstractManager constructor.
    *
-   * @param \AlexSkrypnyk\ShellVariablesExtractor\Config\Config $config
+   * @param \AlexSkrypnyk\Shellvar\Config\Config $config
    *   The configuration.
    */
   public function __construct($config) {

@@ -1,5 +1,5 @@
 {
-    "output": ".build/shell-variables-extractor.phar",
+    "output": ".build/shellvar.phar",
     "compression": "GZ",
     "finder": [
         {

@@ -1,8 +1,8 @@
 <?php
 
-namespace AlexSkrypnyk\ShellVariablesExtractor\Tests\Functional;
+namespace AlexSkrypnyk\Shellvar\Tests\Functional;
 
-use AlexSkrypnyk\ShellVariablesExtractor\Tests\Unit\UnitTestBase;
+use AlexSkrypnyk\Shellvar\Tests\Unit\UnitTestBase;
 
 /**
  * Class MarkdownTableFormatterFunctionalTest.

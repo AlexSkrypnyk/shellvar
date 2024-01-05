@@ -5,8 +5,8 @@
  * Main entry point for the application.
  */
 
-use AlexSkrypnyk\ShellVariablesExtractor\Command\VariablesExtractorCommand;
+use AlexSkrypnyk\Shellvar\Command\ShellvarCommand;
 use Symfony\Component\Console\SingleCommandApplication;
 
 $app = new SingleCommandApplication();
-$app->setCode([new VariablesExtractorCommand($app), 'execute'])->run();
+$app->setCode([new ShellvarCommand($app), 'execute'])->run();

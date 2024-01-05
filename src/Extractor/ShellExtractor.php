@@ -1,9 +1,9 @@
 <?php
 
-namespace AlexSkrypnyk\ShellVariablesExtractor\Extractor;
+namespace AlexSkrypnyk\Shellvar\Extractor;
 
-use AlexSkrypnyk\ShellVariablesExtractor\Utils;
-use AlexSkrypnyk\ShellVariablesExtractor\Variable\Variable;
+use AlexSkrypnyk\Shellvar\Utils;
+use AlexSkrypnyk\Shellvar\Variable\Variable;
 
 /**
  * Class ShellExtractor.
@@ -92,7 +92,7 @@ class ShellExtractor extends AbstractExtractor {
    * @param string $line
    *   A line to extract a variable name from.
    *
-   * @return \AlexSkrypnyk\ShellVariablesExtractor\Variable\Variable|null
+   * @return \AlexSkrypnyk\Shellvar\Variable\Variable|null
    *   Variable instance or NULL if a variable was not extracted.
    */
   protected function extractVariable(string $line) {
