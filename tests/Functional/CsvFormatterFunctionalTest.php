@@ -11,6 +11,8 @@ use AlexSkrypnyk\Shellvar\Tests\Unit\UnitTestBase;
  *
  * @group scripts
  *
+ * @covers \AlexSkrypnyk\Shellvar\Command\ShellvarCommand
+ *
  * phpcs:disable Drupal.Commenting.DocComment.MissingShort
  * phpcs:disable Drupal.Commenting.FunctionComment.Missing
  */
