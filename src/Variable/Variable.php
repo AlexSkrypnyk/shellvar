@@ -1,6 +1,6 @@
 <?php
 
-namespace AlexSkrypnyk\ShellVariablesExtractor\Variable;
+namespace AlexSkrypnyk\Shellvar\Variable;
 
 /**
  * Class Variable.

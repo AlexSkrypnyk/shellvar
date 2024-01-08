@@ -1,6 +1,6 @@
 <?php
 
-namespace AlexSkrypnyk\ShellVariablesExtractor\Config;
+namespace AlexSkrypnyk\Shellvar\Config;
 
 /**
  * Interface ConfigInterface.

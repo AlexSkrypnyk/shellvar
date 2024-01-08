@@ -1,6 +1,6 @@
 <?php
 
-namespace AlexSkrypnyk\ShellVariablesExtractor\Variable;
+namespace AlexSkrypnyk\Shellvar\Variable;
 
 /**
  * Trait VariableAwareTrait.
@@ -12,7 +12,7 @@ trait VariableAwareTrait {
   /**
    * Variables.
    *
-   * @var \AlexSkrypnyk\ShellVariablesExtractor\Variable\Variable[]
+   * @var \AlexSkrypnyk\Shellvar\Variable\Variable[]
    */
   protected $variables = [];
 
@@ -20,7 +20,7 @@ trait VariableAwareTrait {
    * Get the variables.
    *
    * @return array<Variable>
-   *   Returns list of AlexSkrypnyk\ShellVariablesExtractor\Variable\Variable
+   *   Returns list of AlexSkrypnyk\Shellvar\Variable\Variable
    */
   public function getVariables() : array {
     return $this->variables;
@@ -29,7 +29,7 @@ trait VariableAwareTrait {
   /**
    * Set the variables.
    *
-   * @param \AlexSkrypnyk\ShellVariablesExtractor\Variable\Variable[] $variables
+   * @param \AlexSkrypnyk\Shellvar\Variable\Variable[] $variables
    *   The variables to set.
    */
   public function setVariables(array $variables): void {

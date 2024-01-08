@@ -1,11 +1,11 @@
 <?php
 
-namespace AlexSkrypnyk\ShellVariablesExtractor\Tests\Unit;
+namespace AlexSkrypnyk\Shellvar\Tests\Unit;
 
-use AlexSkrypnyk\ShellVariablesExtractor\Config\Config;
-use AlexSkrypnyk\ShellVariablesExtractor\Formatter\AbstractMarkdownFormatter;
-use AlexSkrypnyk\ShellVariablesExtractor\Formatter\MarkdownBlocksFormatter;
-use AlexSkrypnyk\ShellVariablesExtractor\Variable\Variable;
+use AlexSkrypnyk\Shellvar\Config\Config;
+use AlexSkrypnyk\Shellvar\Formatter\AbstractMarkdownFormatter;
+use AlexSkrypnyk\Shellvar\Formatter\MarkdownBlocksFormatter;
+use AlexSkrypnyk\Shellvar\Variable\Variable;
 
 /**
  * Class FormatterUnitTest.
@@ -14,7 +14,7 @@ use AlexSkrypnyk\ShellVariablesExtractor\Variable\Variable;
  *
  * phpcs:disable Drupal.Arrays.Array.LongLineDeclaration
  *
- * @coversDefaultClass \AlexSkrypnyk\ShellVariablesExtractor\Formatter\MarkdownBlocksFormatter
+ * @coversDefaultClass \AlexSkrypnyk\Shellvar\Formatter\MarkdownBlocksFormatter
  */
 class FormatterUnitTest extends UnitTestBase {
 

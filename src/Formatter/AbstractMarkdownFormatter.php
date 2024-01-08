@@ -1,9 +1,9 @@
 <?php
 
-namespace AlexSkrypnyk\ShellVariablesExtractor\Formatter;
+namespace AlexSkrypnyk\Shellvar\Formatter;
 
-use AlexSkrypnyk\ShellVariablesExtractor\Config\Config;
-use AlexSkrypnyk\ShellVariablesExtractor\Utils;
+use AlexSkrypnyk\Shellvar\Config\Config;
+use AlexSkrypnyk\Shellvar\Utils;
 use Symfony\Component\Console\Input\InputOption;
 
 /**
@@ -58,7 +58,7 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
   /**
    * AbstractFormatter constructor.
    *
-   * @param \AlexSkrypnyk\ShellVariablesExtractor\Config\Config $config
+   * @param \AlexSkrypnyk\Shellvar\Config\Config $config
    *   The configuration.
    *   {@inheritdoc}.
    */
@@ -191,12 +191,12 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
   /**
    * Process inline code.
    *
-   * @param \AlexSkrypnyk\ShellVariablesExtractor\Variable\Variable[] $variables
+   * @param \AlexSkrypnyk\Shellvar\Variable\Variable[] $variables
    *   A list of variables to process.
    * @param string[] $tokens
    *   Additional tokens to be processed as inline code.
    *
-   * @return \AlexSkrypnyk\ShellVariablesExtractor\Variable\Variable[]
+   * @return \AlexSkrypnyk\Shellvar\Variable\Variable[]
    *   A list of processed variables.
    */
   protected function processInlineCodeVars(array $variables, array $tokens = []): array {
@@ -252,10 +252,10 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
   /**
    * Process inline code to Convert numbers to code values.
    *
-   * @param \AlexSkrypnyk\ShellVariablesExtractor\Variable\Variable[] $variables
+   * @param \AlexSkrypnyk\Shellvar\Variable\Variable[] $variables
    *   A list of variables to process.
    *
-   * @return \AlexSkrypnyk\ShellVariablesExtractor\Variable\Variable[]
+   * @return \AlexSkrypnyk\Shellvar\Variable\Variable[]
    *   A list of processed variables.
    */
   protected function processInlineCodeNumbers(array $variables): array {
@@ -270,12 +270,12 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
   /**
    * Link variables.
    *
-   * @param \AlexSkrypnyk\ShellVariablesExtractor\Variable\Variable[] $variables
+   * @param \AlexSkrypnyk\Shellvar\Variable\Variable[] $variables
    *   A list of variables to process.
    * @param string $anchor_case
    *   Anchor case.
    *
-   * @return \AlexSkrypnyk\ShellVariablesExtractor\Variable\Variable[]
+   * @return \AlexSkrypnyk\Shellvar\Variable\Variable[]
    *   A list of processed variables.
    */
   protected function processLinks(array $variables, $anchor_case = self::VARIABLE_LINK_CASE_PRESERVE): array {

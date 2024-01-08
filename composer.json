@@ -33,12 +33,12 @@
     },
     "autoload": {
         "psr-4": {
-            "AlexSkrypnyk\\ShellVariablesExtractor\\": "src/"
+            "AlexSkrypnyk\\Shellvar\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "AlexSkrypnyk\\ShellVariablesExtractor\\Tests\\": "tests/"
+            "AlexSkrypnyk\\Shellvar\\Tests\\": "tests/"
         }
     },
     "config": {
@@ -63,6 +63,6 @@
         ]
     },
     "bin": [
-        "shell-variables-extractor"
+        "shellvar"
     ]
 }

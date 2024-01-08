@@ -1,8 +1,8 @@
 <?php
 
-namespace AlexSkrypnyk\ShellVariablesExtractor\Extractor;
+namespace AlexSkrypnyk\Shellvar\Extractor;
 
-use AlexSkrypnyk\ShellVariablesExtractor\AbstractManager;
+use AlexSkrypnyk\Shellvar\AbstractManager;
 
 /**
  * Class ExtractorManager.
@@ -14,7 +14,7 @@ class ExtractorManager extends AbstractManager {
   /**
    * Extract variables from the targets provided in configs.
    *
-   * @return \AlexSkrypnyk\ShellVariablesExtractor\Variable\Variable[]
+   * @return \AlexSkrypnyk\Shellvar\Variable\Variable[]
    *   Array of extracted variables.
    */
   public function extract() {

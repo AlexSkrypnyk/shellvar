@@ -1,6 +1,6 @@
 <?php
 
-namespace AlexSkrypnyk\ShellVariablesExtractor\Factory;
+namespace AlexSkrypnyk\Shellvar\Factory;
 
 /**
  * Interface FactoryDiscoverableInterface.

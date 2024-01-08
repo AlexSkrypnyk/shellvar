@@ -1,6 +1,6 @@
 <?php
 
-namespace AlexSkrypnyk\ShellVariablesExtractor\Traits;
+namespace AlexSkrypnyk\Shellvar\Traits;
 
 /**
  * Interface SingletonInterface.

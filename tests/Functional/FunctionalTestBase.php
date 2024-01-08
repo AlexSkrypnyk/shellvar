@@ -2,10 +2,10 @@
 
 declare(strict_types = 1);
 
-namespace AlexSkrypnyk\ShellVariablesExtractor\Tests\Functional;
+namespace AlexSkrypnyk\Shellvar\Tests\Functional;
 
-use AlexSkrypnyk\ShellVariablesExtractor\Command\VariablesExtractorCommand;
-use AlexSkrypnyk\ShellVariablesExtractor\Tests\Unit\UnitTestBase;
+use AlexSkrypnyk\Shellvar\Command\ShellvarCommand;
+use AlexSkrypnyk\Shellvar\Tests\Unit\UnitTestBase;
 use Symfony\Component\Console\SingleCommandApplication;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -30,7 +30,7 @@ abstract class FunctionalTestBase extends UnitTestBase {
   protected function runExecute(array $input, array $options = []): array {
     $singleCommandApplication = new SingleCommandApplication();
     $singleCommandApplication->setAutoExit(FALSE);
-    $singleCommandApplication->setCode([new VariablesExtractorCommand($singleCommandApplication), 'execute']);
+    $singleCommandApplication->setCode([new ShellvarCommand($singleCommandApplication), 'execute']);
     $commandTester = new CommandTester($singleCommandApplication);
     $code = $commandTester->execute($input, $options);
     $outputDisplay = $commandTester->getDisplay();

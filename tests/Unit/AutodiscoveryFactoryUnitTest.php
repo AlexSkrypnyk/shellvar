@@ -1,16 +1,16 @@
 <?php
 
-namespace AlexSkrypnyk\ShellVariablesExtractor\Tests\Unit;
+namespace AlexSkrypnyk\Shellvar\Tests\Unit;
 
-use AlexSkrypnyk\ShellVariablesExtractor\Config\Config;
-use AlexSkrypnyk\ShellVariablesExtractor\Factory\AutodiscoveryFactory;
+use AlexSkrypnyk\Shellvar\Config\Config;
+use AlexSkrypnyk\Shellvar\Factory\AutodiscoveryFactory;
 
 /**
  * Class AutodiscoveryFactoryUnitTest.
  *
  * Unit tests for theAutodiscoveryFactory class.
  *
- * @coversDefaultClass \AlexSkrypnyk\ShellVariablesExtractor\Factory\AutodiscoveryFactory
+ * @coversDefaultClass \AlexSkrypnyk\Shellvar\Factory\AutodiscoveryFactory
  */
 class AutodiscoveryFactoryUnitTest extends UnitTestBase {
 
@@ -24,10 +24,10 @@ class AutodiscoveryFactoryUnitTest extends UnitTestBase {
     $autodiscovery = new AutodiscoveryFactory('tests/Fixtures');
     $discovered_classes = $autodiscovery->getEntityClasses();
     $this->assertEquals([
-      'DummyDiscoverable11' => 'AlexSkrypnyk\ShellVariablesExtractor\Tests\Fixtures\Discovery1\DummyDiscoverable11',
-      'DummyDiscoverable12' => 'AlexSkrypnyk\ShellVariablesExtractor\Tests\Fixtures\Discovery1\DummyDiscoverable12',
-      'DummyDiscoverable21' => 'AlexSkrypnyk\ShellVariablesExtractor\Tests\Fixtures\Discovery2\DummyDiscoverable21',
-      'DummyDiscoverable22' => 'AlexSkrypnyk\ShellVariablesExtractor\Tests\Fixtures\Discovery2\DummyDiscoverable22',
+      'DummyDiscoverable11' => 'AlexSkrypnyk\Shellvar\Tests\Fixtures\Discovery1\DummyDiscoverable11',
+      'DummyDiscoverable12' => 'AlexSkrypnyk\Shellvar\Tests\Fixtures\Discovery1\DummyDiscoverable12',
+      'DummyDiscoverable21' => 'AlexSkrypnyk\Shellvar\Tests\Fixtures\Discovery2\DummyDiscoverable21',
+      'DummyDiscoverable22' => 'AlexSkrypnyk\Shellvar\Tests\Fixtures\Discovery2\DummyDiscoverable22',
     ], $discovered_classes);
   }
 
@@ -42,15 +42,15 @@ class AutodiscoveryFactoryUnitTest extends UnitTestBase {
     $autodiscovery = new AutodiscoveryFactory('tests/Fixtures/Discovery1');
     $discovered_classes = $autodiscovery->getEntityClasses();
     $this->assertEquals([
-      'DummyDiscoverable11' => 'AlexSkrypnyk\ShellVariablesExtractor\Tests\Fixtures\Discovery1\DummyDiscoverable11',
-      'DummyDiscoverable12' => 'AlexSkrypnyk\ShellVariablesExtractor\Tests\Fixtures\Discovery1\DummyDiscoverable12',
+      'DummyDiscoverable11' => 'AlexSkrypnyk\Shellvar\Tests\Fixtures\Discovery1\DummyDiscoverable11',
+      'DummyDiscoverable12' => 'AlexSkrypnyk\Shellvar\Tests\Fixtures\Discovery1\DummyDiscoverable12',
     ], $discovered_classes);
 
     $autodiscovery = new AutodiscoveryFactory('tests/Fixtures/Discovery2');
     $discovered_classes = $autodiscovery->getEntityClasses();
     $this->assertEquals([
-      'DummyDiscoverable21' => 'AlexSkrypnyk\ShellVariablesExtractor\Tests\Fixtures\Discovery2\DummyDiscoverable21',
-      'DummyDiscoverable22' => 'AlexSkrypnyk\ShellVariablesExtractor\Tests\Fixtures\Discovery2\DummyDiscoverable22',
+      'DummyDiscoverable21' => 'AlexSkrypnyk\Shellvar\Tests\Fixtures\Discovery2\DummyDiscoverable21',
+      'DummyDiscoverable22' => 'AlexSkrypnyk\Shellvar\Tests\Fixtures\Discovery2\DummyDiscoverable22',
     ], $discovered_classes);
   }
 

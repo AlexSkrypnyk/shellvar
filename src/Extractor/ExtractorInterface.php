@@ -1,8 +1,8 @@
 <?php
 
-namespace AlexSkrypnyk\ShellVariablesExtractor\Extractor;
+namespace AlexSkrypnyk\Shellvar\Extractor;
 
-use AlexSkrypnyk\ShellVariablesExtractor\Factory\FactoryDiscoverableInterface;
+use AlexSkrypnyk\Shellvar\Factory\FactoryDiscoverableInterface;
 
 /**
  * Interface ExtractorInterface.
@@ -14,7 +14,7 @@ interface ExtractorInterface extends FactoryDiscoverableInterface {
   /**
    * Extracts variables from the targets provided in the configuration.
    *
-   * @return \AlexSkrypnyk\ShellVariablesExtractor\Variable\Variable[]
+   * @return \AlexSkrypnyk\Shellvar\Variable\Variable[]
    *   Array of extracted variables.
    */
   public function extract(): array;

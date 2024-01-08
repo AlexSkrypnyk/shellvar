@@ -1,8 +1,8 @@
 <?php
 
-namespace AlexSkrypnyk\ShellVariablesExtractor\Tests\Fixtures\Discovery1;
+namespace AlexSkrypnyk\Shellvar\Tests\Fixtures\Discovery1;
 
-use AlexSkrypnyk\ShellVariablesExtractor\Factory\FactoryDiscoverableInterface;
+use AlexSkrypnyk\Shellvar\Factory\FactoryDiscoverableInterface;
 
 /**
  * Class DummyDiscoverable12.

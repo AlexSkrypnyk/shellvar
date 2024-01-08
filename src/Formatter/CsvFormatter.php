@@ -1,6 +1,6 @@
 <?php
 
-namespace AlexSkrypnyk\ShellVariablesExtractor\Formatter;
+namespace AlexSkrypnyk\Shellvar\Formatter;
 
 use Symfony\Component\Console\Input\InputOption;
 

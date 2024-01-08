@@ -1,6 +1,6 @@
 <?php
 
-namespace AlexSkrypnyk\ShellVariablesExtractor\Formatter;
+namespace AlexSkrypnyk\Shellvar\Formatter;
 
 use AlexSkrypnyk\CsvTable\CsvTable;
 use AlexSkrypnyk\CsvTable\Markdown;

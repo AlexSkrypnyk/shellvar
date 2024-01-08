@@ -1,8 +1,8 @@
 <?php
 
-namespace AlexSkrypnyk\ShellVariablesExtractor\Filter;
+namespace AlexSkrypnyk\Shellvar\Filter;
 
-use AlexSkrypnyk\ShellVariablesExtractor\Factory\FactoryDiscoverableInterface;
+use AlexSkrypnyk\Shellvar\Factory\FactoryDiscoverableInterface;
 
 /**
  * Interface FilterInterface.

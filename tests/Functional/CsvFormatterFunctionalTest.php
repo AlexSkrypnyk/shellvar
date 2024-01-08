@@ -1,8 +1,8 @@
 <?php
 
-namespace AlexSkrypnyk\ShellVariablesExtractor\Tests\Functional;
+namespace AlexSkrypnyk\Shellvar\Tests\Functional;
 
-use AlexSkrypnyk\ShellVariablesExtractor\Tests\Unit\UnitTestBase;
+use AlexSkrypnyk\Shellvar\Tests\Unit\UnitTestBase;
 
 /**
  * Class CsvFormatterFunctionalTest.
@@ -10,6 +10,8 @@ use AlexSkrypnyk\ShellVariablesExtractor\Tests\Unit\UnitTestBase;
  * Functional tests for extractions.
  *
  * @group scripts
+ *
+ * @covers \AlexSkrypnyk\Shellvar\Command\ShellvarCommand
  *
  * phpcs:disable Drupal.Commenting.DocComment.MissingShort
  * phpcs:disable Drupal.Commenting.FunctionComment.Missing

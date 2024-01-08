@@ -31,7 +31,7 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
       - uses: php-actions/composer@v6
       - name: Build and test
-        run: composer build && ./.build/shell-variables-extractor.phar | grep -q "?"
+        run: composer build && ./.build/shellvar.phar | grep -q "?"
       - name: Get Tag Name
         id: get-version
         run: echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
@@ -39,4 +39,4 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            ./.build/shell-variables-extractor.phar
+            ./.build/shellvar.phar

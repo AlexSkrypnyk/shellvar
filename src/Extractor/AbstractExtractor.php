@@ -1,12 +1,12 @@
 <?php
 
-namespace AlexSkrypnyk\ShellVariablesExtractor\Extractor;
+namespace AlexSkrypnyk\Shellvar\Extractor;
 
-use AlexSkrypnyk\ShellVariablesExtractor\Config\Config;
-use AlexSkrypnyk\ShellVariablesExtractor\Config\ConfigAwareTrait;
-use AlexSkrypnyk\ShellVariablesExtractor\ConsoleAwareInterface;
-use AlexSkrypnyk\ShellVariablesExtractor\Utils;
-use AlexSkrypnyk\ShellVariablesExtractor\Variable\VariableAwareTrait;
+use AlexSkrypnyk\Shellvar\Config\Config;
+use AlexSkrypnyk\Shellvar\Config\ConfigAwareTrait;
+use AlexSkrypnyk\Shellvar\ConsoleAwareInterface;
+use AlexSkrypnyk\Shellvar\Utils;
+use AlexSkrypnyk\Shellvar\Variable\VariableAwareTrait;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
@@ -23,7 +23,7 @@ abstract class AbstractExtractor implements ExtractorInterface, ConsoleAwareInte
   /**
    * AbstractExtractor constructor.
    *
-   * @param \AlexSkrypnyk\ShellVariablesExtractor\Config\Config $config
+   * @param \AlexSkrypnyk\Shellvar\Config\Config $config
    *   Config.
    */
   public function __construct(Config $config) {

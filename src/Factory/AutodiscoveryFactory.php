@@ -1,8 +1,8 @@
 <?php
 
-namespace AlexSkrypnyk\ShellVariablesExtractor\Factory;
+namespace AlexSkrypnyk\Shellvar\Factory;
 
-use AlexSkrypnyk\ShellVariablesExtractor\Config\Config;
+use AlexSkrypnyk\Shellvar\Config\Config;
 
 /**
  * Class AutodiscoveryFactory.
@@ -46,7 +46,7 @@ class AutodiscoveryFactory {
    *
    * @param mixed $name
    *   Entity name.
-   * @param \AlexSkrypnyk\ShellVariablesExtractor\Config\Config $config
+   * @param \AlexSkrypnyk\Shellvar\Config\Config $config
    *   Formatter configuration.
    *
    * @return object
@@ -66,10 +66,10 @@ class AutodiscoveryFactory {
   /**
    * Create all class instances.
    *
-   * @param \AlexSkrypnyk\ShellVariablesExtractor\Config\Config $config
+   * @param \AlexSkrypnyk\Shellvar\Config\Config $config
    *   The configuration instance.
    *
-   * @return array<mixed>|\AlexSkrypnyk\ShellVariablesExtractor\Filter\FilterInterface[]
+   * @return array<mixed>|\AlexSkrypnyk\Shellvar\Filter\FilterInterface[]
    *   Array of instantiated entity class instances.
    */
   public function createAll(Config $config) : array {

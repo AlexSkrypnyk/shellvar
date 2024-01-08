@@ -1,6 +1,6 @@
 <?php
 
-namespace AlexSkrypnyk\ShellVariablesExtractor\Tests\Functional;
+namespace AlexSkrypnyk\Shellvar\Tests\Functional;
 
 /**
  * Class CliOptionsFunctionalTest.
@@ -10,12 +10,11 @@ namespace AlexSkrypnyk\ShellVariablesExtractor\Tests\Functional;
  * phpcs:disable Drupal.Commenting.DocComment.MissingShort
  * phpcs:disable Drupal.Commenting.FunctionComment.Missing
  *
- * @coversDefaultClass \AlexSkrypnyk\ShellVariablesExtractor\Command\VariablesExtractorCommand
+ * @covers \AlexSkrypnyk\Shellvar\Command\ShellvarCommand
  */
 class CliOptionsFunctionalTest extends FunctionalTestBase {
 
   /**
-   * @covers ::execute
    * @dataProvider dataProviderMain
    * @runInSeparateProcess
    */

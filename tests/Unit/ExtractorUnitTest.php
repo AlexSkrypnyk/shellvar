@@ -1,9 +1,9 @@
 <?php
 
-namespace AlexSkrypnyk\ShellVariablesExtractor\Tests\Unit;
+namespace AlexSkrypnyk\Shellvar\Tests\Unit;
 
-use AlexSkrypnyk\ShellVariablesExtractor\Extractor\ShellExtractor;
-use AlexSkrypnyk\ShellVariablesExtractor\Variable\Variable;
+use AlexSkrypnyk\Shellvar\Extractor\ShellExtractor;
+use AlexSkrypnyk\Shellvar\Variable\Variable;
 
 /**
  * Class ExtractorUnitTest.
@@ -12,7 +12,7 @@ use AlexSkrypnyk\ShellVariablesExtractor\Variable\Variable;
  *
  * phpcs:disable Drupal.Arrays.Array.LongLineDeclaration
  *
- * @coversDefaultClass \AlexSkrypnyk\ShellVariablesExtractor\Extractor\ShellExtractor
+ * @coversDefaultClass \AlexSkrypnyk\Shellvar\Extractor\ShellExtractor
  */
 class ExtractorUnitTest extends UnitTestBase {
 

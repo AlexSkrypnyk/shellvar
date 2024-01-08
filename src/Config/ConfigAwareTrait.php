@@ -1,6 +1,6 @@
 <?php
 
-namespace AlexSkrypnyk\ShellVariablesExtractor\Config;
+namespace AlexSkrypnyk\Shellvar\Config;
 
 /**
  * Trait ConfigAwareTrait.
@@ -13,14 +13,14 @@ trait ConfigAwareTrait {
   /**
    * The configuration.
    *
-   * @var \AlexSkrypnyk\ShellVariablesExtractor\Config\Config
+   * @var \AlexSkrypnyk\Shellvar\Config\Config
    */
   protected $config;
 
   /**
    * Get the configuration.
    *
-   * @return \AlexSkrypnyk\ShellVariablesExtractor\Config\Config
+   * @return \AlexSkrypnyk\Shellvar\Config\Config
    *   The configuration.
    */
   public function getConfig(): Config {
@@ -30,7 +30,7 @@ trait ConfigAwareTrait {
   /**
    * Set the configuration.
    *
-   * @param \AlexSkrypnyk\ShellVariablesExtractor\Config\Config $config
+   * @param \AlexSkrypnyk\Shellvar\Config\Config $config
    *   The configuration to set.
    */
   public function setConfig(Config $config): void {
@@ -42,7 +42,7 @@ trait ConfigAwareTrait {
   /**
    * Process the configuration.
    *
-   * @param \AlexSkrypnyk\ShellVariablesExtractor\Config\Config $config
+   * @param \AlexSkrypnyk\Shellvar\Config\Config $config
    *   The configuration to process.
    *
    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
