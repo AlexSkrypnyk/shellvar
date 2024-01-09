@@ -1,7 +1,7 @@
 {
-    "name": "alexskrypnyk/shell-variables-extractor",
+    "name": "alexskrypnyk/shellvar",
     "type": "library",
-    "description": "Extracts shell variables from one or multiple files in a directory.",
+    "description": "Utility to work with shell variables.",
     "license": "GPL-2.0-or-later",
     "authors": [
         {
@@ -11,10 +11,10 @@
             "role": "Maintainer"
         }
     ],
-    "homepage": "https://github.com/AlexSkrypnyk/shell-variables-extractor",
+    "homepage": "https://github.com/AlexSkrypnyk/shellvar",
     "support": {
-        "issues": "https://github.com/AlexSkrypnyk/shell-variables-extractor/issues",
-        "source": "https://github.com/AlexSkrypnyk/shell-variables-extractor"
+        "issues": "https://github.com/AlexSkrypnyk/shellvar/issues",
+        "source": "https://github.com/AlexSkrypnyk/shellvar"
     },
     "require": {
         "php": ">=8.1",
@@ -30,6 +30,9 @@
         "bamarni/composer-bin-plugin": "^1.8",
         "mikey179/vfsstream": "^1.6",
         "opis/closure": "^3.6"
+    },
+    "replace": {
+        "alexskrypnyk/shell-variables-extractor": "self.version"
     },
     "autoload": {
         "psr-4": {

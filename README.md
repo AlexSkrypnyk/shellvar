@@ -1,20 +1,18 @@
-
-
 <p align="center">
   <a href="" rel="noopener">
-  <img width=200px height=200px src="https://placehold.jp/000000/ffffff/200x200.png?text=Shell+variables+extractor&css=%7B%22border-radius%22%3A%22%20100px%22%7D" alt="Yourproject logo"></a>
+  <img width=200px height=200px src="https://placehold.jp/000000/ffffff/200x200.png?text=Shellvar&css=%7B%22border-radius%22%3A%22%20100px%22%7D" alt="Shellvar logo"></a>
 </p>
 
-<h1 align="center">Shell variables extractor</h1>
+<h1 align="center">Shellvar</h1>
 
 <div align="center">
 
-[![GitHub Issues](https://img.shields.io/github/issues/AlexSkrypnyk/shell-variables-extractor.svg)](https://github.com/AlexSkrypnyk/shell-variables-extractor/issues)
-[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/AlexSkrypnyk/shell-variables-extractor.svg)](https://github.com/AlexSkrypnyk/shell-variables-extractor/pulls)
-[![Tests](https://github.com/AlexSkrypnyk/shell-variables-extractor/actions/workflows/test.yml/badge.svg)](https://github.com/AlexSkrypnyk/shell-variables-extractor/actions/workflows/test.yml)
-[![codecov](https://codecov.io/gh/AlexSkrypnyk/shell-variables-extractor/graph/badge.svg?token=7WEB1IXBYT)](https://codecov.io/gh/AlexSkrypnyk/shell-variables-extractor)
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/AlexSkrypnyk/shell-variables-extractor)
-![LICENSE](https://img.shields.io/github/license/AlexSkrypnyk/shell-variables-extractor)
+[![GitHub Issues](https://img.shields.io/github/issues/AlexSkrypnyk/shellvar.svg)](https://github.com/AlexSkrypnyk/shellvar/issues)
+[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/AlexSkrypnyk/shellvar.svg)](https://github.com/AlexSkrypnyk/shellvar/pulls)
+[![Tests](https://github.com/AlexSkrypnyk/shellvar/actions/workflows/test.yml/badge.svg)](https://github.com/AlexSkrypnyk/shellvar/actions/workflows/test.yml)
+[![codecov](https://codecov.io/gh/AlexSkrypnyk/shellvar/graph/badge.svg?token=7WEB1IXBYT)](https://codecov.io/gh/AlexSkrypnyk/shellvar)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/AlexSkrypnyk/shellvar)
+![LICENSE](https://img.shields.io/github/license/AlexSkrypnyk/shellvar)
 ![Renovate](https://img.shields.io/badge/renovate-enabled-green?logo=renovatebot)
 
 </div>
@@ -23,22 +21,23 @@
 
 <p align="center">
     <br>
-    Helps to maintain up-to-date documentation about variables in shell scripts.
+    Utility to work with shell variables. 
 </p>
 
 ## Features
 
-- Scan a file or a directory containing shell scripts and extract found
-  variables with comments and assigned values.
-- Filter variables: exclude local, exclude by prefix, exclude from a list in
-  file.
-- Format output as a CSV, Markdown table or Markdown blocks defined in the
-  template.
-- Extend filters and formatters with custom classes.
+- Extract variables:
+  - Scan a file or a directory containing shell scripts and extract found
+    variables with comments and assigned values.
+  - Filter variables: exclude local, exclude by prefix, exclude from a list in
+    file.
+  - Format output as a CSV, Markdown table or Markdown blocks defined in the
+    template.
+  - Extend filters and formatters with custom classes.
 
 ## Installation
 
-    composer require alexskrypnyk/shell-variables-extractor
+    composer require alexskrypnyk/shellvar
 
 ## Usage
 
@@ -183,9 +182,9 @@ Assignment to scalar value.
 
 Default value: `val1`
 
-Path: `/Users/o_o/www/shell-variables-extractor/1.sh`
+Path: `1.sh`
 
-Paths: `/Users/o_o/www/shell-variables-extractor/1.sh`
+Paths: `1.sh`
 
 ### `VAR2`
 
@@ -193,9 +192,9 @@ Assignment to another variable.
 
 Default value: `VAR1`
 
-Path: `/Users/o_o/www/shell-variables-extractor/1.sh`
+Path: `1.sh`
 
-Paths: `/Users/o_o/www/shell-variables-extractor/1.sh`
+Paths: `1.sh`
 
 ### `VAR3`
 
@@ -203,9 +202,9 @@ Parameter expansion.
 
 Default value: `abc`
 
-Path: `/Users/o_o/www/shell-variables-extractor/1.sh`
+Path: `1.sh`
 
-Paths: `/Users/o_o/www/shell-variables-extractor/1.sh`
+Paths: `1.sh`
 
 ### `VAR4`
 
@@ -215,9 +214,9 @@ Continuation of the multi-line comment.
 
 Default value: `VAR3`
 
-Path: `/Users/o_o/www/shell-variables-extractor/1.sh`
+Path: `1.sh`
 
-Paths: `/Users/o_o/www/shell-variables-extractor/1.sh`
+Paths: `1.sh`
 
 ```
 
@@ -231,9 +230,9 @@ Assignment to scalar value.
 
 Default value: `val1`
 
-Path: `/Users/o_o/www/shell-variables-extractor/1.sh`
+Path: `1.sh`
 
-Paths: `/Users/o_o/www/shell-variables-extractor/1.sh`
+Paths: `1.sh`
 
 ### `VAR2`
 
@@ -241,9 +240,9 @@ Assignment to another variable.
 
 Default value: `VAR1`
 
-Path: `/Users/o_o/www/shell-variables-extractor/1.sh`
+Path: `1.sh`
 
-Paths: `/Users/o_o/www/shell-variables-extractor/1.sh`
+Paths: `1.sh`
 
 ### `VAR3`
 
@@ -251,9 +250,9 @@ Parameter expansion.
 
 Default value: `abc`
 
-Path: `/Users/o_o/www/shell-variables-extractor/1.sh`
+Path: `1.sh`
 
-Paths: `/Users/o_o/www/shell-variables-extractor/1.sh`
+Paths: `1.sh`
 
 ### `VAR4`
 
@@ -263,9 +262,9 @@ Continuation of the multi-line comment.
 
 Default value: `VAR3`
 
-Path: `/Users/o_o/www/shell-variables-extractor/1.sh`
+Path: `1.sh`
 
-Paths: `/Users/o_o/www/shell-variables-extractor/1.sh`
+Paths: `1.sh`
 
 </td></tr></table>
 
