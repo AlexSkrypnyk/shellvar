@@ -64,7 +64,7 @@ VAR4=${val4:-$VAR3}
 ### Default CSV output
 
 ```bash
-./vendor/bin/shellvar path/to/script.sh
+./vendor/bin/shellvar extract path/to/script.sh
 ```
 
 ```csv
@@ -80,7 +80,7 @@ Continuation of the multi-line comment."
 ### Markdown table
 
 ```bash
-./vendor/bin/shellvar --format=md-table path/to/script.sh
+./vendor/bin/shellvar extract --format=md-table path/to/script.sh
 ```
 
 ```markdown
@@ -105,7 +105,7 @@ which renders as
 ### Markdown blocks
 
 ```bash
-./vendor/bin/shellvar --format=md-blocks path/to/script.sh
+./vendor/bin/shellvar extract --format=md-blocks path/to/script.sh
 ```
 
 ```markdown
@@ -172,7 +172,7 @@ Default value: `VAR3`
 ### Advanced: Markdown blocks with links and custom template
 
 ```bash
-./vendor/bin/shellvar --format=md-blocks --md-link-vars --md-block-template-file=path/to/template.md path/to/script.sh
+./vendor/bin/shellvar extract --format=md-blocks --md-link-vars --md-block-template-file=path/to/template.md path/to/script.sh
 ```
 
 ```markdown

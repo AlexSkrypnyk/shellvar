@@ -2,6 +2,7 @@
 
 namespace AlexSkrypnyk\Shellvar\Tests\Unit;
 
+use AlexSkrypnyk\Shellvar\Tests\Traits\FixtureTrait;
 use AlexSkrypnyk\Shellvar\Tests\Traits\MockTrait;
 use AlexSkrypnyk\Shellvar\Tests\Traits\ReflectionTrait;
 use PHPUnit\Framework\TestCase;
@@ -15,24 +16,6 @@ abstract class UnitTestBase extends TestCase {
 
   use MockTrait;
   use ReflectionTrait;
-
-  /**
-   * Get path to a fixture file.
-   */
-  protected static function fixtureFile(string $filename) : string {
-    $path = static::fixtureDir() . DIRECTORY_SEPARATOR . $filename;
-    if (!is_readable($path)) {
-      throw new \RuntimeException(sprintf('Unable to find fixture file %s.', $path));
-    }
-
-    return $path;
-  }
-
-  /**
-   * Get path to a fixture directory.
-   */
-  protected static function fixtureDir() : string {
-    return 'tests/Fixtures';
-  }
+  use FixtureTrait;
 
 }

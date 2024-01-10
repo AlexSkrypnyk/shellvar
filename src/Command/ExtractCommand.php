@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace AlexSkrypnyk\Shellvar\Command;
 
@@ -11,14 +11,13 @@ use AlexSkrypnyk\Shellvar\Formatter\FormatterManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\SingleCommandApplication;
 
 /**
- * Class Command.
+ * Class ExtractCommand.
  *
  * Extracts variables from shell scripts.
  */
-class ShellvarCommand {
+class ExtractCommand extends Command {
 
   /**
    * The config.
@@ -28,17 +27,14 @@ class ShellvarCommand {
   protected $config;
 
   /**
-   * Command constructor.
-   *
-   * @param \Symfony\Component\Console\SingleCommandApplication $app
-   *   The single command application instance.
+   * {@inheritdoc}
    */
-  public function __construct(SingleCommandApplication $app) {
-    $this->config = new Config();
-
-    $app
-      ->setName('shellvar')
+  protected function configure(): void {
+    $this
+      ->setName('extract')
       ->setDescription('Extract variables from shell scripts.');
+
+    $this->config = new Config();
 
     $classes = [
       ExtractorManager::class,
@@ -51,13 +47,13 @@ class ShellvarCommand {
       // @phpstan-ignore-next-line
       $instance = $class::getInstance($this->config);
       foreach ($instance->getAllConsoleArguments() as $argument) {
-        if (!$app->getDefinition()->hasArgument($argument->getName())) {
-          $app->getDefinition()->addArgument($argument);
+        if (!$this->getDefinition()->hasArgument($argument->getName())) {
+          $this->getDefinition()->addArgument($argument);
         }
       }
       foreach ($instance->getAllConsoleOptions() as $option) {
-        if (!$app->getDefinition()->hasOption($option->getName())) {
-          $app->getDefinition()->addOption($option);
+        if (!$this->getDefinition()->hasOption($option->getName())) {
+          $this->getDefinition()->addOption($option);
         }
       }
     }

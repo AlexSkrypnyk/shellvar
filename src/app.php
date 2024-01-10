@@ -5,8 +5,14 @@
  * Main entry point for the application.
  */
 
-use AlexSkrypnyk\Shellvar\Command\ShellvarCommand;
-use Symfony\Component\Console\SingleCommandApplication;
+use AlexSkrypnyk\Shellvar\Command\ExtractCommand;
+use Symfony\Component\Console\Application;
 
-$app = new SingleCommandApplication();
-$app->setCode([new ShellvarCommand($app), 'execute'])->run();
+// @codeCoverageIgnoreStart
+$application = new Application();
+
+$command = new ExtractCommand();
+$application->add($command);
+
+$application->run();
+// @codeCoverageIgnoreEnd

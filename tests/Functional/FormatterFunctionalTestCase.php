@@ -2,6 +2,8 @@
 
 namespace AlexSkrypnyk\Shellvar\Tests\Functional;
 
+use AlexSkrypnyk\Shellvar\Command\ExtractCommand;
+
 /**
  * Class FormatterFunctionalTestBase.
  *
@@ -12,7 +14,7 @@ namespace AlexSkrypnyk\Shellvar\Tests\Functional;
  * phpcs:disable Drupal.Commenting.DocComment.MissingShort
  * phpcs:disable Drupal.Commenting.FunctionComment.Missing
  */
-abstract class FormatterFunctionalTestBase extends FunctionalTestBase {
+abstract class FormatterFunctionalTestCase extends FunctionalTestCase {
 
   /**
    * @dataProvider dataProviderFormatter
@@ -20,10 +22,10 @@ abstract class FormatterFunctionalTestBase extends FunctionalTestBase {
    * @covers       \AlexSkrypnyk\Shellvar\Formatter\AbstractFormatter::processDescription
    * @runInSeparateProcess
    */
-  public function testFormatter(array|string $args, string $expected_output): void {
-    $args = is_array($args) ? $args : [$args];
-    $result = $this->runExecute($args);
-    $this->assertEquals($expected_output . \PHP_EOL, $result['output']);
+  public function testFormatter(array|string $input, string $expected_output): void {
+    $input = is_array($input) ? $input : [$input];
+    $result = $this->runExecute(ExtractCommand::class, $input);
+    $this->assertEquals($expected_output . \PHP_EOL, implode(\PHP_EOL, $result));
   }
 
   abstract public static function dataProviderFormatter(): array;
