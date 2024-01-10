@@ -32,8 +32,9 @@ jobs:
       - uses: shivammathur/setup-php@v2
         with:
           php-version: 8.1
+      - run: composer install
       - name: Build and test
-        run: composer build && ./.build/shellvar.phar | grep -q "?"
+        run: composer build && ./.build/shellvar.phar | grep -q "help"
       - name: Get Tag Name
         id: get-version
         run: echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
