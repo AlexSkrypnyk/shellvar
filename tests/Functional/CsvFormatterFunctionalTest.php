@@ -2,8 +2,6 @@
 
 namespace AlexSkrypnyk\Shellvar\Tests\Functional;
 
-use AlexSkrypnyk\Shellvar\Tests\Unit\UnitTestBase;
-
 /**
  * Class CsvFormatterFunctionalTest.
  *
@@ -11,12 +9,12 @@ use AlexSkrypnyk\Shellvar\Tests\Unit\UnitTestBase;
  *
  * @group scripts
  *
- * @covers \AlexSkrypnyk\Shellvar\Command\ShellvarCommand
+ * @covers \AlexSkrypnyk\Shellvar\Command\ExtractCommand
  *
  * phpcs:disable Drupal.Commenting.DocComment.MissingShort
  * phpcs:disable Drupal.Commenting.FunctionComment.Missing
  */
-class CsvFormatterFunctionalTest extends FormatterFunctionalTestBase {
+class CsvFormatterFunctionalTest extends FormatterFunctionalTestCase {
 
   public static function dataProviderFormatter() : array {
     return [
@@ -25,7 +23,7 @@ class CsvFormatterFunctionalTest extends FormatterFunctionalTestBase {
         [
           '--exclude-local' => TRUE,
           '--sort' => TRUE,
-          'paths' => [UnitTestBase::fixtureFile('test-data.sh')],
+          'paths' => [self::fixtureFile('test-data.sh')],
         ],
         <<<'EOD'
               Name;"Default value";Description
@@ -65,8 +63,8 @@ class CsvFormatterFunctionalTest extends FormatterFunctionalTestBase {
           // @phpstan-ignore-next-line
           '--path-strip-prefix' => dirname(realpath(__DIR__ . '/..')),
           'paths' => [
-            UnitTestBase::fixtureFile('test-data.bash'),
-            UnitTestBase::fixtureFile('test-data.sh'),
+            self::fixtureFile('test-data.bash'),
+            self::fixtureFile('test-data.sh'),
           ],
         ],
         <<<'EOD'
@@ -100,9 +98,9 @@ class CsvFormatterFunctionalTest extends FormatterFunctionalTestBase {
       [
         [
           '--exclude-local' => TRUE,
-          '--exclude-from-file' => [UnitTestBase::fixtureFile('test-data-excluded.txt')],
+          '--exclude-from-file' => [self::fixtureFile('test-data-excluded.txt')],
           '--sort' => TRUE,
-          'paths' => [UnitTestBase::fixtureFile('test-data.sh')],
+          'paths' => [self::fixtureFile('test-data.sh')],
         ],
         <<<'EOD'
         Name;"Default value";Description
@@ -110,7 +108,7 @@ class CsvFormatterFunctionalTest extends FormatterFunctionalTestBase {
         VAR10;val10;"Description without a leading space."
         VAR11;val11;"Description without a leading space that goes on multiple lines and has a `VAR7`, `$VAR8`, $VAR9, VAR10 and VAR12 variable reference."
         VAR12;val12;"Description without a leading space that goes on multiple lines.
-        
+
         And has a comment with no content."
         VAR13;val13;"And has an empty line before it without a content."
         VAR15;val16;
@@ -135,10 +133,10 @@ class CsvFormatterFunctionalTest extends FormatterFunctionalTestBase {
       [
         [
           '--exclude-local' => TRUE,
-          '--exclude-from-file' => [UnitTestBase::fixtureFile('test-data-excluded.txt')],
+          '--exclude-from-file' => [self::fixtureFile('test-data-excluded.txt')],
           '--exclude-prefix' => ['VAR1'],
           '--sort' => TRUE,
-          'paths' => [UnitTestBase::fixtureFile('test-data.sh')],
+          'paths' => [self::fixtureFile('test-data.sh')],
         ],
         <<<'EOD'
         Name;"Default value";Description
@@ -164,7 +162,7 @@ class CsvFormatterFunctionalTest extends FormatterFunctionalTestBase {
         [
           '--exclude-local' => TRUE,
           '--sort' => TRUE,
-          'paths' => [UnitTestBase::fixtureDir() . '/dir'],
+          'paths' => [self::fixtureDir() . '/dir'],
         ],
         <<<'EOD'
         Name;"Default value";Description
@@ -172,7 +170,7 @@ class CsvFormatterFunctionalTest extends FormatterFunctionalTestBase {
         VAR10;val10;"Description without a leading space."
         VAR11;val11bash;"Description from bash without a leading space that goes on multiple lines."
         VAR12;val12;"Description without a leading space that goes on multiple lines.
-        
+
         And has a comment with no content."
         VAR13;val13;"And has an empty line before it without a content."
         VAR14;val14;
@@ -201,8 +199,8 @@ class CsvFormatterFunctionalTest extends FormatterFunctionalTestBase {
           '--exclude-local' => TRUE,
           '--sort' => TRUE,
           'paths' => [
-            UnitTestBase::fixtureFile('test-data.bash'),
-            UnitTestBase::fixtureFile('test-data.sh'),
+            self::fixtureFile('test-data.bash'),
+            self::fixtureFile('test-data.sh'),
           ],
         ],
         <<<'EOD'
@@ -211,7 +209,7 @@ class CsvFormatterFunctionalTest extends FormatterFunctionalTestBase {
         VAR10;val10;"Description without a leading space."
         VAR11;val11bash;"Description from bash without a leading space that goes on multiple lines."
         VAR12;val12;"Description without a leading space that goes on multiple lines.
-        
+
         And has a comment with no content."
         VAR13;val13;"And has an empty line before it without a content."
         VAR14;val14;

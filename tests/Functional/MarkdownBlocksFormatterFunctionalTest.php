@@ -2,8 +2,6 @@
 
 namespace AlexSkrypnyk\Shellvar\Tests\Functional;
 
-use AlexSkrypnyk\Shellvar\Tests\Unit\UnitTestBase;
-
 /**
  * Class MarkdownTableFormatterFunctionalTest.
  *
@@ -11,12 +9,12 @@ use AlexSkrypnyk\Shellvar\Tests\Unit\UnitTestBase;
  *
  * @group scripts
  *
- * @covers \AlexSkrypnyk\Shellvar\Command\ShellvarCommand
+ * @covers \AlexSkrypnyk\Shellvar\Command\ExtractCommand
  *
  * phpcs:disable Drupal.Commenting.DocComment.MissingShort
  * phpcs:disable Drupal.Commenting.FunctionComment.Missing
  */
-class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase {
+class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestCase {
 
   public static function dataProviderFormatter() : array {
     return [
@@ -27,7 +25,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
           '--format' => 'md-blocks',
           '--md-no-inline-code-wrap-vars' => TRUE,
           '--md-no-inline-code-wrap-numbers' => TRUE,
-          'paths' => [UnitTestBase::fixtureFile('test-data.sh')],
+          'paths' => [self::fixtureFile('test-data.sh')],
         ],
         <<<'EOD'
         ### VAR1
@@ -144,7 +142,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
           '--sort' => TRUE,
           '--format' => 'md-blocks',
           '--md-no-inline-code-wrap-numbers' => TRUE,
-          'paths' => [UnitTestBase::fixtureFile('test-data.sh')],
+          'paths' => [self::fixtureFile('test-data.sh')],
         ],
         <<<'EOD'
         ### `VAR1`
@@ -260,7 +258,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
           '--exclude-local' => TRUE,
           '--sort' => TRUE,
           '--format' => 'md-blocks',
-          'paths' => [UnitTestBase::fixtureFile('test-data.sh')],
+          'paths' => [self::fixtureFile('test-data.sh')],
         ],
         <<<'EOD'
         ### `VAR1`
@@ -377,8 +375,8 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
           '--sort' => TRUE,
           '--format' => 'md-blocks',
           '--md-no-inline-code-wrap-numbers' => TRUE,
-          '--md-inline-code-extra-file' => [UnitTestBase::fixtureFile('test-data-ticks-included.txt')],
-          'paths' => [UnitTestBase::fixtureFile('test-data.sh')],
+          '--md-inline-code-extra-file' => [self::fixtureFile('test-data-ticks-included.txt')],
+          'paths' => [self::fixtureFile('test-data.sh')],
         ],
         <<<'EOD'
         ### `VAR1`
@@ -494,11 +492,11 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
           '--exclude-local' => TRUE,
           '--sort' => TRUE,
           '--format' => 'md-blocks',
-          '--md-block-template-file' => UnitTestBase::fixtureFile('test-template-path.md'),
+          '--md-block-template-file' => self::fixtureFile('test-template-path.md'),
           // @phpstan-ignore-next-line
           '--path-strip-prefix' => dirname(realpath(__DIR__ . '/..')),
           '--md-no-inline-code-wrap-numbers' => TRUE,
-          'paths' => [UnitTestBase::fixtureDir() . '/multipath'],
+          'paths' => [self::fixtureDir() . '/multipath'],
         ],
         <<<'EOD'
         ### `VAR11`
@@ -529,7 +527,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
           '--sort' => TRUE,
           '--format' => 'md-blocks',
           '--md-no-inline-code-wrap-numbers' => TRUE,
-          'paths' => [UnitTestBase::fixtureFile('test-data-list.sh')],
+          'paths' => [self::fixtureFile('test-data-list.sh')],
         ],
         <<<'EOD'
         ### `VAR1`
@@ -564,7 +562,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
           '--format' => 'md-blocks',
           '--md-link-vars' => TRUE,
           '--md-link-vars-anchor-case' => 'lower',
-          'paths' => [UnitTestBase::fixtureFile('test-data-links.sh')],
+          'paths' => [self::fixtureFile('test-data-links.sh')],
         ],
         <<<'EOD'
         ### `VAR1`
@@ -590,7 +588,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
           '--exclude-local' => TRUE,
           '--sort' => TRUE,
           '--format' => 'md-blocks',
-          'paths' => [UnitTestBase::fixtureFile('test-data-skip-text.sh')],
+          'paths' => [self::fixtureFile('test-data-skip-text.sh')],
         ],
         <<<'EOD'
         ### `VAR2`
@@ -609,7 +607,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestBase 
           '--sort' => TRUE,
           '--format' => 'md-blocks',
           '--skip-text' => 'docs-skip',
-          'paths' => [UnitTestBase::fixtureFile('test-data-skip-text.sh')],
+          'paths' => [self::fixtureFile('test-data-skip-text.sh')],
         ],
         <<<'EOD'
         ### `VAR1`
