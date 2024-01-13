@@ -22,7 +22,7 @@ class Utils {
    * @return array<string>
    *   A list of lines, merged into one array.
    */
-  public static function getLinesFromFiles(array $paths, $remove_empty = FALSE) : array {
+  public static function getLinesFromFiles(array $paths, bool $remove_empty = FALSE) : array {
     $lines = [];
 
     foreach ($paths as $path) {
@@ -30,7 +30,7 @@ class Utils {
       $lines = array_merge($lines, preg_split("/(\r\n|\n|\r)/", file_get_contents($path)));
     }
 
-    return $remove_empty ? array_filter($lines) : $lines;
+    return $remove_empty ? array_values(array_filter($lines)) : $lines;
   }
 
   /**
