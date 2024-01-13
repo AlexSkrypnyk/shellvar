@@ -10,6 +10,7 @@ namespace AlexSkrypnyk\Shellvar\Tests\Functional;
  * @group scripts
  *
  * @covers \AlexSkrypnyk\Shellvar\Command\ExtractCommand
+ * @covers \AlexSkrypnyk\Shellvar\Formatter\CsvFormatter
  *
  * phpcs:disable Drupal.Commenting.DocComment.MissingShort
  * phpcs:disable Drupal.Commenting.FunctionComment.Missing

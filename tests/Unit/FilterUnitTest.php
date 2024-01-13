@@ -23,6 +23,7 @@ class FilterUnitTest extends UnitTestBase {
    * @dataProvider dataProviderFilterExcludedPrefixedVars
    * @covers ::filter
    * @covers \AlexSkrypnyk\Shellvar\Filter\AbstractFilter::__construct
+   * @covers \AlexSkrypnyk\Shellvar\Config\ConfigAwareTrait::setConfig
    */
   public function testFilterExcludedPrefixedVars(array $var_names, array $prefixes, array $expected) : void {
     $vars = [];

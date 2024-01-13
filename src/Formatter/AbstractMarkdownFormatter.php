@@ -149,14 +149,7 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
         $in_list = TRUE;
       }
       else {
-        // If previous line was a list item and this is empty - preserve NL.
-        if ($in_list && empty($line[$k])) {
-          $lines[$k] = $lines[$k] . '<NEWLINE>';
-          $in_list = FALSE;
-        }
-        // If previous line was a list item and this is not a list item -
-        // this line is a part of the list item - replace NL with BR.
-        elseif ($in_list && !$this->isListItem($line[$k])) {
+        if ($in_list && !$this->isListItem($line[$k])) {
           $lines[$k - 1] = str_replace('<NEWLINE>', $br, $lines[$k - 1]);
           $lines[$k] = trim($lines[$k]) . '<NEWLINE>';
           $in_list = TRUE;
