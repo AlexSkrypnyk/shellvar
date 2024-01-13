@@ -34,7 +34,7 @@ abstract class FunctionalTestCase extends TestCase {
    *
    * @param string|object $object_or_class
    *   Object or class name.
-   * @param array<string> $input
+   * @param array<mixed> $input
    *   Optional array of input arguments.
    * @param array<string, string> $options
    *   Optional array of options. See CommandTester::execute() for details.
