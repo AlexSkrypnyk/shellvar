@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AlexSkrypnyk\Shellvar;
 
 use Symfony\Component\Console\Exception\InvalidOptionException;
@@ -77,7 +79,7 @@ class Utils {
    * @throws \Symfony\Component\Console\Exception\InvalidOptionException
    *   If resolved path is not readable.
    */
-  public static function resolvePath($path) {
+  public static function resolvePath(string $path): string {
     if (empty($path)) {
       return $path;
     }

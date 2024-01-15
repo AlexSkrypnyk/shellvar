@@ -9,7 +9,7 @@
 
 [![GitHub Issues](https://img.shields.io/github/issues/AlexSkrypnyk/shellvar.svg)](https://github.com/AlexSkrypnyk/shellvar/issues)
 [![GitHub Pull Requests](https://img.shields.io/github/issues-pr/AlexSkrypnyk/shellvar.svg)](https://github.com/AlexSkrypnyk/shellvar/pulls)
-[![Tests](https://github.com/AlexSkrypnyk/shellvar/actions/workflows/test.yml/badge.svg)](https://github.com/AlexSkrypnyk/shellvar/actions/workflows/test.yml)
+[![Tests](https://github.com/AlexSkrypnyk/shellvar/actions/workflows/test-php.yml/badge.svg)](https://github.com/AlexSkrypnyk/shellvar/actions/workflows/test-php.yml)
 [![codecov](https://codecov.io/gh/AlexSkrypnyk/shellvar/graph/badge.svg?token=7WEB1IXBYT)](https://codecov.io/gh/AlexSkrypnyk/shellvar)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/AlexSkrypnyk/shellvar)
 ![LICENSE](https://img.shields.io/github/license/AlexSkrypnyk/shellvar)

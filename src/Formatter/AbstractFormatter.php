@@ -79,7 +79,7 @@ abstract class AbstractFormatter implements FormatterInterface, FactoryDiscovera
 
     if ($header && !is_array($header)) {
       // @phpstan-ignore-next-line
-      $pairs = explode(';', $header);
+      $pairs = explode(';', (string) $header);
       $result = [];
       foreach ($pairs as $pair) {
         $parts = explode('=', $pair, 2);

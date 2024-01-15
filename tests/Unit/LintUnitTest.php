@@ -38,7 +38,7 @@ class LintUnitTest extends UnitTestBase {
       "11: var=\$VAR1",
       "12: var=\"\$VAR2\"",
       "14: var=\$VAR3",
-      "Found 3 variables in file \"$invalidFile\" that are not wrapped in \${}.",
+      sprintf('Found 3 variables in file "%s" that are not wrapped in ${}.', $invalidFile),
     ], $result['messages']);
     $result = $lintCommand->processFile($invalidFile, TRUE);
     $this->assertEquals(TRUE, $result['success']);
@@ -46,7 +46,7 @@ class LintUnitTest extends UnitTestBase {
       "Replaced in line 11: var=\$VAR1",
       "Replaced in line 12: var=\"\$VAR2\"",
       "Replaced in line 14: var=\$VAR3",
-      "Replaced 3 variables in file \"$invalidFile\".",
+      sprintf('Replaced 3 variables in file "%s".', $invalidFile),
     ], $result['messages']);
 
     // Test valid file.
@@ -54,12 +54,12 @@ class LintUnitTest extends UnitTestBase {
     $result = $lintCommand->processFile($validFile);
     $this->assertEquals(TRUE, $result['success']);
     $this->assertEquals([
-      "Found 0 variables in file \"$validFile\" that are not wrapped in \${}.",
+      sprintf('Found 0 variables in file "%s" that are not wrapped in ${}.', $validFile),
     ], $result['messages']);
     $result = $lintCommand->processFile($validFile, TRUE);
     $this->assertEquals(TRUE, $result['success']);
     $this->assertEquals([
-      "Replaced 0 variables in file \"$validFile\".",
+      sprintf('Replaced 0 variables in file "%s".', $validFile),
     ], $result['messages']);
   }
 
@@ -216,9 +216,9 @@ class LintUnitTest extends UnitTestBase {
       ['"var"', TRUE],
       [' "var" ', TRUE],
       [' " var " ', TRUE],
-      ['\'var\'', FALSE],
-      [' \'var\' ', FALSE],
-      [' \' var \' ', FALSE],
+      ["'var'", FALSE],
+      [" 'var' ", FALSE],
+      [" ' var ' ", FALSE],
       ['"\'var\'"', TRUE],
       [' "\'var\'"', TRUE],
       [' "\' var\'"', TRUE],

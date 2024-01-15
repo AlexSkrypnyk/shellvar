@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AlexSkrypnyk\Shellvar\Formatter;
 
 use AlexSkrypnyk\Shellvar\Utils;
@@ -39,7 +41,7 @@ class MarkdownBlocksFormatter extends AbstractMarkdownFormatter {
   /**
    * {@inheritdoc}
    */
-  public function processConfig(mixed $config): void {
+  protected function processConfig(mixed $config): void {
     parent::processConfig($config);
     if (!empty($config->get('md-block-template-file'))) {
       // @phpstan-ignore-next-line
@@ -64,7 +66,7 @@ class MarkdownBlocksFormatter extends AbstractMarkdownFormatter {
     $template = $this->config->get('md-block-template-file') ?: static::getDefaultTemplate();
 
     foreach ($this->variables as $variable) {
-      $placeholders_tokens = array_map(function ($v) {
+      $placeholders_tokens = array_map(static function (string $v) : string {
         return '{{ ' . $v . ' }}';
       }, array_keys($variable->toArray($fields)));
 
@@ -84,7 +86,7 @@ class MarkdownBlocksFormatter extends AbstractMarkdownFormatter {
    * @return string
    *   The template.
    */
-  protected static function getDefaultTemplate() {
+  protected static function getDefaultTemplate(): string {
     return <<<EOT
     ### {{ name }}
     

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AlexSkrypnyk\Shellvar\Filter;
 
 use AlexSkrypnyk\Shellvar\Variable\Variable;
@@ -44,8 +46,8 @@ class ExcludeLocalFilter extends AbstractFilter {
    */
   public function filter(array $variables): array {
     // @phpstan-ignore-next-line
-    return array_filter($variables, function (Variable $variable) {
-      return $variable->getName() != strtolower($variable->getName());
+    return array_filter($variables, static function (Variable $variable) : bool {
+      return $variable->getName() !== strtolower($variable->getName());
     });
   }
 

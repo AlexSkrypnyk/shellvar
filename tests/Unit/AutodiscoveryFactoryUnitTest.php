@@ -1,9 +1,15 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AlexSkrypnyk\Shellvar\Tests\Unit;
 
 use AlexSkrypnyk\Shellvar\Config\Config;
 use AlexSkrypnyk\Shellvar\Factory\AutodiscoveryFactory;
+use AlexSkrypnyk\Shellvar\Tests\Fixtures\Discovery1\DummyDiscoverable11;
+use AlexSkrypnyk\Shellvar\Tests\Fixtures\Discovery1\DummyDiscoverable12;
+use AlexSkrypnyk\Shellvar\Tests\Fixtures\Discovery2\DummyDiscoverable21;
+use AlexSkrypnyk\Shellvar\Tests\Fixtures\Discovery2\DummyDiscoverable22;
 
 /**
  * Class AutodiscoveryFactoryUnitTest.
@@ -24,10 +30,10 @@ class AutodiscoveryFactoryUnitTest extends UnitTestBase {
     $autodiscovery = new AutodiscoveryFactory('tests/Fixtures');
     $discovered_classes = $autodiscovery->getEntityClasses();
     $this->assertEquals([
-      'DummyDiscoverable11' => 'AlexSkrypnyk\Shellvar\Tests\Fixtures\Discovery1\DummyDiscoverable11',
-      'DummyDiscoverable12' => 'AlexSkrypnyk\Shellvar\Tests\Fixtures\Discovery1\DummyDiscoverable12',
-      'DummyDiscoverable21' => 'AlexSkrypnyk\Shellvar\Tests\Fixtures\Discovery2\DummyDiscoverable21',
-      'DummyDiscoverable22' => 'AlexSkrypnyk\Shellvar\Tests\Fixtures\Discovery2\DummyDiscoverable22',
+      'DummyDiscoverable11' => DummyDiscoverable11::class,
+      'DummyDiscoverable12' => DummyDiscoverable12::class,
+      'DummyDiscoverable21' => DummyDiscoverable21::class,
+      'DummyDiscoverable22' => DummyDiscoverable22::class,
     ], $discovered_classes);
   }
 
@@ -42,15 +48,15 @@ class AutodiscoveryFactoryUnitTest extends UnitTestBase {
     $autodiscovery = new AutodiscoveryFactory('tests/Fixtures/Discovery1');
     $discovered_classes = $autodiscovery->getEntityClasses();
     $this->assertEquals([
-      'DummyDiscoverable11' => 'AlexSkrypnyk\Shellvar\Tests\Fixtures\Discovery1\DummyDiscoverable11',
-      'DummyDiscoverable12' => 'AlexSkrypnyk\Shellvar\Tests\Fixtures\Discovery1\DummyDiscoverable12',
+      'DummyDiscoverable11' => DummyDiscoverable11::class,
+      'DummyDiscoverable12' => DummyDiscoverable12::class,
     ], $discovered_classes);
 
     $autodiscovery = new AutodiscoveryFactory('tests/Fixtures/Discovery2');
     $discovered_classes = $autodiscovery->getEntityClasses();
     $this->assertEquals([
-      'DummyDiscoverable21' => 'AlexSkrypnyk\Shellvar\Tests\Fixtures\Discovery2\DummyDiscoverable21',
-      'DummyDiscoverable22' => 'AlexSkrypnyk\Shellvar\Tests\Fixtures\Discovery2\DummyDiscoverable22',
+      'DummyDiscoverable21' => DummyDiscoverable21::class,
+      'DummyDiscoverable22' => DummyDiscoverable22::class,
     ], $discovered_classes);
   }
 
@@ -79,7 +85,7 @@ class AutodiscoveryFactoryUnitTest extends UnitTestBase {
     $autodiscovery = new AutodiscoveryFactory('tests/Fixtures');
     $discovered_all = $autodiscovery->createAll($config);
     $this->assertCount(4, $discovered_all);
-    usort($discovered_all, function ($a, $b) {
+    usort($discovered_all, static function ($a, $b) : int {
       return strcmp($a::getName(), $b::getName());
     });
     $this->assertEquals('DummyDiscoverable11', $discovered_all[0]::getName());

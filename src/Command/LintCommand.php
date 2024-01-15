@@ -42,7 +42,7 @@ class LintCommand extends Command {
     $result = $this->processFile($file, $is_running_fix);
 
     $exit_code = $result['success'] ? Command::SUCCESS : Command::FAILURE;
-    $messages  = !empty($result['messages']) ? $result['messages'] : [];
+    $messages = empty($result['messages']) ? [] : $result['messages'];
     $output->writeln($messages);
 
     return $exit_code;
@@ -69,7 +69,7 @@ class LintCommand extends Command {
     $lines = @file($file_name);
     if ($lines === FALSE) {
       $result['success'] = FALSE;
-      $result['messages'][] = "Could not open file $file_name";
+      $result['messages'][] = 'Could not open file ' . $file_name;
 
       return $result;
     }
@@ -122,8 +122,7 @@ class LintCommand extends Command {
     }
 
     // Find and replace non-escaped variables.
-    //
-    $updated_line = preg_replace_callback('/(?<!\\\\)\$[a-zA-Z_][a-zA-Z0-9_]*/', function ($matches) use ($line) {
+    $updated_line = preg_replace_callback('/(?<!\\\)\$[a-zA-Z_]\w*/', function (array $matches) use ($line): string {
       $value = $matches[0][0];
       $pos = $matches[0][1];
 
@@ -168,7 +167,7 @@ class LintCommand extends Command {
     // Find previous single or double quote.
     for ($i = $pos; $i >= 0; $i--) {
       $char = $line[$i] ?? '';
-      if ($char == '"' || $char == '\'') {
+      if ($char == '"' || $char == "'") {
         $prev = $char;
         break;
       }
@@ -176,13 +175,11 @@ class LintCommand extends Command {
 
     $double_even = substr_count($prefix, '"') % 2 == 0;
 
-    if ($prev == '"') {
-      if ($double_even) {
-        return TRUE;
-      }
+    if ($prev == '"' && $double_even) {
+      return TRUE;
     }
 
-    if ($prev == '\'') {
+    if ($prev == "'") {
       // Prev interpolation is closed - this is a new one.
       if ($double_even) {
         // New non-interpolation.

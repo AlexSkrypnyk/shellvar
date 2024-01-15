@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AlexSkrypnyk\Shellvar\Factory;
 
 use AlexSkrypnyk\Shellvar\Config\Config;
@@ -19,14 +21,7 @@ class AutodiscoveryFactory {
    *
    * @var array<mixed>
    */
-  protected $classes = [];
-
-  /**
-   * Directory to scan for entities.
-   *
-   * @var string
-   */
-  protected $dir;
+  protected array $classes = [];
 
   /**
    * Constructor.
@@ -34,9 +29,7 @@ class AutodiscoveryFactory {
    * @param string $dir
    *   Directory to scan for entities.
    */
-  public function __construct($dir) {
-    $this->dir = $dir;
-
+  public function __construct(protected string $dir) {
     // Automatically discover own classes provided with a package.
     static::discoverOwn();
   }
@@ -71,6 +64,8 @@ class AutodiscoveryFactory {
    *
    * @return array<mixed>|\AlexSkrypnyk\Shellvar\Filter\FilterInterface[]
    *   Array of instantiated entity class instances.
+   *
+   * @throws \Exception
    */
   public function createAll(Config $config) : array {
     $instances = [];
