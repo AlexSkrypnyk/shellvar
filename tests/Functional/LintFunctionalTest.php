@@ -31,9 +31,9 @@ class LintFunctionalTest extends FunctionalTestCase {
     $valid_file_not_run = $this->createTempFileFromFixtureFile('wrapped.sh');
     $this->assertFileEquals($valid_file, $valid_file_not_run);
     $output = $this->runExecute($command, ['file' => $valid_file]);
-    $this->assertEquals("Found 0 variables in file \"$valid_file\" that are not wrapped in \${}." . PHP_EOL, implode(PHP_EOL, $output));
+    $this->assertEquals(sprintf('Found 0 variables in file "%s" that are not wrapped in ${}.', $valid_file) . PHP_EOL, implode(PHP_EOL, $output));
     $output = $this->runExecute($command, ['file' => $valid_file, '-f' => TRUE]);
-    $this->assertEquals("Replaced 0 variables in file \"$valid_file\"." . PHP_EOL, implode(PHP_EOL, $output));
+    $this->assertEquals(sprintf('Replaced 0 variables in file "%s".', $valid_file) . PHP_EOL, implode(PHP_EOL, $output));
     $this->assertFileEquals($valid_file, $valid_file_not_run);
     // Invalid file.
     $invalid_file = $this->createTempFileFromFixtureFile('unwrapped.sh');
@@ -44,7 +44,7 @@ class LintFunctionalTest extends FunctionalTestCase {
       '11: var=$VAR1',
       '12: var="$VAR2"',
       '14: var=$VAR3',
-      "Found 3 variables in file \"$invalid_file\" that are not wrapped in \${}.",
+      sprintf('Found 3 variables in file "%s" that are not wrapped in ${}.', $invalid_file),
       '',
     ], $output);
     $output = $this->runExecute($command, ['file' => $invalid_file, '-f' => TRUE]);
@@ -52,7 +52,7 @@ class LintFunctionalTest extends FunctionalTestCase {
       'Replaced in line 11: var=$VAR1',
       'Replaced in line 12: var="$VAR2"',
       'Replaced in line 14: var=$VAR3',
-      "Replaced 3 variables in file \"$invalid_file\".",
+      sprintf('Replaced 3 variables in file "%s".', $invalid_file),
       '',
     ], $output);
     $this->assertFileNotEquals($invalid_file, $invalid_file_not_run);

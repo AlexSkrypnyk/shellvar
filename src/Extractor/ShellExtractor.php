@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AlexSkrypnyk\Shellvar\Extractor;
 
 use AlexSkrypnyk\Shellvar\Utils;
@@ -15,7 +17,7 @@ class ShellExtractor extends AbstractExtractor {
   /**
    * Defines a comment separator.
    */
-  const COMMENT_SEPARATOR = '#';
+  final const COMMENT_SEPARATOR = '#';
 
   /**
    * {@inheritdoc}
@@ -31,8 +33,8 @@ class ShellExtractor extends AbstractExtractor {
     parent::extract();
 
     // Exclude non-assignments.
-    array_walk($this->variables, function (&$var) {
-      $var = !$var->getIsAssignment() ? FALSE : $var;
+    array_walk($this->variables, static function (&$var) : void {
+      $var = $var->getIsAssignment() ? $var : FALSE;
     });
     $this->variables = array_filter($this->variables);
 
@@ -52,7 +54,7 @@ class ShellExtractor extends AbstractExtractor {
     foreach ($lines as $num => $line) {
       $var = $this->extractVariable($line);
 
-      if (!$var) {
+      if (!$var instanceof Variable) {
         continue;
       }
 
@@ -68,9 +70,9 @@ class ShellExtractor extends AbstractExtractor {
       }
 
       $description = $this->extractVariableDescription($lines, $num, $this->config->get('skip-description-prefix'));
-      if ($description) {
+      if ($description !== '' && $description !== '0') {
         // @phpstan-ignore-next-line
-        if ($skip && str_contains($description, $skip)) {
+        if ($skip && str_contains($description, (string) $skip)) {
           continue;
         }
 
@@ -95,7 +97,7 @@ class ShellExtractor extends AbstractExtractor {
    * @return \AlexSkrypnyk\Shellvar\Variable\Variable|null
    *   Variable instance or NULL if a variable was not extracted.
    */
-  protected function extractVariable(string $line) {
+  protected function extractVariable(string $line): ?Variable {
     $line = trim($line);
 
     if (str_starts_with(trim($line), self::COMMENT_SEPARATOR)) {
@@ -103,32 +105,32 @@ class ShellExtractor extends AbstractExtractor {
     }
 
     // Assignment with inline code (assessing start is enough).
-    if (preg_match('/^`([a-zA-Z][a-zA-Z0-9_]*)=.*$/', $line, $matches)) {
+    if (preg_match('/^`([a-zA-Z]\w*)=.*$/', $line, $matches)) {
       return NULL;
     }
 
     // Assignment.
-    if (preg_match('/^([a-zA-Z][a-zA-Z0-9_]*)=.*$/', $line, $matches)) {
+    if (preg_match('/^([a-zA-Z]\w*)=.*$/', $line, $matches)) {
       return (new Variable($matches[1]))->setIsAssignment(TRUE);
     }
 
     // Usage as `${variable}`.
-    if (preg_match('/`\${([a-zA-Z][a-zA-Z0-9_]*)}`/', $line, $matches)) {
+    if (preg_match('/`\${([a-zA-Z]\w*)}`/', $line, $matches)) {
       return (new Variable($matches[1]))->setIsInlineCode(TRUE);
     }
 
     // Usage as ${variable}.
-    if (preg_match('/\${([a-zA-Z][a-zA-Z0-9_]*)}/', $line, $matches)) {
+    if (preg_match('/\${([a-zA-Z]\w*)}/', $line, $matches)) {
       return new Variable($matches[1]);
     }
 
     // Usage as `$variable`.
-    if (preg_match('/`\$([a-zA-Z][a-zA-Z0-9_]*)`/', $line, $matches)) {
+    if (preg_match('/`\$([a-zA-Z]\w*)`/', $line, $matches)) {
       return (new Variable($matches[1]))->setIsInlineCode(TRUE);
     }
 
     // Usage as $variable.
-    if (preg_match('/\$([a-zA-Z][a-zA-Z0-9_]*)/', $line, $matches)) {
+    if (preg_match('/\$([a-zA-Z]\w*)/', $line, $matches)) {
       return new Variable($matches[1]);
     }
 
@@ -161,9 +163,8 @@ class ShellExtractor extends AbstractExtractor {
     // allows to reduce the value to the innermost matching pattern.
     while (TRUE) {
       $replaced = 0;
-      $value = preg_replace_callback('/\$\{([^:\-}]+):-([^}]+)?}/', function ($matches) use (&$replaced) {
+      $value = preg_replace_callback('/\$\{([^:\-}]+):-([^}]+)?}/', static function ($matches) use (&$replaced) : string {
         $replaced++;
-
         // Use found value or the default value, i.e. in case of ${var:-abc},
         // use 'abc'; in case of ${var:-}, use 'var', but as a variable to make
         // sure that it is not confused with a scalar value ($var vs 'var').
@@ -208,7 +209,7 @@ class ShellExtractor extends AbstractExtractor {
    * @return string
    *   A variable description.
    */
-  protected function extractVariableDescription(array $lines, $line_num, mixed $skip_prefixes = [], $comment_separator = self::COMMENT_SEPARATOR) {
+  protected function extractVariableDescription(array $lines, $line_num, mixed $skip_prefixes = [], $comment_separator = self::COMMENT_SEPARATOR): string {
     $comment_lines = [];
 
     $line_num = min($line_num, count($lines) - 1);
@@ -221,8 +222,8 @@ class ShellExtractor extends AbstractExtractor {
 
     $comment_lines = array_reverse($comment_lines);
 
-    $comment_lines = array_filter($comment_lines, function ($value) use ($skip_prefixes, $comment_separator) {
-      // @phpstan-ignore-next-line
+    $comment_lines = array_filter($comment_lines, static function ($value) use ($skip_prefixes, $comment_separator) : bool {
+        // @phpstan-ignore-next-line
       foreach ($skip_prefixes as $prefix) {
         // @phpstan-ignore-next-line
         if (str_starts_with($value, ltrim($prefix, $comment_separator))) {

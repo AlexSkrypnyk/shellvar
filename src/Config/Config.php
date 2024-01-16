@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AlexSkrypnyk\Shellvar\Config;
 
 /**
@@ -14,7 +16,7 @@ class Config implements ConfigInterface {
    *
    * @var array<string|array|mixed>
    */
-  protected $values = [];
+  protected array $values = [];
 
   /**
    * Config constructor.

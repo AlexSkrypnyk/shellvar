@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AlexSkrypnyk\Shellvar\Filter;
 
 use AlexSkrypnyk\Shellvar\AbstractManager;
@@ -17,7 +19,7 @@ class FilterManager extends AbstractManager {
    *
    * @var \AlexSkrypnyk\Shellvar\Filter\FilterInterface[]
    */
-  protected $filters = [];
+  protected array $filters = [];
 
   /**
    * FilterManager constructor.
@@ -28,7 +30,7 @@ class FilterManager extends AbstractManager {
   public function __construct(Config $config) {
     parent::__construct($config);
     $this->filters = $this->factory->createAll($this->getConfig());
-    usort($this->filters, function (FilterInterface $a, FilterInterface $b) {
+    usort($this->filters, static function (FilterInterface $a, FilterInterface $b) : int {
       return $b::getPriority() <=> $a::getPriority();
     });
   }

@@ -70,7 +70,7 @@ class ExtractCommand extends Command {
    * @return int
    *   The command exit code.
    */
-  public function execute(InputInterface $input, OutputInterface $output): int {
+  protected function execute(InputInterface $input, OutputInterface $output): int {
     $this->config->setAll($input->getArguments(), $input->getOptions());
 
     // Extract.

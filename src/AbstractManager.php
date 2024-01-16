@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AlexSkrypnyk\Shellvar;
 
+use AlexSkrypnyk\Shellvar\Config\Config;
 use AlexSkrypnyk\Shellvar\Config\ConfigAwareTrait;
 use AlexSkrypnyk\Shellvar\Factory\AutodiscoveryFactory;
 use AlexSkrypnyk\Shellvar\Traits\SingletonInterface;
@@ -19,10 +22,8 @@ abstract class AbstractManager implements SingletonInterface, ConsoleAwareInterf
 
   /**
    * The entity factory.
-   *
-   * @var \AlexSkrypnyk\Shellvar\Factory\AutodiscoveryFactory
    */
-  protected $factory;
+  protected AutodiscoveryFactory $factory;
 
   /**
    * AbstractManager constructor.
@@ -30,7 +31,7 @@ abstract class AbstractManager implements SingletonInterface, ConsoleAwareInterf
    * @param \AlexSkrypnyk\Shellvar\Config\Config $config
    *   The configuration.
    */
-  public function __construct($config) {
+  public function __construct(Config $config) {
     $this->setConfig($config);
 
     $this->factory = new AutodiscoveryFactory(static::getDiscoveryDirectory());
@@ -68,9 +69,8 @@ abstract class AbstractManager implements SingletonInterface, ConsoleAwareInterf
       // @phpstan-ignore-next-line
       $items = array_merge($class::getConsoleArguments());
     }
-    $items = array_merge($items, $this::getConsoleArguments());
 
-    return $items;
+    return array_merge($items, $this::getConsoleArguments());
   }
 
   /**
@@ -86,9 +86,8 @@ abstract class AbstractManager implements SingletonInterface, ConsoleAwareInterf
       // @phpstan-ignore-next-line
       $items = array_merge($items, $class::getConsoleOptions());
     }
-    $items = array_merge($items, $this::getConsoleOptions());
 
-    return $items;
+    return array_merge($items, $this::getConsoleOptions());
   }
 
 }

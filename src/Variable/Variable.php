@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AlexSkrypnyk\Shellvar\Variable;
 
 /**
@@ -10,46 +12,31 @@ namespace AlexSkrypnyk\Shellvar\Variable;
 class Variable {
 
   /**
-   * The variable name.
-   *
-   * @var string
-   */
-  protected $name;
-
-  /**
    * The variable description.
-   *
-   * @var string
    */
-  protected $description = '';
+  protected string $description = '';
 
   /**
    * The variable default value.
-   *
-   * @var mixed
    */
-  protected $defaultValue = NULL;
+  protected mixed $defaultValue = NULL;
 
   /**
    * Path to the files where the variable is defined.
    *
    * @var array<string>
    */
-  protected $paths;
+  protected array $paths;
 
   /**
    * Whether the variable is an assignment.
-   *
-   * @var bool
    */
-  protected $isAssignment = FALSE;
+  protected bool $isAssignment = FALSE;
 
   /**
    * Whether the variable is an inline code.
-   *
-   * @var bool
    */
-  protected $isInlineCode = FALSE;
+  protected bool $isInlineCode = FALSE;
 
   /**
    * Variable constructor.
@@ -57,8 +44,7 @@ class Variable {
    * @param string $name
    *   The variable name.
    */
-  public function __construct($name) {
-    $this->name = $name;
+  public function __construct(protected string $name) {
   }
 
   /**
@@ -67,7 +53,7 @@ class Variable {
    * @return string
    *   The variable name.
    */
-  public function getName() {
+  public function getName(): string {
     return $this->name;
   }
 
@@ -80,7 +66,7 @@ class Variable {
    * @return Variable
    *   The variable instance.
    */
-  public function setName($name) {
+  public function setName(string $name): Variable {
     $this->name = $name;
 
     return $this;
@@ -92,7 +78,7 @@ class Variable {
    * @return string
    *   The variable description.
    */
-  public function getDescription() {
+  public function getDescription(): string {
     return $this->description;
   }
 
@@ -105,7 +91,7 @@ class Variable {
    * @return Variable
    *   The variable instance.
    */
-  public function setDescription($description) {
+  public function setDescription(string $description): Variable {
     $this->description = $description;
 
     return $this;
@@ -117,7 +103,7 @@ class Variable {
    * @return mixed
    *   The variable default value.
    */
-  public function getDefaultValue() {
+  public function getDefaultValue(): mixed {
     return $this->defaultValue;
   }
 
@@ -130,7 +116,7 @@ class Variable {
    * @return Variable
    *   The variable instance.
    */
-  public function setDefaultValue($defaultValue) {
+  public function setDefaultValue(mixed $defaultValue): Variable {
     $this->defaultValue = $defaultValue;
 
     return $this;
@@ -186,7 +172,7 @@ class Variable {
    * @return bool
    *   Whether the variable is an assignment.
    */
-  public function getIsAssignment() {
+  public function getIsAssignment(): bool {
     return $this->isAssignment;
   }
 
@@ -200,7 +186,7 @@ class Variable {
    *   The variable instance.
    */
   public function setIsAssignment(bool $value): Variable {
-    $this->isAssignment = (bool) $value;
+    $this->isAssignment = $value;
 
     return $this;
   }
@@ -211,7 +197,7 @@ class Variable {
    * @return bool
    *   Whether the variable is an inline code.
    */
-  public function getIsInlineCode() {
+  public function getIsInlineCode(): bool {
     return $this->isInlineCode;
   }
 
@@ -225,7 +211,7 @@ class Variable {
    *   The variable instance.
    */
   public function setIsInlineCode(bool $value): Variable {
-    $this->isInlineCode = (bool) $value;
+    $this->isInlineCode = $value;
 
     return $this;
   }

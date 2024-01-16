@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AlexSkrypnyk\Shellvar\Formatter;
 
 use AlexSkrypnyk\Shellvar\Config\Config;
@@ -13,9 +15,9 @@ use Symfony\Component\Console\Input\InputOption;
  */
 abstract class AbstractMarkdownFormatter extends AbstractFormatter {
 
-  const VARIABLE_LINK_CASE_PRESERVE = 'preserve';
-  const VARIABLE_LINK_CASE_LOWER = 'lower';
-  const VARIABLE_LINK_CASE_UPPER = 'upper';
+  final const VARIABLE_LINK_CASE_PRESERVE = 'preserve';
+  final const VARIABLE_LINK_CASE_LOWER = 'lower';
+  final const VARIABLE_LINK_CASE_UPPER = 'upper';
 
   /**
    * Get console options.
@@ -62,7 +64,7 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
    *   The configuration.
    *   {@inheritdoc}.
    */
-  public function processConfig(Config $config): void {
+  protected function processConfig(Config $config): void {
     parent::processConfig($config);
 
     if (!empty($config->get('md-inline-code-extra-file'))) {
@@ -135,37 +137,33 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
       // Current line is empty and previous line is empty - preserve NL.
       elseif ($k > 0 && empty($line[$k])) {
         $lines[$k - 1] = str_replace($br, '<NEWLINE>', $lines[$k - 1]);
-        $lines[$k] = $lines[$k] . '<NEWLINE>';
+        $lines[$k] .= '<NEWLINE>';
         $in_list = FALSE;
       }
       elseif ($this->isListItem($line)) {
         if ($k > 0) {
           $lines[$k - 1] = str_replace($br, '<NEWLINE>', $lines[$k - 1]);
         }
-        $lines[$k] = $lines[$k] . '<NEWLINE>';
+        $lines[$k] .= '<NEWLINE>';
         if ($k > 1 && $lines[$k - 1] == '<NEWLINE>') {
           $lines[$k - 2] = str_replace($br, '<NEWLINE>', $lines[$k - 2]);
         }
         $in_list = TRUE;
       }
+      elseif ($in_list && !$this->isListItem($line[$k])) {
+        $lines[$k - 1] = str_replace('<NEWLINE>', $br, $lines[$k - 1]);
+        $lines[$k] = trim($lines[$k]) . '<NEWLINE>';
+        $in_list = TRUE;
+      }
       else {
-        if ($in_list && !$this->isListItem($line[$k])) {
-          $lines[$k - 1] = str_replace('<NEWLINE>', $br, $lines[$k - 1]);
-          $lines[$k] = trim($lines[$k]) . '<NEWLINE>';
-          $in_list = TRUE;
-        }
-        else {
-          $lines[$k] = $lines[$k] . $br;
-          $in_list = FALSE;
-        }
+        $lines[$k] .= $br;
+        $in_list = FALSE;
       }
     }
 
     $description = implode('', $lines);
 
-    $description = str_replace('<NEWLINE>', $nl, $description);
-
-    return $description;
+    return str_replace('<NEWLINE>', $nl, $description);
   }
 
   /**
@@ -193,8 +191,8 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
    *   A list of processed variables.
    */
   protected function processInlineCodeVars(array $variables, array $tokens = []): array {
-    $var_tokens = array_map(function ($v) {
-      return ltrim($v, '$');
+    $var_tokens = array_map(static function ($v): string {
+      return ltrim((string) $v, '$');
     }, array_keys($variables));
 
     foreach ($variables as $variable) {
@@ -230,8 +228,8 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
       foreach ($tokens as $token) {
         $token = trim($token);
 
-        $description = preg_replace_callback('/(`.*?`)|\b' . preg_quote($token, '/') . '\b/', function ($matches) use ($token) {
-          return $matches[0] == $token ? "`$token`" : $matches[0];
+        $description = preg_replace_callback('/(`.*?`)|\b' . preg_quote($token, '/') . '\b/', static function (array $matches) use ($token): string {
+          return $matches[0] === $token ? sprintf('`%s`', $token) : $matches[0];
            // @phpstan-ignore-next-line
         }, $description);
       }
@@ -254,7 +252,7 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
   protected function processInlineCodeNumbers(array $variables): array {
     foreach ($variables as $variable) {
       // @phpstan-ignore-next-line
-      $variable->setDescription(preg_replace('/\b((?<!`)[0-9]+)\b/', '`${1}`', $variable->getDescription()));
+      $variable->setDescription(preg_replace('/\b((?<!`)\d+)\b/', '`${1}`', $variable->getDescription()));
     }
 
     return $variables;
@@ -272,8 +270,8 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
    *   A list of processed variables.
    */
   protected function processLinks(array $variables, $anchor_case = self::VARIABLE_LINK_CASE_PRESERVE): array {
-    $var_tokens = array_map(function ($v) {
-      return ltrim($v, '$');
+    $var_tokens = array_map(static function ($v): string {
+      return ltrim((string) $v, '$');
     }, array_keys($variables));
 
     foreach ($variables as $variable) {
