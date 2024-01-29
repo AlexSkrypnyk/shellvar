@@ -6,7 +6,7 @@ on:
       - feature/allow-run-as-container
 
 jobs:
-  lint-dockerfile:
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
@@ -16,3 +16,16 @@ jobs:
       - uses: hadolint/hadolint-action@v3.1.0
         with:
           dockerfile: Dockerfile
+
+      - uses: e1himself/goss-installation-action@v1
+        with:
+          version: 'v0.4.4'
+
+      - name: Build image
+        run: docker build -t drevops/shellvar:test-shellvar .
+
+      - name: Show images information
+        run: docker images
+
+      - name: Test image
+        run: dgoss run -i drevops/shellvar:test-shellvar
