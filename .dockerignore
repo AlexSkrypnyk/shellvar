@@ -1,0 +1,7 @@
+# .dockerignore
+vendor
+.coverage-html
+.github
+composer.lock
+cobertura.xml
+.phpunit.cache
