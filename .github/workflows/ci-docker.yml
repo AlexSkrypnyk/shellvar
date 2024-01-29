@@ -28,4 +28,4 @@ jobs:
         run: docker images
 
       - name: Test image
-        run: dgoss run -i drevops/shellvar:test-shellvar
+        run: dgoss run drevops/shellvar:test-shellvar tail -f /dev/null

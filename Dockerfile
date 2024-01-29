@@ -18,4 +18,4 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 
 RUN composer install
 
-ENTRYPOINT ["./shellvar"]
+CMD ["./shellvar"]

@@ -1,0 +1,4 @@
+file:
+  /app/shellvar:
+    exists: true
+    filetype: file
