@@ -17,9 +17,8 @@ jobs:
         with:
           dockerfile: Dockerfile
 
-      - uses: e1himself/goss-installation-action@v1
-        with:
-          version: 'v0.4.4'
+      - name: Install goss
+        run: curl -fsSL https://goss.rocks/install | sh && goss --version
 
       - name: Build image
         run: docker build -t drevops/shellvar:test-shellvar .
@@ -28,4 +27,4 @@ jobs:
         run: docker images
 
       - name: Test image
-        run: dgoss run drevops/shellvar:test-shellvar tail -f /dev/null
+        run: dgoss run -i drevops/shellvar:test-shellvar tail -f /dev/null
