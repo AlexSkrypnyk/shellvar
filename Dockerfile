@@ -1,8 +1,8 @@
 FROM php:8.1-cli
 
-# hadolint ignore=DL3008
+# hadolint ignore=DL3008,DL3015
 RUN apt-get update && \
-    apt-get install --no-install-recommends -y \
+    apt-get install -y \
             libzip-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
