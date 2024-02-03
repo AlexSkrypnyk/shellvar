@@ -111,4 +111,3 @@ jobs:
           docker images
           # Push Docker image to Docker Hub.
           docker push "${GITHUB_REPOSITORY}:canary"
-    
