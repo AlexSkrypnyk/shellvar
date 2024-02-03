@@ -1,0 +1,114 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - '*'
+
+  release:
+    types:
+      - published
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: Dockerfile
+
+      - uses: e1himself/goss-installation-action@v1
+        with:
+          version: 'v0.4.4'
+
+      - name: Build Docker image
+        run: docker build -t "${GITHUB_REPOSITORY}:test-shellvar" .
+
+      - name: Show Docker images
+        run: docker images
+
+      - name: Test Docker image
+        run: dgoss run "${GITHUB_REPOSITORY}:test-shellvar" tail -f /dev/null
+
+  deploy-on-release-tag:
+    runs-on: ubuntu-latest
+    needs:
+      - build-and-test
+    if: ${{ github.event_name == 'release' && github.event.action == 'published' }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build Docker Images & Deploy
+        env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+            # Count number of release base on year and month of HEAD.
+            year=$(git log -1 --format=%cd --date=format:%Y)
+            month=$(git log -1 --format=%cd --date=format:%m)
+            response=$(curl -s "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases")
+            # Check request success.
+            if [[ $(echo "$response" | jq -r .message) == "Not Found" ]]; then
+              echo "Repository does not existing."
+              exit 1
+            fi
+            release_count=$(echo "$response" | jq --arg YEAR "$year" --arg MONTH "$month" -r \
+            '. | map(select(.published_at | startswith("\($YEAR)-\($MONTH)"))) | length')
+            echo "Number of releases in ${year}-${month}: $release_count"
+            
+            # Setup version name.
+            month_without_zero=$(git log -1 --format=%cd --date=format:%-m)
+            year_with_last_2_digital=$(git log -1 --format=%cd --date=format:%y)
+            version="${year_with_last_2_digital}.${month_without_zero}.${release_count}"
+            echo "Version: $version"
+            
+            # Build Docker images.
+            docker build -t "${GITHUB_REPOSITORY}:latest" .
+            docker build -t "${GITHUB_REPOSITORY}:${version}" .
+          
+            # Show Docker images
+            docker images
+          
+            # Push Docker images to Docker Hub.
+            docker push "${GITHUB_REPOSITORY}:latest"
+            docker push "${GITHUB_REPOSITORY}:${version}"
+
+  deploy-on-push-main:
+    runs-on: ubuntu-latest
+    needs:
+      - build-and-test
+    if: ${{ github.ref == 'refs/heads/main' }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build Docker Image & Deploy
+        env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          docker build -t "${GITHUB_REPOSITORY}:canary" .
+          # Show Docker images
+          docker images
+          # Push Docker image to Docker Hub.
+          docker push "${GITHUB_REPOSITORY}:canary"
+    
