@@ -12,6 +12,6 @@ interface SingletonInterface {
   /**
    * Get the singleton instance.
    */
-  public static function getInstance();
+  public static function getInstance(...$args);
 
 }

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace AlexSkrypnyk\Shellvar\Factory;
 
@@ -19,7 +19,7 @@ class AutodiscoveryFactory {
   /**
    * Array of entity classes.
    *
-   * @var array<mixed>
+   * @var array<string>
    */
   protected array $classes = [];
 
@@ -42,18 +42,24 @@ class AutodiscoveryFactory {
    * @param \AlexSkrypnyk\Shellvar\Config\Config $config
    *   Formatter configuration.
    *
-   * @return object
+   * @return \AlexSkrypnyk\Shellvar\Factory\FactoryDiscoverableInterface
    *   Instantiated entity class instance.
    *
    * @throws \Exception
    *   If the requested entity does not exist.
    */
-  public function create(mixed $name, Config $config) : object {
+  public function create(mixed $name, Config $config): FactoryDiscoverableInterface {
     if (!isset($this->classes[$name])) {
-      throw new \Exception("Invalid entity: " . $name);
+      throw new \Exception('Invalid entity: ' . $name);
     }
 
-    return new $this->classes[$name]($config);
+    $instance = new $this->classes[$name]($config);
+
+    if (!$instance instanceof FactoryDiscoverableInterface) {
+      throw new \Exception('Invalid entity: ' . $name);
+    }
+
+    return $instance;
   }
 
   /**
@@ -62,19 +68,19 @@ class AutodiscoveryFactory {
    * @param \AlexSkrypnyk\Shellvar\Config\Config $config
    *   The configuration instance.
    *
-   * @return array<mixed>|\AlexSkrypnyk\Shellvar\Filter\FilterInterface[]
+   * @return \AlexSkrypnyk\Shellvar\Factory\FactoryDiscoverableInterface[]
    *   Array of instantiated entity class instances.
    *
    * @throws \Exception
    */
-  public function createAll(Config $config) : array {
+  public function createAll(Config $config): array {
     $instances = [];
 
+    /** @var \AlexSkrypnyk\Shellvar\Factory\FactoryDiscoverableInterface $class */
     foreach ($this->classes as $class) {
-      // @phpstan-ignore-next-line
       $instances[] = $this->create($class::getName(), $config);
     }
-    // @phpstan-ignore-next-line
+
     return $instances;
   }
 
@@ -125,7 +131,7 @@ class AutodiscoveryFactory {
    * @return array<mixed|object>
    *   Array of entity classes.
    */
-  public function getEntityClasses() : array {
+  public function getEntityClasses(): array {
     return $this->classes;
   }
 

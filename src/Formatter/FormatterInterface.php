@@ -12,7 +12,7 @@ interface FormatterInterface {
   /**
    * Format variables data.
    *
-   * @param array<mixed> $variables
+   * @param \AlexSkrypnyk\Shellvar\Variable\Variable[] $variables
    *   Variables.
    *
    * @return string

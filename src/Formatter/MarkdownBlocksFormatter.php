@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace AlexSkrypnyk\Shellvar\Formatter;
 
@@ -44,8 +44,8 @@ class MarkdownBlocksFormatter extends AbstractMarkdownFormatter {
   protected function processConfig(mixed $config): void {
     parent::processConfig($config);
     if (!empty($config->get('md-block-template-file'))) {
-      // @phpstan-ignore-next-line
-      $config->set('md-block-template-file', file_get_contents(Utils::resolvePath($config->get('md-block-template-file'))));
+      $file = is_string($config->get('md-block-template-file')) ? $config->get('md-block-template-file') : '';
+      $config->set('md-block-template-file', file_get_contents(Utils::resolvePath($file)));
     }
   }
 
@@ -63,17 +63,18 @@ class MarkdownBlocksFormatter extends AbstractMarkdownFormatter {
       'paths',
     ];
 
-    $template = $this->config->get('md-block-template-file') ?: static::getDefaultTemplate();
+    $template = is_string($this->config->get('md-block-template-file')) ? $this->config->get('md-block-template-file') : static::getDefaultTemplate();
 
     foreach ($this->variables as $variable) {
-      $placeholders_tokens = array_map(static function (string $v) : string {
+      // @phpstan-ignore-next-line
+      $placeholders_tokens = array_map(static function (string $v): string {
         return '{{ ' . $v . ' }}';
       }, array_keys($variable->toArray($fields)));
 
       $placeholders_values = $variable->toArray($fields);
 
       $placeholders = array_combine($placeholders_tokens, $placeholders_values);
-      // @phpstan-ignore-next-line
+
       $content .= str_replace("\n\n\n", "\n", strtr($template, $placeholders));
     }
 

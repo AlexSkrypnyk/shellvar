@@ -32,7 +32,7 @@ trait SingletonTrait {
   /**
    * Reset the instance.
    */
-  public static function resetInstance() : void {
+  public static function resetInstance(): void {
     $cls = static::class;
 
     if (isset(self::$instances[$cls])) {

@@ -40,38 +40,43 @@ class CsvFormatter extends AbstractFormatter {
    * {@inheritdoc}
    */
   protected function doFormat(): string {
-    $csv = fopen('php://temp/maxmemory:' . (5 * 1024 * 1024), 'r+');
+    $file = fopen('php://temp/maxmemory:' . (5 * 1024 * 1024), 'r+');
 
-    $header = $this->config->get('fields');
-    // @phpstan-ignore-next-line
-    fputcsv($csv, array_values($header), $this->config->get('csv-separator') ?? ',');
-
-    foreach ($this->variables as $variable) {
-      // @phpstan-ignore-next-line
-      fputcsv($csv, $variable->toArray(array_keys($header)), $this->config->get('csv-separator') ?? ',');
+    if ($file === FALSE) {
+      throw new \RuntimeException('Failed to open temporary file.');
     }
 
-    // @phpstan-ignore-next-line
-    rewind($csv);
-    // @phpstan-ignore-next-line
-    return stream_get_contents($csv);
+    $header = $this->config->get('fields');
+    $header = is_array($header) ? $header : [];
+
+    $separator = is_string($this->config->get('csv-separator', ',')) ? $this->config->get('csv-separator', ',') : ',';
+
+    fputcsv($file, array_values($header), $separator);
+
+    foreach ($this->variables as $variable) {
+      fputcsv($file, $variable->toArray(array_keys($header)), $separator);
+    }
+
+    rewind($file);
+
+    $content = stream_get_contents($file);
+    if ($content === FALSE) {
+      throw new \RuntimeException('Failed to read temporary file.');
+    }
+
+    return $content;
   }
 
   /**
-   * Get process description.
-   *
-   * @return string|null
-   *   Returns process description
-   *   {@inheritdoc}
+   * {@inheritdoc}
    */
-  protected function processDescription(string $description): string|null {
+  protected function processDescription(string $description): string {
     $description = parent::processDescription($description);
 
     // Remove a single new line.
-    // @phpstan-ignore-next-line
-    $description = preg_replace('/(?<!\n)\n(?!\n)/', ' ', $description);
+    $replaced_description = preg_replace('/(?<!\n)\n(?!\n)/', ' ', $description);
 
-    return $description;
+    return $replaced_description ?: $description;
   }
 
 }

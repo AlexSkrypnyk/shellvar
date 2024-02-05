@@ -10,21 +10,26 @@ namespace AlexSkrypnyk\Shellvar\Config;
 interface ConfigInterface {
 
   /**
-   * Get a configuration value.
+   * Get config value.
    *
    * @param string $name
-   *   Name.
+   *   Config name.
+   * @param mixed $default
+   *   Config value.
+   *
+   * @return mixed
+   *   Config value.
    */
-  public function get($name): mixed;
+  public function get(string $name, mixed $default = NULL): mixed;
 
   /**
    * Set a configuration value.
    *
    * @param string $name
    *   Config name.
-   * @param string|array|mixed $value
+   * @param mixed $value
    *   Config value.
    */
-  public function set($name, $value): ConfigInterface;
+  public function set(string $name, mixed $value): ConfigInterface;
 
 }
