@@ -1,0 +1,49 @@
+name: Test Docker
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+      - 'feature/**'
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        docker-versions: [ '23.0', '24.0', '25.0' ]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Docker
+        uses: docker-practice/actions-setup-docker@master
+        with:
+          docker_version: ${{ matrix.docker-versions }}
+
+      - name: Docker version
+        run: docker --version
+
+      - name: Check coding standards
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: Dockerfile
+
+      - name: Install Goss
+        uses: e1himself/goss-installation-action@v1
+        with:
+          version: 'v0.4.4'
+
+      - name: Build Docker image
+        run: docker build -t "${GITHUB_REPOSITORY}:test-shellvar" .
+
+      - name: Show Docker images
+        run: docker images
+
+      - name: Run tests
+        run: dgoss run "${GITHUB_REPOSITORY}:test-shellvar" tail -f /dev/null
