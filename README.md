@@ -308,9 +308,26 @@ like so: `--exclude-prefix=VAR1 --exclude-prefix=VAR2` etc.
 | `--md-inline-code-extra-file=FILE` | A path to a file that contains additional strings to be formatted as inline code in the Markdown output format. Multiple values allowed.                                                                  |                                                                  |
 | `--md-block-template-file=FILE`    | A path to a Markdown template file used for Markdown blocks (md-blocks) output format. `{{ name }}`, `{{ description }}`, `{{ default_value }}` and `{{ path }}` tokens can be used within the template.  |                                                                  |
 
-## Maintenance
+## Use with Docker
+You can change latest with the tag you prefer.
+
+    docker image pulll alexskrypnyk/shellvar:latest
+    # Extract
+    docker run --rm alexskrypnyk/shellvar /app/shellvar extract [your-file]
+    # Lint
+    docker run --rm alexskrypnyk/shellvar /app/shellvar lint [your-file]
+
+## Maintenance and releasing
+
+### Maintenance
 
     composer install
     composer lint
     composer lint:fix
     composer test
+
+### Releasing
+
+- `XX.YY.ZZ` tag - when release tag is published on GitHub.
+- `latest` - when release tag is published on GitHub.
+- `canary` - on every push to `main` branch
