@@ -40,10 +40,14 @@ jobs:
           version: 'v0.4.4'
 
       - name: Build Docker image
-        run: docker build -t "${GITHUB_REPOSITORY}:test-shellvar" .
+        run: |
+          lowcase_repository=${GITHUB_REPOSITORY,,}
+          docker build -t "${lowcase_repository}:test-shellvar" .
 
       - name: Show Docker images
         run: docker images
 
       - name: Run tests
-        run: dgoss run "${GITHUB_REPOSITORY}:test-shellvar" tail -f /dev/null
+        run: |
+          lowcase_repository=${GITHUB_REPOSITORY,,}
+          dgoss run "${lowcase_repository}:test-shellvar" tail -f /dev/null
