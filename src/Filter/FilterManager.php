@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace AlexSkrypnyk\Shellvar\Filter;
 
@@ -29,8 +29,13 @@ class FilterManager extends AbstractManager {
    */
   public function __construct(Config $config) {
     parent::__construct($config);
-    $this->filters = $this->factory->createAll($this->getConfig());
-    usort($this->filters, static function (FilterInterface $a, FilterInterface $b) : int {
+
+    /** @var \AlexSkrypnyk\Shellvar\Filter\FilterInterface[] $filters */
+    $filters = $this->factory->createAll($this->getConfig());
+
+    $this->filters = $filters;
+
+    usort($this->filters, static function (FilterInterface $a, FilterInterface $b): int {
       return $b::getPriority() <=> $a::getPriority();
     });
   }
@@ -44,7 +49,7 @@ class FilterManager extends AbstractManager {
    * @return array<mixed>
    *   Filter variables using discovered filters.
    */
-  public function filter(array $variables) : array {
+  public function filter(array $variables): array {
     foreach ($this->filters as $filter) {
       $variables = $filter->filter($variables);
     }

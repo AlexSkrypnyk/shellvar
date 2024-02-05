@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace AlexSkrypnyk\Shellvar;
 
@@ -65,8 +65,8 @@ abstract class AbstractManager implements SingletonInterface, ConsoleAwareInterf
   public function getAllConsoleArguments(): array {
     $items = [];
 
+    /** @var \AlexSkrypnyk\Shellvar\ConsoleAwareInterface $class */
     foreach ($this->factory->getEntityClasses() as $class) {
-      // @phpstan-ignore-next-line
       $items = array_merge($class::getConsoleArguments());
     }
 
@@ -82,8 +82,8 @@ abstract class AbstractManager implements SingletonInterface, ConsoleAwareInterf
   public function getAllConsoleOptions(): array {
     $items = [];
 
+    /** @var \AlexSkrypnyk\Shellvar\ConsoleAwareInterface $class */
     foreach ($this->factory->getEntityClasses() as $class) {
-      // @phpstan-ignore-next-line
       $items = array_merge($items, $class::getConsoleOptions());
     }
 

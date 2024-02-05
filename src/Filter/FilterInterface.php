@@ -27,6 +27,6 @@ interface FilterInterface extends FactoryDiscoverableInterface {
    *
    * Higher priority means the filter will be applied sooner.
    */
-  public static function getPriority():int;
+  public static function getPriority(): int;
 
 }

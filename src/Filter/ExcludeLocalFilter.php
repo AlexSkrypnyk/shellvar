@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace AlexSkrypnyk\Shellvar\Filter;
 
@@ -24,7 +24,7 @@ class ExcludeLocalFilter extends AbstractFilter {
   /**
    * {@inheritdoc}
    */
-  public static function getPriority():int {
+  public static function getPriority(): int {
     return 100;
   }
 
@@ -45,8 +45,11 @@ class ExcludeLocalFilter extends AbstractFilter {
    * {@inheritdoc}
    */
   public function filter(array $variables): array {
-    // @phpstan-ignore-next-line
-    return array_filter($variables, static function (Variable $variable) : bool {
+    return array_filter($variables, static function ($variable): bool {
+      if (!$variable instanceof Variable) {
+        return FALSE;
+      }
+
       return $variable->getName() !== strtolower($variable->getName());
     });
   }

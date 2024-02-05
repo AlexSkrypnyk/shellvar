@@ -67,8 +67,11 @@ abstract class AbstractExtractor implements ExtractorInterface, ConsoleAwareInte
    * {@inheritdoc}
    */
   protected function processConfig(Config $config): void {
-    // @phpstan-ignore-next-line
-    $config->set('paths', $this->scanPaths(Utils::resolvePaths($config->get('paths', []))));
+    $paths = $config->get('paths', []);
+    $paths = is_array($paths) ? $paths : [$paths];
+    $paths = array_filter($paths, static fn($path): bool => is_string($path));
+    $config->set('paths', $this->scanPaths(Utils::resolvePaths($paths)));
+
     $config->set('skip-text', $config->get('skip-text', '@skip'));
   }
 
@@ -76,8 +79,8 @@ abstract class AbstractExtractor implements ExtractorInterface, ConsoleAwareInte
    * {@inheritdoc}
    */
   public function extract(): array {
-    // @phpstan-ignore-next-line
-    foreach ($this->config->get('paths') as $path) {
+    foreach ((array) $this->config->get('paths') as $path) {
+      $path = is_scalar($path) ? (string) $path : '';
       $this->extractVariablesFromFile($path);
     }
 
@@ -89,10 +92,10 @@ abstract class AbstractExtractor implements ExtractorInterface, ConsoleAwareInte
    *
    * If cross-file extraction is required - override extract() method.
    *
-   * @param string|mixed $file
+   * @param string $filepath
    *   Path to file.
    */
-  abstract protected function extractVariablesFromFile(mixed $file): void;
+  abstract protected function extractVariablesFromFile(string $filepath): void;
 
   /**
    * Get a list of files to scan.
@@ -103,7 +106,7 @@ abstract class AbstractExtractor implements ExtractorInterface, ConsoleAwareInte
    * @return array<string>
    *   A list of files to scan.
    */
-  protected function scanPaths($paths) : array {
+  protected function scanPaths($paths): array {
     $files = [];
 
     $paths = Utils::resolvePaths($paths);
@@ -116,12 +119,11 @@ abstract class AbstractExtractor implements ExtractorInterface, ConsoleAwareInte
         if (is_readable($path . '/.env')) {
           $files[] = $path . '/.env';
         }
-        // @phpstan-ignore-next-line
-        $files = array_merge($files, glob($path . '/.*.{bash,sh}', GLOB_BRACE), glob($path . '/*.{bash,sh}', GLOB_BRACE));
+        $files = array_merge($files, (array) glob($path . '/.*.{bash,sh}', GLOB_BRACE), (array) glob($path . '/*.{bash,sh}', GLOB_BRACE));
       }
     }
 
-    return $files;
+    return empty($files) ? [] : array_filter($files);
   }
 
 }
