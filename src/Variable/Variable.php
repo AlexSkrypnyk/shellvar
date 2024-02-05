@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace AlexSkrypnyk\Shellvar\Variable;
 
@@ -153,14 +153,13 @@ class Variable {
   /**
    * Add path to the file where the variable is defined.
    *
-   * @param string|bool $path
+   * @param string $path
    *   Path to the file where the variable is defined.
    *
    * @return Variable
    *   The variable instance.
    */
-  public function addPath(string|bool $path): Variable {
-    // @phpstan-ignore-next-line
+  public function addPath(string $path): Variable {
     $this->paths[] = $path;
 
     return $this;
@@ -234,7 +233,7 @@ class Variable {
    * @param array<string> $fields
    *   Array of field names to sort by.
    *
-   * @return array<string, mixed>
+   * @return array<int|string, bool|float|int|string|null>
    *   Array of values, keyed by the order and name of the fields.
    *
    * phpcs:disable Drupal.Arrays.Array.LongLineDeclaration
@@ -248,9 +247,8 @@ class Variable {
       'path' => count($this->getPaths()) > 0 ? $this->getPaths()[0] : '',
     ];
 
-    $values = array_merge(array_flip($fields), $values);
-
-    return array_intersect_key($values, array_flip($fields));
+    // @phpstan-ignore-next-line
+    return array_intersect_key(array_merge(array_flip($fields), $values), array_flip($fields));
   }
 
 }

@@ -44,7 +44,6 @@ class ExtractCommand extends Command {
 
     /** @var \AlexSkrypnyk\Shellvar\Traits\SingletonInterface[] $classes */
     foreach ($classes as $class) {
-      // @phpstan-ignore-next-line
       $instance = $class::getInstance($this->config);
       foreach ($instance->getAllConsoleArguments() as $argument) {
         if (!$this->getDefinition()->hasArgument($argument->getName())) {

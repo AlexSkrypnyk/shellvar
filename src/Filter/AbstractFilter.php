@@ -28,7 +28,7 @@ abstract class AbstractFilter implements FilterInterface, ConsoleAwareInterface 
   /**
    * {@inheritdoc}
    */
-  public static function getPriority():int {
+  public static function getPriority(): int {
     return 0;
   }
 

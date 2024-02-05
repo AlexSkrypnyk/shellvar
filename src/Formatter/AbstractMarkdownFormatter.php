@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace AlexSkrypnyk\Shellvar\Formatter;
 
@@ -16,7 +16,9 @@ use Symfony\Component\Console\Input\InputOption;
 abstract class AbstractMarkdownFormatter extends AbstractFormatter {
 
   final const VARIABLE_LINK_CASE_PRESERVE = 'preserve';
+
   final const VARIABLE_LINK_CASE_LOWER = 'lower';
+
   final const VARIABLE_LINK_CASE_UPPER = 'upper';
 
   /**
@@ -25,7 +27,7 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
    * @return array<InputOption>
    *   {@inheritdoc}
    */
-  public static function getConsoleOptions() : array {
+  public static function getConsoleOptions(): array {
     return array_merge(parent::getConsoleOptions(), [
       new InputOption(
         name: 'md-link-vars',
@@ -68,8 +70,9 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
     parent::processConfig($config);
 
     if (!empty($config->get('md-inline-code-extra-file'))) {
-      // @phpstan-ignore-next-line
-      $config->set('md-inline-code-extra-file', Utils::getNonEmptyLinesFromFiles(Utils::resolvePaths($config->get('md-inline-code-extra-file'))));
+      $paths = (array) $config->get('md-inline-code-extra-file');
+      $paths = array_filter($paths, static fn($path): bool => is_string($path));
+      $config->set('md-inline-code-extra-file', Utils::getNonEmptyLinesFromFiles(Utils::resolvePaths($paths)));
     }
   }
 
@@ -80,8 +83,9 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
     parent::processVariables();
 
     if (!$this->config->get('md-no-inline-code-wrap-vars')) {
-      // @phpstan-ignore-next-line
-      $this->variables = $this->processInlineCodeVars($this->variables, $this->config->get('md-inline-code-extra-file'));
+      $extra_file = $this->config->get('md-inline-code-extra-file');
+      $extra_file = is_array($extra_file) ? $extra_file : [$extra_file];
+      $this->variables = $this->processInlineCodeVars($this->variables, $extra_file);
     }
 
     if (!$this->config->get('md-no-inline-code-wrap-numbers')) {
@@ -89,8 +93,10 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
     }
 
     if ($this->config->get('md-link-vars')) {
-      // @phpstan-ignore-next-line
-      $this->variables = $this->processLinks($this->variables, $this->config->get('md-link-vars-anchor-case'));
+      $anchor_case = $this->config->get('md-link-vars-anchor-case');
+      if (is_string($anchor_case)) {
+        $this->variables = $this->processLinks($this->variables, $anchor_case);
+      }
     }
   }
 
@@ -104,7 +110,7 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
 
     $br = '<br />';
     $nl = "\n";
-    // @phpstan-ignore-next-line
+
     $lines = explode($nl, $description);
 
     // @code
@@ -214,27 +220,25 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
         $description = preg_replace(
           '/(?<!`)\$' . preg_quote($var_token, '/') . '\b(?!`)/',
           '`$' . $var_token . '`',
-          // @phpstan-ignore-next-line
-          $description
+          (string) $description
         );
 
         $description = preg_replace(
           '/(?<!`)\$\{' . preg_quote($var_token, '/') . '}(?!`)/',
           '`${' . $var_token . '}`',
-          // @phpstan-ignore-next-line
-          $description
+          (string) $description
         );
       }
+
       foreach ($tokens as $token) {
         $token = trim($token);
 
         $description = preg_replace_callback('/(`.*?`)|\b' . preg_quote($token, '/') . '\b/', static function (array $matches) use ($token): string {
           return $matches[0] === $token ? sprintf('`%s`', $token) : $matches[0];
-           // @phpstan-ignore-next-line
-        }, $description);
+        }, (string) $description);
       }
-      // @phpstan-ignore-next-line
-      $variable->setDescription($description);
+
+      $variable->setDescription((string) $description);
     }
 
     return $variables;
@@ -251,8 +255,7 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
    */
   protected function processInlineCodeNumbers(array $variables): array {
     foreach ($variables as $variable) {
-      // @phpstan-ignore-next-line
-      $variable->setDescription(preg_replace('/\b((?<!`)\d+)\b/', '`${1}`', $variable->getDescription()));
+      $variable->setDescription((string) preg_replace('/\b((?<!`)\d+)\b/', '`${1}`', $variable->getDescription()));
     }
 
     return $variables;
@@ -286,19 +289,16 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
         ], [
           '[$' . $var_token . '](' . $href . ')',
           '[${' . $var_token . '}](' . $href . ')',
-          // @phpstan-ignore-next-line
-        ], $description);
+        ], (string) $description);
 
-        $description = preg_replace([
+        $description = (string) preg_replace([
           '/`\$\b' . preg_quote($var_token, '/') . '\b`/',
           '/`\$\{\b' . preg_quote($var_token, '/') . '\b\}`/',
         ], [
           '[`$' . $var_token . '`](' . $href . ')',
           '[`${' . $var_token . '}`](' . $href . ')',
-          // @phpstan-ignore-next-line
-        ], $description);
+        ], (string) $description);
       }
-      // @phpstan-ignore-next-line
       $variable->setDescription($description);
     }
 

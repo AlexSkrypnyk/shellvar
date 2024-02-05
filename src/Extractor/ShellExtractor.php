@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace AlexSkrypnyk\Shellvar\Extractor;
 
@@ -33,7 +33,7 @@ class ShellExtractor extends AbstractExtractor {
     parent::extract();
 
     // Exclude non-assignments.
-    array_walk($this->variables, static function (&$var) : void {
+    array_walk($this->variables, static function (&$var): void {
       $var = $var->getIsAssignment() ? $var : FALSE;
     });
     $this->variables = array_filter($this->variables);
@@ -45,11 +45,12 @@ class ShellExtractor extends AbstractExtractor {
    * {@inheritdoc}
    *
    * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+   * @SuppressWarnings(PHPMD.NPathComplexity)
    */
-  protected function extractVariablesFromFile($file): void {
-    $skip = $this->config->get('skip-text');
-    // @phpstan-ignore-next-line
-    $lines = Utils::getLinesFromFiles([$file]);
+  protected function extractVariablesFromFile(string $filepath): void {
+    $skip = is_scalar($this->config->get('skip-text')) ? (string) $this->config->get('skip-text') : '';
+
+    $lines = Utils::getLinesFromFiles([$filepath]);
 
     foreach ($lines as $num => $line) {
       $var = $this->extractVariable($line);
@@ -58,8 +59,13 @@ class ShellExtractor extends AbstractExtractor {
         continue;
       }
 
-      // @phpstan-ignore-next-line
-      $var->addPath(realpath($file));
+      $absolute_filepath = realpath($filepath);
+
+      if ($absolute_filepath === FALSE) {
+        throw new \RuntimeException('Failed to resolve the absolute path for the file: ' . $filepath);
+      }
+
+      $var->addPath($absolute_filepath);
 
       if ($var->getIsAssignment()) {
         $default_value = $this->extractVariableValue($line, $this->config->get('unset'));
@@ -69,10 +75,10 @@ class ShellExtractor extends AbstractExtractor {
         }
       }
 
-      $description = $this->extractVariableDescription($lines, $num, $this->config->get('skip-description-prefix'));
-      if ($description !== '' && $description !== '0') {
-        // @phpstan-ignore-next-line
-        if ($skip && str_contains($description, (string) $skip)) {
+      $description_prefix = is_array($this->config->get('skip-description-prefix')) ? $this->config->get('skip-description-prefix') : [];
+      $description = $this->extractVariableDescription($lines, $num, $description_prefix);
+      if (!empty($description)) {
+        if ($skip && str_contains($description, $skip)) {
           continue;
         }
 
@@ -163,21 +169,20 @@ class ShellExtractor extends AbstractExtractor {
     // allows to reduce the value to the innermost matching pattern.
     while (TRUE) {
       $replaced = 0;
-      $value = preg_replace_callback('/\$\{([^:\-}]+):-([^}]+)?}/', static function ($matches) use (&$replaced) : string {
+      $value = preg_replace_callback('/\$\{([^:\-}]+):-([^}]+)?}/', static function ($matches) use (&$replaced): string {
         $replaced++;
         // Use found value or the default value, i.e. in case of ${var:-abc},
         // use 'abc'; in case of ${var:-}, use 'var', but as a variable to make
         // sure that it is not confused with a scalar value ($var vs 'var').
         return trim($matches[2] ?? '$' . $matches[1], '"');
-        // @phpstan-ignore-next-line
-      }, $value);
+      }, (string) $value);
 
       if ($replaced === 0) {
         break;
       }
     }
-    // @phpstan-ignore-next-line
-    $value = trim($value, '"');
+
+    $value = trim((string) $value, '"');
 
     if (str_starts_with($value, '$')) {
       if (str_starts_with($value, '${')) {
@@ -201,7 +206,7 @@ class ShellExtractor extends AbstractExtractor {
    *   A list of lines to extract a variable description from.
    * @param int $line_num
    *   A line number to start from.
-   * @param mixed $skip_prefixes
+   * @param array<string> $skip_prefixes
    *   A list of prefixes to skip.
    * @param string $comment_separator
    *   A comment delimiter.
@@ -209,7 +214,7 @@ class ShellExtractor extends AbstractExtractor {
    * @return string
    *   A variable description.
    */
-  protected function extractVariableDescription(array $lines, $line_num, mixed $skip_prefixes = [], $comment_separator = self::COMMENT_SEPARATOR): string {
+  protected function extractVariableDescription(array $lines, $line_num, array $skip_prefixes = [], $comment_separator = self::COMMENT_SEPARATOR): string {
     $comment_lines = [];
 
     $line_num = min($line_num, count($lines) - 1);
@@ -222,10 +227,8 @@ class ShellExtractor extends AbstractExtractor {
 
     $comment_lines = array_reverse($comment_lines);
 
-    $comment_lines = array_filter($comment_lines, static function ($value) use ($skip_prefixes, $comment_separator) : bool {
-        // @phpstan-ignore-next-line
+    $comment_lines = array_filter($comment_lines, static function ($value) use ($skip_prefixes, $comment_separator): bool {
       foreach ($skip_prefixes as $prefix) {
-        // @phpstan-ignore-next-line
         if (str_starts_with($value, ltrim($prefix, $comment_separator))) {
           return FALSE;
         }

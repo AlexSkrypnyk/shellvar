@@ -35,11 +35,12 @@ class FormatterManager extends AbstractManager {
    * @return string
    *   The formatted variables.
    */
-  public function format($variables): string {
+  public function format(array $variables): string {
     $format = $this->config->get('format');
+
+    /** @var \AlexSkrypnyk\Shellvar\Formatter\FormatterInterface $formatter */
     $formatter = $this->factory->create($format, $this->config);
 
-    // @phpstan-ignore-next-line
     return $formatter->format($variables);
   }
 
