@@ -10,7 +10,7 @@ on:
       - 'feature/**'
 
 jobs:
-  build-and-test:
+  test-docker:
     runs-on: ubuntu-latest
 
     strategy:
