@@ -326,22 +326,8 @@ You can change latest with the tag you prefer.
     composer lint:fix
     composer test
 
-### Versioning
-
-This project uses _Year-Month-Patch_ versioning:
-
-- `YY`: Last two digits of the year, e.g., `23` for 2023.
-- `m`: Numeric month, e.g., April is `4`.
-- `patch`: Patch number for the month, starting at `0`.
-
-Example: `23.4.2` indicates the third patch in April 2023.
-
 ### Releasing
 
-Releases are scheduled to occur at a minimum of once per month.
-
-This image is built by DockerHub via an automated build and tagged as follows:
-
-- `YY.m.patch` tag - when release tag is published on GitHub.
+- `XX.YY.ZZ` tag - when release tag is published on GitHub.
 - `latest` - when release tag is published on GitHub.
 - `canary` - on every push to `main` branch
