@@ -56,10 +56,10 @@
             "phpcs",
             "phpmd --exclude vendor,vendor-bin,node_modules . text phpmd.xml",
             "phpstan",
-            "rector --dry-run"
+            "rector --clear-cache --dry-run"
         ],
         "lint:fix": [
-            "rector",
+            "rector --clear-cache",
             "phpcbf"
         ],
         "test": "if [ \"${XDEBUG_MODE}\" = 'coverage' ]; then phpunit; else phpunit --no-coverage; fi",

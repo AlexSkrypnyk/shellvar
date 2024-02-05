@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace AlexSkrypnyk\Shellvar;
 
@@ -24,12 +24,23 @@ class Utils {
    * @return array<string>
    *   A list of lines, merged into one array.
    */
-  public static function getLinesFromFiles(array $paths, bool $remove_empty = FALSE) : array {
+  public static function getLinesFromFiles(array $paths, bool $remove_empty = FALSE): array {
     $lines = [];
 
     foreach ($paths as $path) {
-      // @phpstan-ignore-next-line
-      $lines = array_merge($lines, preg_split("/(\r\n|\n|\r)/", file_get_contents($path)));
+      $content = file_get_contents($path);
+
+      if ($content === FALSE) {
+        throw new InvalidOptionException(sprintf('Unable to read a file path %s.', $path));
+      }
+
+      $new_lines = preg_split("/(\r\n|\n|\r)/", $content);
+
+      if ($new_lines === FALSE) {
+        throw new InvalidOptionException(sprintf('Unable to split file content into lines for a file path %s.', $path));
+      }
+
+      $lines = array_merge($lines, $new_lines);
     }
 
     return $remove_empty ? array_values(array_filter($lines)) : $lines;
@@ -44,7 +55,7 @@ class Utils {
    * @return array<string>
    *   A list of lines, merged into one array.
    */
-  public static function getNonEmptyLinesFromFiles(array $paths) : array {
+  public static function getNonEmptyLinesFromFiles(array $paths): array {
     return static::getLinesFromFiles($paths, TRUE);
   }
 

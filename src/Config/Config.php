@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace AlexSkrypnyk\Shellvar\Config;
 
@@ -14,14 +14,14 @@ class Config implements ConfigInterface {
   /**
    * The configuration values.
    *
-   * @var array<string|array|mixed>
+   * @var array<mixed>
    */
   protected array $values = [];
 
   /**
    * Config constructor.
    *
-   * @param array<string|array|mixed> $arguments
+   * @param array<mixed> $arguments
    *   Config arguments.
    */
   public function __construct(...$arguments) {
@@ -29,21 +29,16 @@ class Config implements ConfigInterface {
   }
 
   /**
-   * Get config value.
-   *
-   * @param string $name
-   *   Config name.
-   * @param string|array|mixed $default
-   *   Config value.
+   * {@inheritdoc}
    */
-  public function get($name, $default = NULL): mixed {
+  public function get(string $name, mixed $default = NULL): mixed {
     return $this->values[$name] ?? $default;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function set($name, $value): ConfigInterface {
+  public function set(string $name, mixed $value): ConfigInterface {
     $this->values[$name] = $value;
 
     return $this;
@@ -58,7 +53,7 @@ class Config implements ConfigInterface {
    * @return void
    *   Returns nothing.
    */
-  public function setAll(...$arguments) : void {
+  public function setAll(...$arguments): void {
     $this->values = array_merge(...$arguments);
   }
 

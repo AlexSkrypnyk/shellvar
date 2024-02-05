@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace AlexSkrypnyk\Shellvar\Command;
 
@@ -35,10 +35,10 @@ class LintCommand extends Command {
    */
   protected function execute(InputInterface $input, OutputInterface $output): int {
     $is_running_fix = (bool) $input->getOption('fix');
-    $file = $input->getArgument('file');
+
+    $file = is_scalar($input->getArgument('file')) ? (string) $input->getArgument('file') : '';
 
     // Process file.
-    // @phpstan-ignore-next-line
     $result = $this->processFile($file, $is_running_fix);
 
     $exit_code = $result['success'] ? Command::SUCCESS : Command::FAILURE;

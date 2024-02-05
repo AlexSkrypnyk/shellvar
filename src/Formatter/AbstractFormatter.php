@@ -44,7 +44,7 @@ abstract class AbstractFormatter implements FormatterInterface, FactoryDiscovera
    * @return array<InputOption>
    *   {@inheritdoc}
    */
-  public static function getConsoleOptions() : array {
+  public static function getConsoleOptions(): array {
     return [
       new InputOption(
         name: 'fields',
@@ -77,16 +77,16 @@ abstract class AbstractFormatter implements FormatterInterface, FactoryDiscovera
   protected function processConfig(Config $config): void {
     $header = $config->get('fields');
 
-    if ($header && !is_array($header)) {
-      // @phpstan-ignore-next-line
-      $pairs = explode(';', (string) $header);
-      $result = [];
+    if (!empty($header) && is_string($header)) {
+      $pairs = explode(';', $header);
+
+      $columns = [];
       foreach ($pairs as $pair) {
         $parts = explode('=', $pair, 2);
-        $result[$parts[0]] = trim($parts[1] ?? $parts[0], '"');
+        $columns[$parts[0]] = trim($parts[1] ?? $parts[0], '"');
       }
 
-      $config->set('fields', $result);
+      $config->set('fields', $columns);
     }
   }
 
@@ -94,7 +94,6 @@ abstract class AbstractFormatter implements FormatterInterface, FactoryDiscovera
    * {@inheritdoc}
    */
   public function format(array $variables): string {
-    // @phpstan-ignore-next-line
     $this->setVariables($variables);
 
     $this->processVariables();
@@ -119,13 +118,13 @@ abstract class AbstractFormatter implements FormatterInterface, FactoryDiscovera
     }
 
     if ($this->config->get('unset')) {
-      // @phpstan-ignore-next-line
-      $this->variables = $this->processUnset($this->variables, $this->config->get('unset'));
+      $unset_value = is_string($this->config->get('unset')) ? $this->config->get('unset') : 'UNSET';
+      $this->variables = $this->processUnset($this->variables, $unset_value);
     }
 
     if ($this->config->get('path-strip-prefix')) {
-      // @phpstan-ignore-next-line
-      $this->variables = $this->processPathStripPrefix($this->variables, $this->config->get('path-strip-prefix'));
+      $path_strip_prefix = is_string($this->config->get('path-strip-prefix')) ? $this->config->get('path-strip-prefix') : '';
+      $this->variables = $this->processPathStripPrefix($this->variables, $path_strip_prefix);
     }
 
     $this->variables = $this->processDescriptions($this->variables);
@@ -179,6 +178,10 @@ abstract class AbstractFormatter implements FormatterInterface, FactoryDiscovera
    *   An array of processed variables.
    */
   protected function processPathStripPrefix(array $variables, string $prefix): array {
+    if (empty($prefix)) {
+      return $variables;
+    }
+
     foreach ($variables as $variable) {
       $updated_paths = [];
       foreach ($variable->getPaths() as $path) {
@@ -206,7 +209,6 @@ abstract class AbstractFormatter implements FormatterInterface, FactoryDiscovera
     foreach ($variables as $variable) {
       $description = $variable->getDescription();
       $description = $this->processDescription($description);
-      // @phpstan-ignore-next-line
       $variable->setDescription($description);
     }
 
@@ -219,15 +221,16 @@ abstract class AbstractFormatter implements FormatterInterface, FactoryDiscovera
    * @param string $description
    *   A description to process.
    *
-   * @return string|null
+   * @return string
    *   A processed description.
    */
-  protected function processDescription(string $description): string|null {
+  protected function processDescription(string $description): string {
     $description = trim($description);
-    // Replace multiple empty lines with a single one.
-    $description = preg_replace('/(\n){3,}/', "\n\n", $description);
 
-    return $description;
+    // Replace multiple empty lines with a single one.
+    $replaced_description = preg_replace('/(\n){3,}/', "\n\n", $description);
+
+    return $replaced_description ?: $description;
   }
 
 }

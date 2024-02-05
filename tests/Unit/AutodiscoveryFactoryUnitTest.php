@@ -68,10 +68,8 @@ class AutodiscoveryFactoryUnitTest extends UnitTestBase {
   public function testCreate() : void {
     $autodiscovery = new AutodiscoveryFactory('tests/Fixtures');
     $discovered = $autodiscovery->create('DummyDiscoverable11', new Config());
-    // @phpstan-ignore-next-line
     $this->assertEquals('DummyDiscoverable11', $discovered::getName());
     $discovered = $autodiscovery->create('DummyDiscoverable12', new Config());
-    // @phpstan-ignore-next-line
     $this->assertEquals('DummyDiscoverable12', $discovered::getName());
   }
 

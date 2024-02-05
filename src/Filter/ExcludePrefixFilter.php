@@ -37,10 +37,20 @@ class ExcludePrefixFilter extends AbstractFilter {
    */
   public function filter($variables): array {
     $prefixes = $this->config->get('exclude-prefix');
-    // @phpstan-ignore-next-line
-    return array_filter($variables, static function (Variable $variable) use ($prefixes) : bool {
-      // @phpstan-ignore-next-line
-      return !array_filter($prefixes, static fn($p): bool => str_starts_with($variable->getName(), $p));
+    $prefixes = is_array($prefixes) ? $prefixes : [$prefixes];
+
+    return array_filter($variables, static function ($variable) use ($prefixes): bool {
+      if (!$variable instanceof Variable) {
+        return FALSE;
+      }
+
+      foreach ($prefixes as $prefix) {
+        if (str_starts_with($variable->getName(), $prefix)) {
+          return FALSE;
+        }
+      }
+
+      return TRUE;
     });
   }
 

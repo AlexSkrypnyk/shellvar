@@ -22,7 +22,7 @@ trait VariableAwareTrait {
    * @return array<Variable>
    *   Returns list of AlexSkrypnyk\Shellvar\Variable\Variable
    */
-  public function getVariables() : array {
+  public function getVariables(): array {
     return $this->variables;
   }
 
