@@ -41,6 +41,8 @@
 
 ## Usage
 
+### Extract
+
 By default, variable names, descriptions (taken from the comments) and their
 values are printed to STDOUT in the CSV format. You can also change the output
 format to Markdown table or Markdown blocks.
@@ -61,7 +63,7 @@ VAR3=${val3:-abc}
 VAR4=${val4:-$VAR3}
 ```
 
-### Default CSV output
+#### Default CSV output
 
 ```bash
 ./vendor/bin/shellvar extract path/to/script.sh
@@ -77,7 +79,7 @@ VAR4;VAR3;"Parameter expansion with a default value using another variable $VAR3
 Continuation of the multi-line comment."
 ```
 
-### Markdown table
+#### Markdown table
 
 ```bash
 ./vendor/bin/shellvar extract --format=md-table path/to/script.sh
@@ -102,7 +104,7 @@ which renders as
 | `VAR4` | `VAR3`        | Parameter expansion with a default value using<br />another variable `$VAR3`.<br /><br />Continuation of the multi-line comment. |
 
 
-### Markdown blocks
+#### Markdown blocks
 
 ```bash
 ./vendor/bin/shellvar extract --format=md-blocks path/to/script.sh
@@ -169,7 +171,7 @@ Default value: `VAR3`
 
 </td></tr></table>
 
-### Advanced: Markdown blocks with links and custom template
+#### Advanced: Markdown blocks with links and custom template
 
 ```bash
 ./vendor/bin/shellvar extract --format=md-blocks --md-link-vars --md-block-template-file=path/to/template.md path/to/script.sh
@@ -268,14 +270,14 @@ Paths: `1.sh`
 
 </td></tr></table>
 
-## Options
+#### Options
 
 There are options for different phases: extraction, filtering and formatting.
 
 "Multiple values allowed" means that you can specify the option multiple times
 like so: `--exclude-prefix=VAR1 --exclude-prefix=VAR2` etc.
 
-### Extraction
+#### Extraction
 
 | Name                               | Description                                                                          | Default value |
 |------------------------------------|--------------------------------------------------------------------------------------|---------------|
@@ -283,7 +285,7 @@ like so: `--exclude-prefix=VAR1 --exclude-prefix=VAR2` etc.
 | `--skip-text=SKIP`                 | Skip variable extraction if the comment has this specified text.                     | `@skip`       |
 | `--skip-description-prefix=PREFIX` | Skip description lines that start with the provided prefix. Multiple values allowed. |               |
 
-### Filtering
+#### Filtering
 
 | Name                       | Description                                                                                                   | Default value |
 |----------------------------|---------------------------------------------------------------------------------------------------------------|---------------|
@@ -291,7 +293,7 @@ like so: `--exclude-prefix=VAR1 --exclude-prefix=VAR2` etc.
 | `--exclude-prefix=PREFIX`  | Exclude variables that start with the provided prefix. Multiple values allowed                                |               |                                                                                                               |
 | `--exclude-from-file=FILE` | A path to a file that contains variables to be excluded from the extraction process. Multiple values allowed. |               |
 
-### Format
+#### Format
 
 | Name                               | Description                                                                                                                                                                                               | Default value                                                    |
 |------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------|
@@ -308,18 +310,24 @@ like so: `--exclude-prefix=VAR1 --exclude-prefix=VAR2` etc.
 | `--md-inline-code-extra-file=FILE` | A path to a file that contains additional strings to be formatted as inline code in the Markdown output format. Multiple values allowed.                                                                  |                                                                  |
 | `--md-block-template-file=FILE`    | A path to a Markdown template file used for Markdown blocks (md-blocks) output format. `{{ name }}`, `{{ description }}`, `{{ default_value }}` and `{{ path }}` tokens can be used within the template.  |                                                                  |
 
-## Use with Docker
-You can change latest with the tag you prefer.
 
-    docker image pulll alexskrypnyk/shellvar:latest
-    # Extract
-    docker run --rm alexskrypnyk/shellvar /app/shellvar extract [your-file]
-    # Lint
-    docker run --rm alexskrypnyk/shellvar /app/shellvar lint [your-file]
+### Lint
 
-## Maintenance and releasing
+Report on shell variables that are not in ${VAR} format.
 
-### Maintenance
+Fix shell variables that are not in ${VAR} format.
+
+#### Lint file.
+    ./vendor/bin/shellvar lint <file>
+
+Example: ./vendor/bin/shellvar lint tests/Fixtures/unwrapped.sh
+
+#### Fix file.
+    ./vendor/bin/shellvar lint <file> --fix
+
+Example: ./vendor/bin/shellvar lint tests/Fixtures/unwrapped.sh --fix
+
+## Maintenance
 
     composer install
     composer lint
