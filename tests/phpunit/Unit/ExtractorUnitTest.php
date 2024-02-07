@@ -23,7 +23,7 @@ class ExtractorUnitTest extends UnitTestBase {
    * @covers ::extractVariable
    */
   public function testExtractVariable(string $line, ?Variable $expected) : void {
-    $extractor = $this->prepareMock(ShellExtractor::class);
+    $extractor = $this->prepareMock(ShellExtractor::class, [], FALSE);
     $actual = $this->callProtectedMethod($extractor, 'extractVariable', [$line]);
     $this->assertEquals($expected, $actual);
   }
@@ -114,7 +114,7 @@ class ExtractorUnitTest extends UnitTestBase {
    * @covers ::extractVariableValue
    */
   public function testExtractVariableValue(string $line, string|int $expected) : void {
-    $extractor = $this->prepareMock(ShellExtractor::class);
+    $extractor = $this->prepareMock(ShellExtractor::class, [], FALSE);
     $actual = $this->callProtectedMethod($extractor, 'extractVariableValue', [$line, 'TESTUNSET']);
     $this->assertEquals($expected, $actual);
   }
@@ -181,7 +181,7 @@ class ExtractorUnitTest extends UnitTestBase {
    * @covers ::extractVariableDescription
    */
   public function testExtractVariableDescription(array $lines, int $line_num, array $skip_prefix, string $expected) : void {
-    $extractor = $this->prepareMock(ShellExtractor::class);
+    $extractor = $this->prepareMock(ShellExtractor::class, [], FALSE);
     $actual = $this->callProtectedMethod($extractor, 'extractVariableDescription', [$lines, $line_num, $skip_prefix]);
     $this->assertEquals($expected, $actual);
   }

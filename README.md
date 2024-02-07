@@ -9,7 +9,7 @@
 
 [![GitHub Issues](https://img.shields.io/github/issues/AlexSkrypnyk/shellvar.svg)](https://github.com/AlexSkrypnyk/shellvar/issues)
 [![GitHub Pull Requests](https://img.shields.io/github/issues-pr/AlexSkrypnyk/shellvar.svg)](https://github.com/AlexSkrypnyk/shellvar/pulls)
-[![Tests](https://github.com/AlexSkrypnyk/shellvar/actions/workflows/test-php.yml/badge.svg)](https://github.com/AlexSkrypnyk/shellvar/actions/workflows/test-php.yml)
+[![Test PHP](https://github.com/AlexSkrypnyk/shellvar/actions/workflows/test-php.yml/badge.svg)](https://github.com/AlexSkrypnyk/shellvar/actions/workflows/test-php.yml)
 [![codecov](https://codecov.io/gh/AlexSkrypnyk/shellvar/graph/badge.svg?token=7WEB1IXBYT)](https://codecov.io/gh/AlexSkrypnyk/shellvar)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/AlexSkrypnyk/shellvar)
 ![LICENSE](https://img.shields.io/github/license/AlexSkrypnyk/shellvar)
@@ -21,7 +21,7 @@
 
 <p align="center">
     <br>
-    Utility to work with shell variables. 
+    Utility to work with shell variables.
 </p>
 
 ## Features
@@ -45,7 +45,7 @@ By default, variable names, descriptions (taken from the comments) and their
 values are printed to STDOUT in the CSV format. You can also change the output
 format to Markdown table or Markdown blocks.
 
-Given the following shell script (see [extended example](tests/Fixtures/test-data.sh) used in tests):
+Given the following shell script (see [extended example](tests/phpunit/Fixtures/test-data.sh) used in tests):
 
 ```bash
 # Assignment to scalar value.
