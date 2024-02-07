@@ -27,7 +27,7 @@ class AutodiscoveryFactoryUnitTest extends UnitTestBase {
    * @covers ::getEntityClasses
    */
   public function testDiscovery() : void {
-    $autodiscovery = new AutodiscoveryFactory('tests/Fixtures');
+    $autodiscovery = new AutodiscoveryFactory('tests/phpunit/Fixtures');
     $discovered_classes = $autodiscovery->getEntityClasses();
     $this->assertEquals([
       'DummyDiscoverable11' => DummyDiscoverable11::class,
@@ -45,14 +45,14 @@ class AutodiscoveryFactoryUnitTest extends UnitTestBase {
    * @covers ::getEntityClasses
    */
   public function testDiscoveryTyped() : void {
-    $autodiscovery = new AutodiscoveryFactory('tests/Fixtures/Discovery1');
+    $autodiscovery = new AutodiscoveryFactory('tests/phpunit/Fixtures/Discovery1');
     $discovered_classes = $autodiscovery->getEntityClasses();
     $this->assertEquals([
       'DummyDiscoverable11' => DummyDiscoverable11::class,
       'DummyDiscoverable12' => DummyDiscoverable12::class,
     ], $discovered_classes);
 
-    $autodiscovery = new AutodiscoveryFactory('tests/Fixtures/Discovery2');
+    $autodiscovery = new AutodiscoveryFactory('tests/phpunit/Fixtures/Discovery2');
     $discovered_classes = $autodiscovery->getEntityClasses();
     $this->assertEquals([
       'DummyDiscoverable21' => DummyDiscoverable21::class,
@@ -66,7 +66,7 @@ class AutodiscoveryFactoryUnitTest extends UnitTestBase {
    * @covers ::create
    */
   public function testCreate() : void {
-    $autodiscovery = new AutodiscoveryFactory('tests/Fixtures');
+    $autodiscovery = new AutodiscoveryFactory('tests/phpunit/Fixtures');
     $discovered = $autodiscovery->create('DummyDiscoverable11', new Config());
     $this->assertEquals('DummyDiscoverable11', $discovered::getName());
     $discovered = $autodiscovery->create('DummyDiscoverable12', new Config());
@@ -80,7 +80,7 @@ class AutodiscoveryFactoryUnitTest extends UnitTestBase {
    */
   public function testCreateAll() : void {
     $config = new Config();
-    $autodiscovery = new AutodiscoveryFactory('tests/Fixtures');
+    $autodiscovery = new AutodiscoveryFactory('tests/phpunit/Fixtures');
     $discovered_all = $autodiscovery->createAll($config);
     $this->assertCount(4, $discovered_all);
     usort($discovered_all, static function ($a, $b) : int {
@@ -100,7 +100,7 @@ class AutodiscoveryFactoryUnitTest extends UnitTestBase {
   public function testException() : void {
     $this->expectException(\Exception::class);
     $this->expectExceptionMessage('Invalid entity: non-existent');
-    $autodiscovery = new AutodiscoveryFactory('tests/Fixtures');
+    $autodiscovery = new AutodiscoveryFactory('tests/phpunit/Fixtures');
     $autodiscovery->create('non-existent', new Config());
   }
 

@@ -4,22 +4,11 @@ on:
   push:
     tags:
       - '*'
-    branches:
-      - main
 
 permissions:
   contents: write
 
 jobs:
-  release-drafter:
-    permissions:
-      contents: write
-      pull-requests: write
-    runs-on: ubuntu-latest
-    steps:
-      - uses: release-drafter/release-drafter@v6
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   release-php:
     runs-on: ubuntu-latest
 

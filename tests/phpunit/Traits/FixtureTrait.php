@@ -25,7 +25,7 @@ trait FixtureTrait {
    * Get path to a fixture directory.
    */
   protected static function fixtureDir(): string {
-    return 'tests/Fixtures';
+    return 'tests/phpunit/Fixtures';
   }
 
   /**

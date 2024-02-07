@@ -20,7 +20,8 @@ parameters:
       # it is not possible to specify the type of the parameter, so we ignore
       # this error.
       message: '#.*no value type specified in iterable type array.#'
-      path: tests/*
+      path: tests/phpunit/*
+      reportUnmatched: false
     - "#^Unsafe usage of new static#"
     - message: '#.*.#'
       path: src/Traits
