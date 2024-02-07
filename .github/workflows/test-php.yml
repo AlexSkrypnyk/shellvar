@@ -78,4 +78,4 @@ jobs:
         run: composer build
 
       - name: Test PHAR
-        run: ./.build/shellvar.phar || exit 1
+        run: ./.build/shellvar || exit 1

@@ -26,6 +26,9 @@
 
 ## Features
 
+- Lint variables:
+  - Report on shell variables that are not in `${VAR}` format.
+  - Fix shell variables that are not in `${VAR}` format.
 - Extract variables:
   - Scan a file or a directory containing shell scripts and extract found
     variables with comments and assigned values.
@@ -37,9 +40,49 @@
 
 ## Installation
 
-    composer require alexskrypnyk/shellvar
+Download the latest version of the `shellvar` from the [releases page](https://github.com/AlexSkrypnyk/shellvar/releases)
+and run on host machine:
+
+```bash
+./shellvar [command] [options]
+```
+
+or run as a Docker container:
+
+```bash
+docker run -v $(pwd):/app drevops/shellvar [command] [options]
+```
 
 ## Usage
+
+### Lint
+
+- Report on shell variables that are not in ${VAR} format.
+- Fix shell variables that are not in ${VAR} format.
+
+#### Lint file.
+
+```bash
+./shellvar lint <file>
+```
+
+Example:
+
+```bash
+./shellvar lint tests/phpunit/Fixtures/unwrapped.sh
+```
+
+#### Fix file.
+
+```bash
+./shellvar lint <file> --fix
+```
+
+Example:
+
+```bash
+./shellvar lint tests/phpunit/Fixtures/unwrapped.sh --fix
+```
 
 ### Extract
 
@@ -66,7 +109,7 @@ VAR4=${val4:-$VAR3}
 #### Default CSV output
 
 ```bash
-./vendor/bin/shellvar extract path/to/script.sh
+./shellvar extract path/to/script.sh
 ```
 
 ```csv
@@ -82,7 +125,7 @@ Continuation of the multi-line comment."
 #### Markdown table
 
 ```bash
-./vendor/bin/shellvar extract --format=md-table path/to/script.sh
+./shellvar extract --format=md-table path/to/script.sh
 ```
 
 ```markdown
@@ -107,7 +150,7 @@ which renders as
 #### Markdown blocks
 
 ```bash
-./vendor/bin/shellvar extract --format=md-blocks path/to/script.sh
+./shellvar extract --format=md-blocks path/to/script.sh
 ```
 
 ```markdown
@@ -174,7 +217,7 @@ Default value: `VAR3`
 #### Advanced: Markdown blocks with links and custom template
 
 ```bash
-./vendor/bin/shellvar extract --format=md-blocks --md-link-vars --md-block-template-file=path/to/template.md path/to/script.sh
+./shellvar extract --format=md-blocks --md-link-vars --md-block-template-file=path/to/template.md path/to/script.sh
 ```
 
 ```markdown
@@ -310,29 +353,13 @@ like so: `--exclude-prefix=VAR1 --exclude-prefix=VAR2` etc.
 | `--md-inline-code-extra-file=FILE` | A path to a file that contains additional strings to be formatted as inline code in the Markdown output format. Multiple values allowed.                                                                  |                                                                  |
 | `--md-block-template-file=FILE`    | A path to a Markdown template file used for Markdown blocks (md-blocks) output format. `{{ name }}`, `{{ description }}`, `{{ default_value }}` and `{{ path }}` tokens can be used within the template.  |                                                                  |
 
-
-### Lint
-
-Report on shell variables that are not in ${VAR} format.
-
-Fix shell variables that are not in ${VAR} format.
-
-#### Lint file.
-    ./vendor/bin/shellvar lint <file>
-
-Example: ./vendor/bin/shellvar lint tests/Fixtures/unwrapped.sh
-
-#### Fix file.
-    ./vendor/bin/shellvar lint <file> --fix
-
-Example: ./vendor/bin/shellvar lint tests/Fixtures/unwrapped.sh --fix
-
 ## Maintenance
 
     composer install
     composer lint
     composer lint:fix
     composer test
+    composer build
 
 ### Releasing
 

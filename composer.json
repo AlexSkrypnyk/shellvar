@@ -42,11 +42,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "AlexSkrypnyk\\App\\Tests\\": "tests/phpunit"
-        },
-        "classmap": [
-            "tests/phpunit"
-        ]
+            "AlexSkrypnyk\\Shellvar\\Tests\\": "tests/phpunit"
+        }
     },
     "config": {
         "allow-plugins": {
