@@ -49,7 +49,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestCase 
         ### VAR12
 
         Description without a leading space that goes on<br />multiple lines.
-        
+
         And has a comment with no content.
 
         Default value: val12
@@ -166,7 +166,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestCase 
         ### `VAR12`
 
         Description without a leading space that goes on<br />multiple lines.
-        
+
         And has a comment with no content.
 
         Default value: `val12`
@@ -282,7 +282,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestCase 
         ### `VAR12`
 
         Description without a leading space that goes on<br />multiple lines.
-        
+
         And has a comment with no content.
 
         Default value: `val12`
@@ -400,7 +400,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestCase 
         ### `VAR12`
 
         Description without a leading space that goes on<br />multiple lines.
-        
+
         And has a comment with no content.
 
         Default value: `val12`
@@ -507,17 +507,17 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestCase 
 
         Default value: `val11bash`
 
-        Path: `/tests/Fixtures/multipath/test-data.bash`
+        Path: `/phpunit/Fixtures/multipath/test-data.bash`
 
-        Paths: `/tests/Fixtures/multipath/test-data.bash`
+        Paths: `/phpunit/Fixtures/multipath/test-data.bash`
 
         ### `VAR2`
 
         Default value: `val2bash`
 
-        Path: `/tests/Fixtures/multipath/test-data.bash`
+        Path: `/phpunit/Fixtures/multipath/test-data.bash`
 
-        Paths: `/tests/Fixtures/multipath/test-data.bash`, `/tests/Fixtures/multipath/test-data.sh`
+        Paths: `/phpunit/Fixtures/multipath/test-data.bash`, `/phpunit/Fixtures/multipath/test-data.sh`
 
         EOD,
       ],
@@ -535,13 +535,13 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestCase 
         ### `VAR1`
 
         Description without a leading space that goes on<br />multiple lines.
-        
+
         And has a comment with no content.
-        
+
         Default value: `val1`
-        
+
         ### `VAR2`
-        
+
         List header.
         - "item1" - list item1.
         - "item2" - list item2.<br />Second line of list item2.
@@ -550,7 +550,7 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestCase 
         Multiple lines after a list item.<br />Second line.
 
         And a third line.
-        
+
         Default value: `val2`
 
         EOD,
@@ -568,17 +568,17 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestCase 
         ],
         <<<'EOD'
         ### `VAR1`
-        
+
         Reference to VAR1, `VAR1`, [`$VAR1`](#var1) and [`$VAR1`](#var1).
-        
+
         Reference to VAR1_SUFFIX, `VAR1_SUFFIX`, $VAR1_SUFFIX and `$VAR1_SUFFIX`
-        
+
         Reference to PREFIX_VAR1, `PREFIX_VAR1`, $PREFIX_VAR1 and `$PREFIX_VAR1`
-        
+
         Reference to PREFIX_VAR1_SUFFIX, `PREFIX_VAR1_SUFFIX`, $PREFIX_VAR1_SUFFIX and `$PREFIX_VAR1_SUFFIX`
-        
+
         Reference to PREFIX_VAR2_SUFFIX, `PREFIX_VAR2_SUFFIX`, $PREFIX_VAR2_SUFFIX and `$PREFIX_VAR2_SUFFIX`
-        
+
         Default value: `UNSET`
 
         EOD,

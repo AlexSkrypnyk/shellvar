@@ -30,7 +30,7 @@
         "phpmd/phpmd": "^2.13",
         "phpstan/phpstan": "^1.10",
         "phpunit/phpunit": "^10",
-        "rector/rector": "^0.19.0"
+        "rector/rector": "^1.0.0"
     },
     "replace": {
         "alexskrypnyk/shell-variables-extractor": "self.version"
@@ -42,13 +42,16 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "AlexSkrypnyk\\Shellvar\\Tests\\": "tests/"
-        }
+            "AlexSkrypnyk\\App\\Tests\\": "tests/phpunit"
+        },
+        "classmap": [
+            "tests/phpunit"
+        ]
     },
     "config": {
         "allow-plugins": {
-            "dealerdirect/phpcodesniffer-composer-installer": true,
-            "bamarni/composer-bin-plugin": true
+            "bamarni/composer-bin-plugin": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true
         }
     },
     "scripts": {
@@ -58,7 +61,7 @@
             "phpstan",
             "rector --clear-cache --dry-run"
         ],
-        "lint:fix": [
+        "lint-fix": [
             "rector --clear-cache",
             "phpcbf"
         ],
