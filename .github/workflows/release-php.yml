@@ -34,7 +34,7 @@ jobs:
         run: composer build
 
       - name: Test PHAR
-        run: ./.build/shellvar.phar || exit 1
+        run: ./.build/shellvar || exit 1
 
       - name: Get tag name
         id: get-version
@@ -44,4 +44,4 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            ./.build/shellvar.phar
+            ./.build/shellvar
