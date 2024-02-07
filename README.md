@@ -3,7 +3,9 @@
   <img width=200px height=200px src="https://placehold.jp/000000/ffffff/200x200.png?text=Shellvar&css=%7B%22border-radius%22%3A%22%20100px%22%7D" alt="Shellvar logo"></a>
 </p>
 
-<h1 align="center">Shellvar</h1>
+<p align="center">
+    <strong>Utility to work with shell variables</strong>
+</p>
 
 <div align="center">
 
@@ -15,14 +17,12 @@
 ![LICENSE](https://img.shields.io/github/license/AlexSkrypnyk/shellvar)
 ![Renovate](https://img.shields.io/badge/renovate-enabled-green?logo=renovatebot)
 
+[![Docker Pulls](https://img.shields.io/docker/pulls/drevops/shellvar?logo=docker)](https://hub.docker.com/r/drevops/shellvar)
+![amd64](https://img.shields.io/badge/arch-linux%2Famd64-brightgreen)
+
 </div>
 
 ---
-
-<p align="center">
-    <br>
-    Utility to work with shell variables.
-</p>
 
 ## Features
 
@@ -44,26 +44,24 @@ Download the latest version of the `shellvar` from the [releases page](https://g
 and run on host machine:
 
 ```bash
-./shellvar [command] [options]
+./shellvar [command] [options] path/to/script.sh
 ```
 
 or run as a Docker container:
 
 ```bash
-docker run -v $(pwd):/app drevops/shellvar [command] [options]
+docker run -v $(pwd):/app drevops/shellvar [command] [options] path/to/script.sh
 ```
 
-## Usage
+## Usage - Lint
 
-### Lint
+- Report on shell variables that are not in `${VAR}` format.
+- Fix shell variables that are not in `${VAR}` format.
 
-- Report on shell variables that are not in ${VAR} format.
-- Fix shell variables that are not in ${VAR} format.
-
-#### Lint file.
+### Lint file.
 
 ```bash
-./shellvar lint <file>
+./shellvar lint path/to/script.sh
 ```
 
 Example:
@@ -72,19 +70,19 @@ Example:
 ./shellvar lint tests/phpunit/Fixtures/unwrapped.sh
 ```
 
-#### Fix file.
+### Fix file.
 
 ```bash
-./shellvar lint <file> --fix
+./shellvar lint --fix path/to/script.sh
 ```
 
 Example:
 
 ```bash
-./shellvar lint tests/phpunit/Fixtures/unwrapped.sh --fix
+./shellvar lint --fix tests/phpunit/Fixtures/unwrapped.sh
 ```
 
-### Extract
+## Usage - Extract
 
 By default, variable names, descriptions (taken from the comments) and their
 values are printed to STDOUT in the CSV format. You can also change the output
@@ -106,7 +104,7 @@ VAR3=${val3:-abc}
 VAR4=${val4:-$VAR3}
 ```
 
-#### Default CSV output
+### Default CSV output
 
 ```bash
 ./shellvar extract path/to/script.sh
@@ -122,12 +120,15 @@ VAR4;VAR3;"Parameter expansion with a default value using another variable $VAR3
 Continuation of the multi-line comment."
 ```
 
-#### Markdown table
+### Markdown table
 
 ```bash
 ./shellvar extract --format=md-table path/to/script.sh
 ```
 
+<details>
+  <summary>Click to see output</summary>
+
 ```markdown
 | Name   | Default value | Description                                                                                                                      |
 |--------|---------------|----------------------------------------------------------------------------------------------------------------------------------|
@@ -146,13 +147,17 @@ which renders as
 | `VAR3` | `abc`         | Parameter expansion.                                                                                                             |
 | `VAR4` | `VAR3`        | Parameter expansion with a default value using<br />another variable `$VAR3`.<br /><br />Continuation of the multi-line comment. |
 
+</details>
 
-#### Markdown blocks
+### Markdown blocks
 
 ```bash
 ./shellvar extract --format=md-blocks path/to/script.sh
 ```
 
+<details>
+  <summary>Click to see output</summary>
+
 ```markdown
 ### `VAR1`
 
@@ -214,12 +219,17 @@ Default value: `VAR3`
 
 </td></tr></table>
 
-#### Advanced: Markdown blocks with links and custom template
+</details>
+
+### Advanced: Markdown blocks with links and custom template
 
 ```bash
 ./shellvar extract --format=md-blocks --md-link-vars --md-block-template-file=path/to/template.md path/to/script.sh
 ```
 
+<details>
+  <summary>Click to see output</summary>
+
 ```markdown
 ### `VAR1`
 
@@ -313,7 +323,9 @@ Paths: `1.sh`
 
 </td></tr></table>
 
-#### Options
+</details>
+
+### Options
 
 There are options for different phases: extraction, filtering and formatting.
 
@@ -361,7 +373,9 @@ like so: `--exclude-prefix=VAR1 --exclude-prefix=VAR2` etc.
     composer test
     composer build
 
-### Releasing
+### Docker publishing
+
+Shellvar is [published as a Docker image](https://hub.docker.com/r/drevops/shellvar) with the following tags:
 
 - `XX.YY.ZZ` tag - when release tag is published on GitHub.
 - `latest` - when release tag is published on GitHub.
