@@ -23,22 +23,31 @@ class LintFunctionalTest extends FunctionalTestCase {
    */
   public function testLintCommand(): void {
     $command = new LintCommand();
-    // No existing file.
+
+    // Not existing file.
     $output = $this->runExecute($command, ['file' => 'no-existing-file.sh']);
     $this->assertEquals('Could not open file no-existing-file.sh' . PHP_EOL, implode(PHP_EOL, $output));
+    $this->assertEquals(1, $this->commandTester->getStatusCode());
+
     // Valid file.
     $valid_file = $this->createTempFileFromFixtureFile('wrapped.sh');
     $valid_file_not_run = $this->createTempFileFromFixtureFile('wrapped.sh');
     $this->assertFileEquals($valid_file, $valid_file_not_run);
+
     $output = $this->runExecute($command, ['file' => $valid_file]);
+    $this->assertEquals(0, $this->commandTester->getStatusCode());
     $this->assertEquals(sprintf('Found 0 variables in file "%s" that are not wrapped in ${}.', $valid_file) . PHP_EOL, implode(PHP_EOL, $output));
+
     $output = $this->runExecute($command, ['file' => $valid_file, '-f' => TRUE]);
+    $this->assertEquals(0, $this->commandTester->getStatusCode());
     $this->assertEquals(sprintf('Replaced 0 variables in file "%s".', $valid_file) . PHP_EOL, implode(PHP_EOL, $output));
     $this->assertFileEquals($valid_file, $valid_file_not_run);
+
     // Invalid file.
     $invalid_file = $this->createTempFileFromFixtureFile('unwrapped.sh');
     $invalid_file_not_run = $this->createTempFileFromFixtureFile('unwrapped.sh');
     $this->assertFileEquals($invalid_file, $invalid_file_not_run);
+
     $output = $this->runExecute($command, ['file' => $invalid_file]);
     $this->assertEquals([
       '11: var=$VAR1',
@@ -47,6 +56,8 @@ class LintFunctionalTest extends FunctionalTestCase {
       sprintf('Found 3 variables in file "%s" that are not wrapped in ${}.', $invalid_file),
       '',
     ], $output);
+    $this->assertEquals(1, $this->commandTester->getStatusCode());
+
     $output = $this->runExecute($command, ['file' => $invalid_file, '-f' => TRUE]);
     $this->assertEquals([
       'Replaced in line 11: var=$VAR1',
@@ -56,6 +67,7 @@ class LintFunctionalTest extends FunctionalTestCase {
       '',
     ], $output);
     $this->assertFileNotEquals($invalid_file, $invalid_file_not_run);
+    $this->assertEquals(0, $this->commandTester->getStatusCode());
   }
 
 }

@@ -33,7 +33,7 @@ class LintUnitTest extends UnitTestBase {
     // Test invalid file.
     $invalidFile = $this->createTempFileFromFixtureFile('unwrapped.sh');
     $result = $lintCommand->processFile($invalidFile);
-    $this->assertEquals(TRUE, $result['success']);
+    $this->assertEquals(FALSE, $result['success']);
     $this->assertEquals([
       "11: var=\$VAR1",
       "12: var=\"\$VAR2\"",
