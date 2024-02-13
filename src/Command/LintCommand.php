@@ -90,7 +90,6 @@ class LintCommand extends Command {
       $processed_lines[] = $is_running_fix ? $processed_line : $line;
     }
 
-    // Do actual replace variables in file or not.
     if ($is_running_fix) {
       $file_data = implode('', $processed_lines);
       file_put_contents($file_name, $file_data);
@@ -98,6 +97,7 @@ class LintCommand extends Command {
     }
     else {
       $result['messages'][] = sprintf('Found %s variables in file "%s" that are not wrapped in ${}.', $changed_count, $file_name);
+      $result['success'] = $changed_count === 0;
     }
 
     return $result;
