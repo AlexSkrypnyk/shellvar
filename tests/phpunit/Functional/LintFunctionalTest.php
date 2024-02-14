@@ -80,13 +80,15 @@ class LintFunctionalTest extends FunctionalTestCase {
 
     $valid_file = $this->createTempFileFromFixtureFile('wrapped.sh', 'dir1');
     $invalid_file = $this->createTempFileFromFixtureFile('unwrapped.sh', 'dir1');
+    $invalid_file_bats = $this->createTempFileFromFixtureFile('unwrapped.bats', 'dir1');
     $invalid_file_subdir = $this->createTempFileFromFixtureFile('unwrapped.sh', 'dir1/subdir');
     $invalid_file_initial = $this->createTempFileFromFixtureFile('unwrapped.sh', 'initial');
+    $file_md = $this->createTempFileFromFixtureFile('test-template-path.md', 'dir1');
     $dir = dirname($valid_file);
 
+    // Lint.
     $output = $this->runExecute($command, ['file' => $dir]);
     $this->assertEquals(1, $this->commandTester->getStatusCode());
-
     $this->assertEquals([
       '11: var=$VAR1',
       '12: var="$VAR2"',
@@ -100,6 +102,18 @@ class LintFunctionalTest extends FunctionalTestCase {
       '',
     ], $output);
 
+    // Lint with extensions.
+    $output = $this->runExecute($command, ['file' => $dir, '-e' => ['bats']]);
+    $this->assertEquals(1, $this->commandTester->getStatusCode());
+    $this->assertEquals([
+      '11: var=$VAR1',
+      '12: var="$VAR2"',
+      '14: var=$VAR3',
+      sprintf('Found 3 variables in file "%s" that are not wrapped in ${}.', $invalid_file_bats),
+      '',
+    ], $output);
+
+    // Lint fix.
     $output = $this->runExecute($command, ['file' => $dir, '-f' => TRUE]);
     $this->assertEquals(0, $this->commandTester->getStatusCode());
     $this->assertEquals([
@@ -120,6 +134,8 @@ class LintFunctionalTest extends FunctionalTestCase {
     unlink($valid_file);
     unlink($invalid_file);
     unlink($invalid_file_subdir);
+    unlink($file_md);
+    unlink($invalid_file_bats);
     $output = $this->runExecute($command, ['file' => $dir]);
     $this->assertEquals(0, $this->commandTester->getStatusCode());
     $this->assertEquals([
