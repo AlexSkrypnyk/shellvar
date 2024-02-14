@@ -58,28 +58,36 @@ docker run -v $(pwd):/app drevops/shellvar [command] [options] path/to/script.sh
 - Report on shell variables that are not in `${VAR}` format.
 - Fix shell variables that are not in `${VAR}` format.
 
-### Lint file.
+### Lint file or directory
 
 ```bash
 ./shellvar lint path/to/script.sh
+
+./shellvar lint path/to/dir
 ```
 
 Example:
 
 ```bash
 ./shellvar lint tests/phpunit/Fixtures/unwrapped.sh
+
+./shellvar lint tests/phpunit/Fixtures
 ```
 
-### Fix file.
+### Fix file or directory
 
 ```bash
 ./shellvar lint --fix path/to/script.sh
+
+./shellvar lint --fix path/to/dir
 ```
 
 Example:
 
 ```bash
 ./shellvar lint --fix tests/phpunit/Fixtures/unwrapped.sh
+
+./shellvar lint --fix tests/phpunit/Fixtures
 ```
 
 ## Usage - Extract

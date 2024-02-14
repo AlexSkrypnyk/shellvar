@@ -38,12 +38,32 @@ class LintCommand extends Command {
 
     $file = is_scalar($input->getArgument('file')) ? (string) $input->getArgument('file') : '';
 
-    // Process file.
-    $result = $this->processFile($file, $is_running_fix);
+    $files = [];
+    if (is_dir($file)) {
+      $files = scandir($file);
+      // @phpstan-ignore-next-line
+      $files = array_filter($files, static function ($f): bool {
+        return !in_array($f, ['.', '..']);
+      });
+      $files = array_map(static function (string $f) use ($file): string {
+        return $file . '/' . $f;
+      }, $files);
+    }
+    else {
+      $files[] = $file;
+    }
 
-    $exit_code = $result['success'] ? Command::SUCCESS : Command::FAILURE;
-    $messages = empty($result['messages']) ? [] : $result['messages'];
-    $output->writeln($messages);
+    $exit_code = 0;
+    foreach ($files as $file) {
+      $result = $this->processFile($file, $is_running_fix);
+
+      if (!$result['success']) {
+        $exit_code = Command::FAILURE;
+      }
+
+      $messages = empty($result['messages']) ? [] : $result['messages'];
+      $output->writeln($messages);
+    }
 
     return $exit_code;
   }

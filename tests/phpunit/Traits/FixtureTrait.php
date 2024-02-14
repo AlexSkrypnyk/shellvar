@@ -33,24 +33,31 @@ trait FixtureTrait {
    *
    * @param string $fixture_file_name
    *   Fixture file name.
+   * @param string $parent
+   *   Parent directory.
    *
    * @return string
    *   Temp file.
    *
    * @throws \Exception
    */
-  protected static function createTempFileFromFixtureFile(string $fixture_file_name): string {
-    // Create temp file.
-    $file = tempnam(sys_get_temp_dir(), 'temp-fixture');
-    if ($file === FALSE) {
-      throw new \Exception('Unable create temp file from fixture file.');
+  protected function createTempFileFromFixtureFile(string $fixture_file_name, string $parent = ''): string {
+    if (!empty($parent)) {
+      $parent = rtrim($parent, DIRECTORY_SEPARATOR);
     }
+
+    $parent = sys_get_temp_dir() . DIRECTORY_SEPARATOR . getmypid() . DIRECTORY_SEPARATOR . $this->name() . DIRECTORY_SEPARATOR . $parent;
+
+    mkdir($parent, 0777, TRUE);
+
+    $file = $parent . DIRECTORY_SEPARATOR . $fixture_file_name;
 
     // Copy content from fixture file to temp file.
     $fixture_file_content = file_get_contents(static::fixtureFile($fixture_file_name));
     if ($fixture_file_content === FALSE) {
       throw new \Exception('Unable copy content from fixture file to temp file.');
     }
+
     $result = file_put_contents($file, $fixture_file_content);
     if ($result === FALSE) {
       throw new \Exception('Unable copy content from fixture file to temp file.');
