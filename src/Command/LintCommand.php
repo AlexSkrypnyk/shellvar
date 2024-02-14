@@ -38,16 +38,14 @@ class LintCommand extends Command {
 
     $file = is_scalar($input->getArgument('file')) ? (string) $input->getArgument('file') : '';
 
-    $files = [];
     if (is_dir($file)) {
-      $files = scandir($file);
-      // @phpstan-ignore-next-line
-      $files = array_filter($files, static function ($f): bool {
-        return !in_array($f, ['.', '..']);
-      });
-      $files = array_map(static function (string $f) use ($file): string {
-        return $file . '/' . $f;
-      }, $files);
+      $files = array_map(static function (\SplFileInfo $f): string|false {
+        return $f->getRealPath();
+      }, array_filter(iterator_to_array(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($file))), static function (mixed $f): bool {
+        return $f instanceof \SplFileInfo && $f->isFile();
+      }));
+
+      sort($files);
     }
     else {
       $files[] = $file;

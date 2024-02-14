@@ -63,6 +63,12 @@ trait FixtureTrait {
       throw new \Exception('Unable copy content from fixture file to temp file.');
     }
 
+    $file = realpath($file);
+
+    if (!$file) {
+      throw new \Exception('Unable to resolve the real path for the temp file.');
+    }
+
     return $file;
   }
 
