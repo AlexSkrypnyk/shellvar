@@ -80,6 +80,7 @@ class LintFunctionalTest extends FunctionalTestCase {
 
     $valid_file = $this->createTempFileFromFixtureFile('wrapped.sh', 'dir1');
     $invalid_file = $this->createTempFileFromFixtureFile('unwrapped.sh', 'dir1');
+    $invalid_file_subdir = $this->createTempFileFromFixtureFile('unwrapped.sh', 'dir1/subdir');
     $invalid_file_initial = $this->createTempFileFromFixtureFile('unwrapped.sh', 'initial');
     $dir = dirname($valid_file);
 
@@ -87,6 +88,10 @@ class LintFunctionalTest extends FunctionalTestCase {
     $this->assertEquals(1, $this->commandTester->getStatusCode());
 
     $this->assertEquals([
+      '11: var=$VAR1',
+      '12: var="$VAR2"',
+      '14: var=$VAR3',
+      sprintf('Found 3 variables in file "%s" that are not wrapped in ${}.', $invalid_file_subdir),
       '11: var=$VAR1',
       '12: var="$VAR2"',
       '14: var=$VAR3',
@@ -101,6 +106,10 @@ class LintFunctionalTest extends FunctionalTestCase {
       'Replaced in line 11: var=$VAR1',
       'Replaced in line 12: var="$VAR2"',
       'Replaced in line 14: var=$VAR3',
+      sprintf('Replaced 3 variables in file "%s".', $invalid_file_subdir),
+      'Replaced in line 11: var=$VAR1',
+      'Replaced in line 12: var="$VAR2"',
+      'Replaced in line 14: var=$VAR3',
       sprintf('Replaced 3 variables in file "%s".', $invalid_file),
       sprintf('Replaced 0 variables in file "%s".', $valid_file),
       '',
@@ -110,6 +119,7 @@ class LintFunctionalTest extends FunctionalTestCase {
     // Empty dir.
     unlink($valid_file);
     unlink($invalid_file);
+    unlink($invalid_file_subdir);
     $output = $this->runExecute($command, ['file' => $dir]);
     $this->assertEquals(0, $this->commandTester->getStatusCode());
     $this->assertEquals([
