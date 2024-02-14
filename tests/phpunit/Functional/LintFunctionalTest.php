@@ -25,7 +25,7 @@ class LintFunctionalTest extends FunctionalTestCase {
     $command = new LintCommand();
 
     // Not existing file.
-    $output = $this->runExecute($command, ['file' => 'no-existing-file.sh']);
+    $output = $this->runExecute($command, ['path' => 'no-existing-file.sh']);
     $this->assertEquals('Could not open file no-existing-file.sh' . PHP_EOL, implode(PHP_EOL, $output));
     $this->assertEquals(1, $this->commandTester->getStatusCode());
 
@@ -34,11 +34,11 @@ class LintFunctionalTest extends FunctionalTestCase {
     $valid_file_not_run = $this->createTempFileFromFixtureFile('wrapped.sh');
     $this->assertFileEquals($valid_file, $valid_file_not_run);
 
-    $output = $this->runExecute($command, ['file' => $valid_file]);
+    $output = $this->runExecute($command, ['path' => $valid_file]);
     $this->assertEquals(0, $this->commandTester->getStatusCode());
     $this->assertEquals(sprintf('Found 0 variables in file "%s" that are not wrapped in ${}.', $valid_file) . PHP_EOL, implode(PHP_EOL, $output));
 
-    $output = $this->runExecute($command, ['file' => $valid_file, '-f' => TRUE]);
+    $output = $this->runExecute($command, ['path' => $valid_file, '-f' => TRUE]);
     $this->assertEquals(0, $this->commandTester->getStatusCode());
     $this->assertEquals(sprintf('Replaced 0 variables in file "%s".', $valid_file) . PHP_EOL, implode(PHP_EOL, $output));
     $this->assertFileEquals($valid_file, $valid_file_not_run);
@@ -48,7 +48,7 @@ class LintFunctionalTest extends FunctionalTestCase {
     $invalid_file_initial = $this->createTempFileFromFixtureFile('unwrapped.sh', 'initial');
     $this->assertFileEquals($invalid_file, $invalid_file_initial);
 
-    $output = $this->runExecute($command, ['file' => $invalid_file]);
+    $output = $this->runExecute($command, ['path' => $invalid_file]);
     $this->assertEquals([
       '11: var=$VAR1',
       '12: var="$VAR2"',
@@ -58,7 +58,7 @@ class LintFunctionalTest extends FunctionalTestCase {
     ], $output);
     $this->assertEquals(1, $this->commandTester->getStatusCode());
 
-    $output = $this->runExecute($command, ['file' => $invalid_file, '-f' => TRUE]);
+    $output = $this->runExecute($command, ['path' => $invalid_file, '-f' => TRUE]);
     $this->assertEquals([
       'Replaced in line 11: var=$VAR1',
       'Replaced in line 12: var="$VAR2"',
@@ -87,7 +87,7 @@ class LintFunctionalTest extends FunctionalTestCase {
     $dir = dirname($valid_file);
 
     // Lint.
-    $output = $this->runExecute($command, ['file' => $dir]);
+    $output = $this->runExecute($command, ['path' => $dir]);
     $this->assertEquals(1, $this->commandTester->getStatusCode());
     $this->assertEquals([
       '11: var=$VAR1',
@@ -103,7 +103,7 @@ class LintFunctionalTest extends FunctionalTestCase {
     ], $output);
 
     // Lint with extensions.
-    $output = $this->runExecute($command, ['file' => $dir, '-e' => ['bats']]);
+    $output = $this->runExecute($command, ['path' => $dir, '-e' => ['bats']]);
     $this->assertEquals(1, $this->commandTester->getStatusCode());
     $this->assertEquals([
       '11: var=$VAR1',
@@ -114,7 +114,7 @@ class LintFunctionalTest extends FunctionalTestCase {
     ], $output);
 
     // Lint fix.
-    $output = $this->runExecute($command, ['file' => $dir, '-f' => TRUE]);
+    $output = $this->runExecute($command, ['path' => $dir, '-f' => TRUE]);
     $this->assertEquals(0, $this->commandTester->getStatusCode());
     $this->assertEquals([
       'Replaced in line 11: var=$VAR1',
@@ -136,7 +136,7 @@ class LintFunctionalTest extends FunctionalTestCase {
     unlink($invalid_file_subdir);
     unlink($file_md);
     unlink($invalid_file_bats);
-    $output = $this->runExecute($command, ['file' => $dir]);
+    $output = $this->runExecute($command, ['path' => $dir]);
     $this->assertEquals(0, $this->commandTester->getStatusCode());
     $this->assertEquals([
       '',
