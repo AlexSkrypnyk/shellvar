@@ -26,7 +26,11 @@ class LintCommand extends Command {
     $this->setDescription('Check if shell script variables are wrapped in ${} and fix violations.');
     $this->setHelp('Check if shell script variables are wrapped in \${} and fix violations.');
 
-    $this->addArgument('file', InputArgument::REQUIRED, 'File to check');
+    $this->addArgument('file', InputArgument::REQUIRED, 'File or directory to check');
+    $this->addOption('extensions', 'e', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'File extensions to filter by. Applies only if specified file is a directory.', [
+      'sh',
+      'bash',
+    ]);
     $this->addOption('fix', 'f', InputOption::VALUE_NONE, 'If the script should fix the variables in file.');
   }
 
@@ -37,12 +41,13 @@ class LintCommand extends Command {
     $is_running_fix = (bool) $input->getOption('fix');
 
     $file = is_scalar($input->getArgument('file')) ? (string) $input->getArgument('file') : '';
+    $extensions = is_array($input->getOption('extensions')) ? $input->getOption('extensions') : ['sh', 'bash'];
 
     if (is_dir($file)) {
       $files = array_map(static function (\SplFileInfo $f): string|false {
         return $f->getRealPath();
-      }, array_filter(iterator_to_array(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($file))), static function (mixed $f): bool {
-        return $f instanceof \SplFileInfo && $f->isFile();
+      }, array_filter(iterator_to_array(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($file))), static function (mixed $f) use ($extensions): bool {
+        return $f instanceof \SplFileInfo && $f->isFile() && in_array($f->getExtension(), $extensions, TRUE);
       }));
 
       sort($files);

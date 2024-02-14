@@ -64,6 +64,8 @@ docker run -v $(pwd):/app drevops/shellvar [command] [options] path/to/script.sh
 ./shellvar lint path/to/script.sh
 
 ./shellvar lint path/to/dir
+
+./shellvar lint path/to/dir --extensions=sh,bash,bats
 ```
 
 Example:
@@ -72,6 +74,8 @@ Example:
 ./shellvar lint tests/phpunit/Fixtures/unwrapped.sh
 
 ./shellvar lint tests/phpunit/Fixtures
+
+./shellvar lint  --extensions=sh,bash,bats tests/phpunit/Fixtures
 ```
 
 ### Fix file or directory
@@ -80,6 +84,8 @@ Example:
 ./shellvar lint --fix path/to/script.sh
 
 ./shellvar lint --fix path/to/dir
+
+./shellvar lint --fix --extensions=sh,bash,bats path/to/dir
 ```
 
 Example:
@@ -88,6 +94,8 @@ Example:
 ./shellvar lint --fix tests/phpunit/Fixtures/unwrapped.sh
 
 ./shellvar lint --fix tests/phpunit/Fixtures
+
+./shellvar lint --fix --extensions=sh,bash,bats tests/phpunit/Fixtures
 ```
 
 ## Usage - Extract
