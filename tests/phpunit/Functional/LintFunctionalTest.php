@@ -21,7 +21,7 @@ class LintFunctionalTest extends FunctionalTestCase {
    *
    * @throws \Exception
    */
-  public function testLintCommand(): void {
+  public function testLintCommandFile(): void {
     $command = new LintCommand();
 
     // Not existing file.
@@ -45,8 +45,8 @@ class LintFunctionalTest extends FunctionalTestCase {
 
     // Invalid file.
     $invalid_file = $this->createTempFileFromFixtureFile('unwrapped.sh');
-    $invalid_file_not_run = $this->createTempFileFromFixtureFile('unwrapped.sh');
-    $this->assertFileEquals($invalid_file, $invalid_file_not_run);
+    $invalid_file_initial = $this->createTempFileFromFixtureFile('unwrapped.sh', 'initial');
+    $this->assertFileEquals($invalid_file, $invalid_file_initial);
 
     $output = $this->runExecute($command, ['file' => $invalid_file]);
     $this->assertEquals([
@@ -66,8 +66,55 @@ class LintFunctionalTest extends FunctionalTestCase {
       sprintf('Replaced 3 variables in file "%s".', $invalid_file),
       '',
     ], $output);
-    $this->assertFileNotEquals($invalid_file, $invalid_file_not_run);
+    $this->assertFileNotEquals($invalid_file, $invalid_file_initial);
     $this->assertEquals(0, $this->commandTester->getStatusCode());
+  }
+
+  /**
+   * Test LintCommand.
+   *
+   * @throws \Exception
+   */
+  public function testLintCommandDir(): void {
+    $command = new LintCommand();
+
+    $valid_file = $this->createTempFileFromFixtureFile('wrapped.sh', 'dir1');
+    $invalid_file = $this->createTempFileFromFixtureFile('unwrapped.sh', 'dir1');
+    $invalid_file_initial = $this->createTempFileFromFixtureFile('unwrapped.sh', 'initial');
+    $dir = dirname($valid_file);
+
+    $output = $this->runExecute($command, ['file' => $dir]);
+    $this->assertEquals(1, $this->commandTester->getStatusCode());
+
+    $this->assertEquals([
+      '11: var=$VAR1',
+      '12: var="$VAR2"',
+      '14: var=$VAR3',
+      sprintf('Found 3 variables in file "%s" that are not wrapped in ${}.', $invalid_file),
+      sprintf('Found 0 variables in file "%s" that are not wrapped in ${}.', $valid_file),
+      '',
+    ], $output);
+
+    $output = $this->runExecute($command, ['file' => $dir, '-f' => TRUE]);
+    $this->assertEquals(0, $this->commandTester->getStatusCode());
+    $this->assertEquals([
+      'Replaced in line 11: var=$VAR1',
+      'Replaced in line 12: var="$VAR2"',
+      'Replaced in line 14: var=$VAR3',
+      sprintf('Replaced 3 variables in file "%s".', $invalid_file),
+      sprintf('Replaced 0 variables in file "%s".', $valid_file),
+      '',
+    ], $output);
+    $this->assertFileNotEquals($invalid_file, $invalid_file_initial);
+
+    // Empty dir.
+    unlink($valid_file);
+    unlink($invalid_file);
+    $output = $this->runExecute($command, ['file' => $dir]);
+    $this->assertEquals(0, $this->commandTester->getStatusCode());
+    $this->assertEquals([
+      '',
+    ], $output);
   }
 
 }
