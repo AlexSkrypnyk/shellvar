@@ -26,8 +26,8 @@ class LintCommand extends Command {
     $this->setDescription('Check if shell script variables are wrapped in ${} and fix violations.');
     $this->setHelp('Check if shell script variables are wrapped in \${} and fix violations.');
 
-    $this->addArgument('file', InputArgument::REQUIRED, 'File or directory to check');
-    $this->addOption('extensions', 'e', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'File extensions to filter by. Applies only if specified file is a directory.', [
+    $this->addArgument('path', InputArgument::REQUIRED, 'File or directory to check');
+    $this->addOption('extension', 'e', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'File extension to filter by. Applies only if specified path is a directory.', [
       'sh',
       'bash',
     ]);
@@ -40,25 +40,25 @@ class LintCommand extends Command {
   protected function execute(InputInterface $input, OutputInterface $output): int {
     $is_running_fix = (bool) $input->getOption('fix');
 
-    $file = is_scalar($input->getArgument('file')) ? (string) $input->getArgument('file') : '';
-    $extensions = is_array($input->getOption('extensions')) ? $input->getOption('extensions') : ['sh', 'bash'];
+    $path = is_scalar($input->getArgument('path')) ? (string) $input->getArgument('path') : '';
+    $extensions = is_array($input->getOption('extension')) ? $input->getOption('extension') : ['sh', 'bash'];
 
-    if (is_dir($file)) {
+    if (is_dir($path)) {
       $files = array_map(static function (\SplFileInfo $f): string|false {
         return $f->getRealPath();
-      }, array_filter(iterator_to_array(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($file))), static function (mixed $f) use ($extensions): bool {
+      }, array_filter(iterator_to_array(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path))), static function (mixed $f) use ($extensions): bool {
         return $f instanceof \SplFileInfo && $f->isFile() && in_array($f->getExtension(), $extensions, TRUE);
       }));
 
       sort($files);
     }
     else {
-      $files[] = $file;
+      $files[] = $path;
     }
 
     $exit_code = 0;
-    foreach ($files as $file) {
-      $result = $this->processFile($file, $is_running_fix);
+    foreach ($files as $path) {
+      $result = $this->processFile($path, $is_running_fix);
 
       if (!$result['success']) {
         $exit_code = Command::FAILURE;
