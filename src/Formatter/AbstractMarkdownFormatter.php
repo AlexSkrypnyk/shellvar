@@ -151,7 +151,7 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
           $lines[$k - 1] = str_replace($br, '<NEWLINE>', $lines[$k - 1]);
         }
         $lines[$k] .= '<NEWLINE>';
-        if ($k > 1 && $lines[$k - 1] == '<NEWLINE>') {
+        if ($k > 1 && $lines[$k - 1] === '<NEWLINE>') {
           $lines[$k - 2] = str_replace($br, '<NEWLINE>', $lines[$k - 2]);
         }
         $in_list = TRUE;
