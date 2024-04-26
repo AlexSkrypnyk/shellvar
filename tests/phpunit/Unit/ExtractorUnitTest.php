@@ -110,13 +110,76 @@ class ExtractorUnitTest extends UnitTestBase {
   /**
    * Tests the extractVariableValue() method.
    *
+   * @dataProvider dataProviderParseVariableString
+   * @covers ::parseVariableString
+   */
+  public function testParseVariableString(string $line, string $name, ?string $operator, ?string $default) : void {
+    $extractor = $this->prepareMock(ShellExtractor::class, [], FALSE);
+    $actual = $this->callProtectedMethod($extractor, 'parseVariableString', [$line, 'TESTUNSET']);
+    $this->assertSame($name, $actual['name']);
+    $this->assertSame($operator, $actual['operator']);
+    $this->assertSame($default, $actual['default']);
+  }
+
+  /**
+   * Data provider for testParseVariableString().
+   */
+  public static function dataProviderParseVariableString() : array {
+    return [
+      ['', '', NULL, NULL],
+
+      ['VAR1', 'VAR1', NULL, NULL],
+
+      ['VAR1-', 'VAR1', '-', NULL],
+      ['VAR1:-', 'VAR1', ':-', NULL],
+      ['VAR1:=', 'VAR1', ':=', NULL],
+      ['VAR1+=', 'VAR1', '+=', NULL],
+      ['VAR1?', 'VAR1', '?', NULL],
+
+      ['VAR1-val', 'VAR1', '-', 'val'],
+      ['VAR1:-val', 'VAR1', ':-', 'val'],
+      ['VAR1:=val', 'VAR1', ':=', 'val'],
+      ['VAR1+=val', 'VAR1', '+=', 'val'],
+      // Special case for '?'.
+      ['VAR1?val', 'VAR1', '?', NULL],
+
+      ['VAR1-"val"', 'VAR1', '-', '"val"'],
+      ['VAR1:-"val"', 'VAR1', ':-', '"val"'],
+      ['VAR1:="val"', 'VAR1', ':=', '"val"'],
+      ['VAR1+="val"', 'VAR1', '+=', '"val"'],
+      // Special case for '?'.
+      ['VAR1?"val"', 'VAR1', '?', NULL],
+
+      ['VAR1-$VAR2', 'VAR1', '-', '$VAR2'],
+      ['VAR1:-$VAR2', 'VAR1', ':-', '$VAR2'],
+      ['VAR1:=$VAR2', 'VAR1', ':=', '$VAR2'],
+      ['VAR1+=$VAR2', 'VAR1', '+=', '$VAR2'],
+      // Special case for '?'.
+      ['VAR1?$VAR2', 'VAR1', '?', NULL],
+
+      ['VAR1-"$VAR2"', 'VAR1', '-', '"$VAR2"'],
+      ['VAR1:-"$VAR2"', 'VAR1', ':-', '"$VAR2"'],
+      ['VAR1:="$VAR2"', 'VAR1', ':=', '"$VAR2"'],
+      ['VAR1+="$VAR2"', 'VAR1', '+=', '"$VAR2"'],
+      // Special case for '?'.
+      ['VAR1?"$VAR2"', 'VAR1', '?', NULL],
+
+      // Negative.
+      ['VAR1=', 'VAR1=', NULL, NULL],
+      ['VAR1 =', 'VAR1 =', NULL, NULL],
+    ];
+  }
+
+  /**
+   * Tests the extractVariableValue() method.
+   *
    * @dataProvider dataProviderExtractVariableValue
    * @covers ::extractVariableValue
    */
   public function testExtractVariableValue(string $line, string|int $expected) : void {
     $extractor = $this->prepareMock(ShellExtractor::class, [], FALSE);
     $actual = $this->callProtectedMethod($extractor, 'extractVariableValue', [$line, 'TESTUNSET']);
-    $this->assertEquals($expected, $actual);
+    $this->assertSame($expected, $actual);
   }
 
   /**
@@ -146,8 +209,8 @@ class ExtractorUnitTest extends UnitTestBase {
 
       ['VAR1=${VAR2:-}', 'VAR2'],
       ['VAR1="${VAR2:-}"', 'VAR2'],
-      ['VAR1=${VAR2:-123}', 123],
-      ['VAR1="${VAR2:-123}"', 123],
+      ['VAR1=${VAR2:-123}', '123'],
+      ['VAR1="${VAR2:-123}"', '123'],
 
       ['VAR1=${VAR2:-$VAR3}', 'VAR3'],
       ['VAR1="${VAR2:-$VAR3}"', 'VAR3'],
@@ -162,8 +225,8 @@ class ExtractorUnitTest extends UnitTestBase {
       ['VAR1="${VAR2:-${VAR3:-"${VAR4:-567}"}}"', '567'],
 
       // Still a valid expression in the context of this method.
-      ['$VAR1=123', 123],
-      ['${VAR1}=123', 123],
+      ['$VAR1=123', '123'],
+      ['${VAR1}=123', '123'],
 
       // Script arguments.
       ['VAR1=${VAR2:-$1}', 'TESTUNSET'],
@@ -171,6 +234,25 @@ class ExtractorUnitTest extends UnitTestBase {
       ['VAR1=${1:-}', 'TESTUNSET'],
       ['VAR1=${1:-2}', '2'],
       ['VAR1=${1:-$2}', 'TESTUNSET'],
+
+      // Other forms.
+      ['VAR1=${VAR2-val2}', 'val2'],
+      ['VAR1=${VAR2-$VAR3}', 'VAR3'],
+      ['VAR1=${VAR2-"$VAR3"}', 'VAR3'],
+      ['VAR1=${VAR2-${VAR3}}', 'VAR3'],
+      ['VAR1=${VAR2-"${VAR3}"}', 'VAR3'],
+      ['VAR1=${VAR2:-val2}', 'val2'],
+      ['VAR1=${VAR2-val2}', 'val2'],
+      ['VAR1=${VAR2-${VAR3:-${VAR4-val4}}}', 'val4'],
+      ['VAR1=${VAR2-${VAR3:-${VAR4-}}}', 'VAR4'],
+
+      ['VAR1=${VAR2-${VAR3:-${VAR4?val4}}}', 'VAR4'],
+      ['VAR1=${VAR2-${VAR3:-}}', 'VAR3'],
+      ['VAR1=${VAR2-"${VAR3:-}"}', 'VAR3'],
+
+      ['VAR1=${VAR2:=$VAR3}', 'VAR3'],
+      ['VAR1=${VAR2+=$VAR3}', 'VAR3'],
+      ['VAR1=${VAR2?Some message}', 'VAR2'],
     ];
   }
 

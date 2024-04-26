@@ -190,7 +190,7 @@ class LintCommand extends Command {
     // Find previous single or double quote.
     for ($i = $pos; $i >= 0; $i--) {
       $char = $line[$i] ?? '';
-      if ($char == '"' || $char == "'") {
+      if ($char === '"' || $char === "'") {
         $prev = $char;
         break;
       }
@@ -198,11 +198,11 @@ class LintCommand extends Command {
 
     $double_even = substr_count($prefix, '"') % 2 == 0;
 
-    if ($prev == '"' && $double_even) {
+    if ($prev === '"' && $double_even) {
       return TRUE;
     }
 
-    if ($prev == "'") {
+    if ($prev === "'") {
       // Prev interpolation is closed - this is a new one.
       if ($double_even) {
         // New non-interpolation.

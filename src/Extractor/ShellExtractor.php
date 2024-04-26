@@ -165,19 +165,44 @@ class ShellExtractor extends AbstractExtractor {
       return $default_value;
     }
 
+    // Validate value.
+    // Even number of quotes.
+    if (str_contains($value, '"') && substr_count($value, '"') % 2 !== 0) {
+      throw new \RuntimeException('Invalid number of quotes in the value: ' . $value);
+    }
+    // Even number of braces.
+    if ((str_contains($value, '{') || str_contains($value, '}')) && substr_count($value, '}') !== substr_count($value, '{')) {
+      throw new \RuntimeException('Unbalanced braces in the value: ' . $value);
+    }
+
     // Replace all outermost matching patterns with the found sub-group. This
     // allows to reduce the value to the innermost matching pattern.
     while (TRUE) {
-      $replaced = 0;
-      $value = preg_replace_callback('/\$\{([^:\-}]+):-([^}]+)?}/', static function ($matches) use (&$replaced): string {
-        $replaced++;
-        // Use found value or the default value, i.e. in case of ${var:-abc},
-        // use 'abc'; in case of ${var:-}, use 'var', but as a variable to make
-        // sure that it is not confused with a scalar value ($var vs 'var').
-        return trim($matches[2] ?? '$' . $matches[1], '"');
+      $replaced_count = 0;
+
+      $regex = '/\$\{(?:[^{}]*|\{[^{}]*\})*\$\{([^{}]+)\}(?:[^{}]*|\{[^{}]*\})*\}/';
+      $value = preg_replace_callback($regex, static function ($matches) use (&$replaced_count): string {
+        $to_replace = $matches[0];
+
+        $innermost = $matches[1] ?? NULL;
+        if (!$innermost) {
+          return '';
+        }
+
+        $parsed = self::parseVariableString($innermost);
+        if (!$parsed) {
+          return '';
+        }
+
+        $replace_with = trim($parsed['default'] ?? '$' . $parsed['name'], '"');
+        $replaced = str_replace('${' . $innermost . '}', $replace_with, $to_replace);
+
+        $replaced_count++;
+
+        return $replaced;
       }, (string) $value);
 
-      if ($replaced === 0) {
+      if ($replaced_count === 0) {
         break;
       }
     }
@@ -188,15 +213,60 @@ class ShellExtractor extends AbstractExtractor {
       if (str_starts_with($value, '${')) {
         $value = trim($value, '${}');
         $value = trim($value, '"');
+
+        $parsed = self::parseVariableString($value);
+        if (!$parsed) {
+          return $default_value;
+        }
+
+        $value = trim($parsed['default'] ?? '$' . $parsed['name'], '"');
       }
 
-      $value = trim($value, '$');
-
       // Numeric values are script arguments, so we convert them to defaults.
-      $value = is_numeric($value) ? $default_value : $value;
+      $value = str_starts_with($value, '$') && is_numeric(trim($value, '$')) ? $default_value : $value;
+
+      $value = trim((string) $value, '$');
     }
 
     return empty($value) ? $default_value : $value;
+  }
+
+  /**
+   * Parse a variable string.
+   *
+   * @param string $string
+   *   A variable string to parse.
+   *
+   * @return array|null
+   *   An array representation of a parsed variable string with the following:
+   *   - name: The variable name.
+   *   - operator: The operator.
+   *   - default: The default value.
+   */
+  protected static function parseVariableString(string $string): ?array {
+    $parts = [
+      'name' => $string,
+      'operator' => NULL,
+      'default' => NULL,
+    ];
+
+    preg_match('/([^:+=?-]+)(-|:-|:=|\+=|\?)(.+)?/', $string, $matches);
+
+    if (empty($matches)) {
+      return $parts;
+    }
+
+    $parts = [
+      'name' => array_slice($matches, 1)[0] ?? $string,
+      'operator' => array_slice($matches, 1)[1] ?? NULL,
+      'default' => array_slice($matches, 1)[2] ?? NULL,
+    ];
+
+    if ($parts['operator'] === '?') {
+      $parts['default'] = NULL;
+    }
+
+    return $parts;
   }
 
   /**
