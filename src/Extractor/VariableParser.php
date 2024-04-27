@@ -195,8 +195,12 @@ class VariableParser {
    *   A value to validate.
    */
   public static function validateValue(string $value): void {
-    // Even number of quotes.
-    if (str_contains($value, '"') && substr_count($value, '"') % 2 !== 0) {
+    // Replace double quotes enclosed by single quotes with a placeholder to
+    // not count them.
+    $processed = preg_replace("/'[^']*\"[^']*'/", '', $value) ?? $value;
+
+    // Even number of quotes in the processed value.
+    if (str_contains($processed, '"') && substr_count($processed, '"') % 2 !== 0) {
       throw new \RuntimeException('Invalid number of quotes in the value: ' . $value);
     }
 
