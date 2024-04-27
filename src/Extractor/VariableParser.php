@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace AlexSkrypnyk\Shellvar\Extractor;
 
+use AlexSkrypnyk\Shellvar\Utils;
+
 /**
  * Class VariableParser.
  *
@@ -12,143 +14,7 @@ namespace AlexSkrypnyk\Shellvar\Extractor;
 class VariableParser {
 
   /**
-   * Extract variable value from a line.
-   *
-   * It is already known that the line contains a variable assignment.
-   *
-   * @param string $line
-   *   A line to extract a variable value from.
-   * @param string $default_value
-   *   The default value to return if a value was not extracted.
-   *
-   * @return string
-   *   A variable value.
-   *
-   * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-   * @SuppressWarnings(PHPMD.NPathComplexity)
-   */
-  public static function parseValue($line, string $default_value): string {
-    [, $value] = explode('=', $line, 2);
-
-    $value = trim($value);
-
-    if (empty($value) || !is_string($value)) {
-      return $default_value;
-    }
-
-    self::validateValue($value);
-
-    $value = self::resolveNestedNotations($value);
-
-    $value = trim($value, '"');
-
-    if (str_starts_with($value, '$')) {
-      if (str_starts_with($value, '${')) {
-        $value = trim($value, '${}');
-        $value = trim($value, '"');
-
-        $parsed = VariableParser::parseValueNotation($value);
-
-        $value = trim($parsed['default'] ?? '$' . $parsed['name'], '"');
-      }
-
-      // Numeric values are script arguments, so we convert them to
-      // the default value.
-      $value = str_starts_with($value, '$') && is_numeric(trim($value, '$')) ? $default_value : $value;
-
-      $value = trim($value, '$');
-    }
-
-    return empty($value) ? $default_value : $value;
-  }
-
-  /**
-   * Simplify the value notation by resolving nested notations.
-   *
-   * @param string $value
-   *   A value to resolve nested notations in.
-   *
-   * @return string
-   *   A value with resolved nested notations.
-   */
-  protected static function resolveNestedNotations(string $value): string {
-    $updated_value = $value;
-
-    while (!empty($updated_value)) {
-      $replaced_count = 0;
-
-      // Match `<name><operator><value>` notation.
-      $regex = '/\$\{(?:[^{}]*|\{[^{}]*})*\$\{([^{}]+)}(?:[^{}]*|\{[^{}]*})*}/';
-      $updated_value = preg_replace_callback($regex, static function (array $matches) use (&$replaced_count): string {
-        $original = $matches[0];
-        $notation = $matches[1];
-
-        $parsed = VariableParser::parseValueNotation($notation);
-
-        // Use the found default value from the notation or the
-        // variable name itself if the notation does not have a default value.
-        $replace_value = trim($parsed['default'] ?? '$' . $parsed['name'], '"');
-
-        // Wrap the notation in `${}` and replace it with a resolved replacement
-        // value.
-        $replaced = str_replace('${' . $notation . '}', $replace_value, $original);
-
-        $replaced_count++;
-
-        return $replaced;
-      }, $updated_value);
-
-      if ($replaced_count === 0) {
-        if ($updated_value !== NULL) {
-          $value = $updated_value;
-        }
-        break;
-      }
-    }
-
-    return (string) $value;
-  }
-
-  /**
-   * Parse a value notation.
-   *
-   * @param string $string
-   *   A value notation to parse.
-   *
-   * @return array<string, string|null>
-   *   An array representation of a parsed value notation with the following:
-   *   - name: The variable name.
-   *   - operator: The operator.
-   *   - default: The default value.
-   */
-  protected static function parseValueNotation(string $string): array {
-    $parts = [
-      'name' => $string,
-      'operator' => NULL,
-      'default' => NULL,
-    ];
-
-    preg_match('/([^:+=?-]+)(-|:-|:=|\+=|\?)(.+)?/', $string, $matches);
-
-    if (empty($matches)) {
-      return $parts;
-    }
-
-    $parts = [
-      'name' => array_slice($matches, 1)[0] ?? $string,
-      'operator' => array_slice($matches, 1)[1] ?? NULL,
-      'default' => array_slice($matches, 1)[2] ?? NULL,
-    ];
-
-    if ($parts['operator'] === '?') {
-      $parts['default'] = NULL;
-    }
-
-    return $parts;
-  }
-
-  /**
-   * Extract variable description from multiple lines.
+   * Parse variable description from multiple lines.
    *
    * @param array<string> $lines
    *   A list of lines to extract a variable description from.
@@ -189,12 +55,47 @@ class VariableParser {
   }
 
   /**
+   * Parse variable value from a line.
+   *
+   * It is already known that the line contains a variable assignment.
+   *
+   * @param string $line
+   *   A line to extract a variable value from.
+   * @param string $unset_value
+   *   The value to return if a value was not set or not extracted.
+   *
+   * @return string
+   *   A parsed variable value or unset value if unable to parse or variable is
+   *   not set.
+   */
+  public static function parseValue($line, string $unset_value): string {
+    [$name, $value] = explode('=', $line, 2);
+
+    $value = trim($value);
+
+    if (empty($value) || !is_string($value)) {
+      return $unset_value;
+    }
+
+    self::validateValue($value);
+
+    $value = self::resolveNestedNotations($value, $unset_value);
+    $value = Utils::removeDoubleQuotes($value);
+
+    if ($name === self::unwrapNotation($value)) {
+      $value = NULL;
+    }
+
+    return is_null($value) ? $unset_value : $value;
+  }
+
+  /**
    * Validate a value.
    *
    * @param string $value
    *   A value to validate.
    */
-  public static function validateValue(string $value): void {
+  protected static function validateValue(string $value): void {
     // Replace double quotes enclosed by single quotes with a placeholder to
     // not count them.
     $processed = preg_replace("/'[^']*\"[^']*'/", '', $value) ?? $value;
@@ -211,6 +112,198 @@ class VariableParser {
     if ((str_contains($value, '{') || str_contains($value, '}')) && substr_count($value, '}') !== substr_count($value, '{')) {
       throw new \RuntimeException('Unbalanced braces in the value: ' . $value);
     }
+  }
+
+  /**
+   * Simplify the value notation by resolving nested notations.
+   *
+   * Do not optimise this method. It has explicit conditional branches
+   * to easily understand the logic and debug it.
+   *
+   * @param string $value
+   *   A value to resolve nested notations in.
+   * @param string $unset_value
+   *   A value to use for when the value is not set.
+   *
+   * @return string
+   *   A value with resolved nested notations.
+   *
+   * @throws \Exception
+   */
+  protected static function resolveNestedNotations(string $value, string $unset_value): string {
+    $value = self::normaliseNotation($value);
+
+    $updated_value = $value;
+
+    $tokens = [];
+
+    while (!empty($updated_value)) {
+      $replaced_count = 0;
+
+      // Match for ${...} variable notation and replace it with a token while
+      // also collecting tokens for further replacement.
+      $updated_value = preg_replace_callback('/\$\{[^{}]+}/', static function (array $matches) use ($unset_value, &$replaced_count, &$tokens): string {
+        $notation = $matches[0];
+
+        if (self::notationIsVariable($notation)) {
+          $token_name = 'SHELVAR_TEMP_TOKEN_' . count($tokens);
+          $tokens[$token_name] = self::resolveNotation($notation, $unset_value);
+          $notation = $token_name;
+          $replaced_count++;
+        }
+
+        return $notation;
+      }, $updated_value);
+
+      if ($updated_value !== NULL) {
+        $value = $updated_value;
+      }
+
+      if ($replaced_count === 0) {
+        break;
+      }
+    }
+
+    if (!empty($tokens)) {
+      $value = Utils::recursiveStrtr($value, $tokens);
+    }
+
+    return $value;
+  }
+
+  /**
+   * Given ${VAR1:-${VAR2-val2}} notation, resolve the variable value.
+   *
+   * @param string $notation
+   *   Variable notation.
+   * @param string $unset_value
+   *   A value to use for when the value is not set.
+   *
+   * @return string
+   *   A resolved value.
+   */
+  protected static function resolveNotation(string $notation, string $unset_value): string {
+    $notation = self::unwrapNotation($notation);
+
+    $parsed = VariableParser::parseNotation($notation);
+
+    $value = '$' . $parsed['name'];
+    $value = self::normaliseNotation($value);
+
+    // Return the default value from the nested variable notation or use the
+    // default value.
+    if (!is_null($parsed['default'])) {
+      $value = $parsed['default'];
+      if (self::notationIsVariable($parsed['default'])) {
+        $value = self::resolveNestedNotations($parsed['default'], $unset_value);
+      }
+    }
+    elseif (is_numeric($parsed['name'])) {
+      $value = $unset_value;
+    }
+
+    return $value;
+  }
+
+  /**
+   * Parse a value notation.
+   *
+   * @param string $string
+   *   A value notation to parse.
+   *
+   * @return array<string, string|null>
+   *   An array representation of a parsed value notation with the following:
+   *   - name: The variable name.
+   *   - operator: The operator.
+   *   - default: The default value.
+   */
+  protected static function parseNotation(string $string): array {
+    $parts = [
+      'name' => $string,
+      'operator' => NULL,
+      'default' => NULL,
+    ];
+
+    preg_match('/([^:+=?-]+)(-|:-|:=|\+=|\?)(.+)?/', $string, $matches);
+
+    if (empty($matches)) {
+      return $parts;
+    }
+
+    $parts = [
+      'name' => array_slice($matches, 1)[0] ?? $string,
+      'operator' => array_slice($matches, 1)[1] ?? NULL,
+      'default' => array_slice($matches, 1)[2] ?? NULL,
+    ];
+
+    if ($parts['operator'] === '?') {
+      $parts['default'] = NULL;
+    }
+
+    return $parts;
+  }
+
+  /**
+   * Check if a notation is a variable.
+   *
+   * @param string $value
+   *   A value to check.
+   *
+   * @return bool
+   *   TRUE if the value is a variable, FALSE otherwise.
+   */
+  protected static function notationIsVariable(string $value): bool {
+    $value = Utils::removeDoubleQuotes($value);
+
+    return str_starts_with($value, '$');
+  }
+
+  /**
+   * Normalise variable notation.
+   *
+   * @param string $notation
+   *   A variable notation.
+   *
+   * @return string
+   *   Normalised variable notation.
+   */
+  protected static function normaliseNotation(string $notation): string {
+    if (!str_starts_with($notation, '"') && !str_ends_with($notation, '"')) {
+      $notation = '"' . $notation . '"';
+    }
+
+    if (str_starts_with($notation, '"$') && !str_starts_with($notation, '"${') && !str_starts_with($notation, '"$(')) {
+      $notation = '"${' . substr($notation, 2, -1) . '}"';
+    }
+
+    return $notation;
+  }
+
+  /**
+   * Unwrap variable notation.
+   *
+   * @param string $notation
+   *   A variable notation.
+   *
+   * @return string
+   *   Unwrapped variable notation.
+   */
+  protected static function unwrapNotation($notation):string {
+    if (str_starts_with($notation, '"')) {
+      $notation = substr($notation, 1);
+    }
+    if (str_ends_with($notation, '"')) {
+      $notation = substr($notation, 0, -1);
+    }
+
+    if (str_starts_with($notation, '${')) {
+      $notation = substr($notation, 2);
+    }
+    if (str_ends_with($notation, '}')) {
+      $notation = substr($notation, 0, -1);
+    }
+
+    return $notation;
   }
 
 }

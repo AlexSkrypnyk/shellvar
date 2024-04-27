@@ -7,15 +7,15 @@
 VAR1=
 VAR2=val2
 
-VAR3="${val3}"
-VAR4=${val4}
+VAR3="val3"
+VAR4="\"val4\""
 
-VAR5=${val5:-abc}
+VAR5=${VAR5:-val5}
 
-VAR6=${val6:-$VAR5}
-VAR7=${val7:-${VAR5}}
+VAR6=${VAR6:-$VAR5}
+VAR7=${VAR7:-${VAR6}}
 
-VAR8=val8
+VAR8=${VAR7:-${VAR5}-${VAR6:-val6}}
 
 # Description with leading space.
 VAR9=val9

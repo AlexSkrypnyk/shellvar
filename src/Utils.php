@@ -106,4 +106,75 @@ class Utils {
     return $path;
   }
 
+  /**
+   * Remove double quotes from a string.
+   *
+   * @param string $string
+   *   A string to remove double quotes from.
+   *
+   * @return string
+   *   A string without double quotes.
+   */
+  public static function removeDoubleQuotes($string): string {
+    $replaced = preg_replace_callback(
+      '/
+        \\\\"|      # Match escaped double quotes
+        \'\[^\'\]*\'|  # Match single-quoted strings
+        "|           # Match double quotes
+    /x',
+      static function (array $matches): string {
+        // If the match is a double quote, remove it.
+        return ($matches[0] === '"' ? '' : $matches[0]);
+      },
+      $string
+    );
+
+    return $replaced ?? $string;
+  }
+
+  /**
+   * Replace placeholders in a string.
+   *
+   * @param string $data
+   *   A data to replace placeholders in.
+   * @param array<string, string> $replacements
+   *   A list of replacements.
+   * @param array<string,bool> $visited
+   *   A list of visited data. Internal.
+   * @param null $original_data
+   *   Original data reference. Internal.
+   *
+   * @return string
+   *   A string with replaced placeholders.
+   *
+   * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+   */
+  public static function recursiveStrtr(string $data, array $replacements, array &$visited = [], &$original_data = NULL): string {
+    if (empty($replacements) && is_string($data)) {
+      return $data;
+    }
+
+    if ($original_data === NULL) {
+      $original_data = $data;
+    }
+
+    if (isset($visited[$data])) {
+      throw new \Exception(sprintf("Circular reference detected for '%s'", $data));
+    }
+
+    $visited[$data] = TRUE;
+
+    $processed = $data;
+    do {
+      $last = $processed;
+      $processed = strtr($processed, $replacements);
+
+      if ($processed === $original_data) {
+        throw new \Exception("Circular reference leading back to the original input detected.");
+      }
+    } while ($last !== $processed);
+
+    return $processed;
+  }
+
 }

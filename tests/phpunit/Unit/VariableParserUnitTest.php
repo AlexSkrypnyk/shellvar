@@ -18,14 +18,157 @@ use AlexSkrypnyk\Shellvar\Extractor\VariableParser;
 class VariableParserUnitTest extends UnitTestBase {
 
   /**
+   * Tests the parseDescription() method.
+   *
+   * @dataProvider dataProviderParseDescription
+   * @covers ::parseDescription
+   */
+  public function testParseDescription(array $lines, int $line_num, array $skip_prefix, string $expected): void {
+    $actual = VariableParser::parseDescription($lines, $line_num, $skip_prefix);
+    $this->assertEquals($expected, $actual);
+  }
+
+  /**
+   * Data provider for testParseDescription().
+   */
+  public static function dataProviderParseDescription(): array {
+    return [
+      [[], 0, [], ''],
+      [[], 10, [], ''],
+      [['string'], 0, [], ''],
+      [['string'], 10, [], ''],
+      [['# first second', 'VAR1'], 1, [], 'first second'],
+      [[' ', '# first second', 'VAR1'], 2, [], 'first second'],
+      [['# zero', ' ', '# first second', 'VAR1'], 3, [], 'first second'],
+      [['# zero', ' ', '# first second', '#', '# third', 'VAR1'], 5, [], "first second\n" . "\n" . 'third'],
+      [['# zero', ' ', '# first second', '#', '# third', '# forth', 'VAR1'], 6, [], "first second\n" . "\n" . "third\n" . 'forth'],
+      //
+      // Description prefixes.
+      [['# zero', ' ', '#;< first second', '# third', '# forth', 'VAR1'], 5, ['#;<'], "third\nforth"],
+      [['# zero', ' ', '#;< first second', '#;> third', '# forth', 'VAR1'], 5, ['#;<', '#;>'], 'forth'],
+      [['# zero', ' ', '#;< first second', '#;> third', '# forth', 'VAR1'], 5, [';<', ';>'], 'forth'],
+      // Special case: removing the skipped prefix should avoid additional line.
+      [['# zero', ' ', '# first second', '#', '#;> third', '# forth', 'VAR1'], 6, [';<', ';>'], "first second\n" . "\n" . 'forth'],
+    ];
+  }
+
+  /**
+   * Tests the parseValue() method.
+   *
+   * @dataProvider dataProviderParseVariableValue
+   * @covers ::parseValue
+   * @covers ::validateValue
+   * @covers ::resolveNestedNotations
+   * @covers ::resolveNotation
+   * @covers ::notationIsVariable
+   * @covers ::normaliseNotation
+   * @covers ::unwrapNotation
+   * @group parse_variable_value
+   */
+  public function testParseVariableValue(string $line, string|int $expected): void {
+    $actual = VariableParser::parseValue($line, 'TESTUNSET');
+    $this->assertSame($expected, $actual);
+  }
+
+  /**
+   * Data provider for testExtractVariable().
+   *
+   * Note that we only assert for assignment expressions. Non-assignment
+   * expressions would not reach this method.
+   */
+  public static function dataProviderParseVariableValue(): array {
+    return [
+      ['VAR1=', 'TESTUNSET'],
+      ['VAR1= ', 'TESTUNSET'],
+      ['VAR1=   ', 'TESTUNSET'],
+
+      ['VAR1=""', ''],
+      ['VAR1= ""', ''],
+      ['VAR1=" "', ' '],
+      ['VAR1= " "', ' '],
+
+      // Special case when variable references itself without a default value.
+      ['VAR1=${VAR1:-}', 'TESTUNSET'],
+
+      ['VAR1=123', '123'],
+      ['VAR1="123"', '123'],
+
+      ['VAR1=$VAR2', '${VAR2}'],
+      ['VAR1="$VAR2"', '${VAR2}'],
+      ['VAR1=${VAR2}', '${VAR2}'],
+      ['VAR1="${VAR2}"', '${VAR2}'],
+
+      ['VAR1=${VAR2:-}', '${VAR2}'],
+      ['VAR1="${VAR2:-}"', '${VAR2}'],
+      ['VAR1=${VAR2:-123}', '123'],
+      ['VAR1="${VAR2:-123}"', '123'],
+
+      ['VAR1=${VAR2:-$VAR3}', '${VAR3}'],
+      ['VAR1="${VAR2:-$VAR3}"', '${VAR3}'],
+      ['VAR1="${VAR2:-"$VAR3"}"', '${VAR3}'],
+      ['VAR1=${VAR2:-${VAR3}}', '${VAR3}'],
+      ['VAR1=${VAR2:-"${VAR3}"}', '${VAR3}'],
+      ['VAR1="${VAR2:-"${VAR3}"}"', '${VAR3}'],
+      ['VAR1="${VAR2:-${VAR3}}"', '${VAR3}'],
+      ['VAR1="${VAR2:-${VAR3:-}}"', '${VAR3}'],
+      ['VAR1="${VAR2:-${VAR3:-567}}"', '567'],
+      ['VAR1="${VAR2:-${VAR3:-567}}"', '567'],
+      ['VAR1="${VAR2:-${VAR3:-"${VAR4:-567}"}}"', '567'],
+
+      // Still a valid expression in the context of this method.
+      ['$VAR1=123', '123'],
+      ['${VAR1}=123', '123'],
+
+      // Script arguments.
+      ['VAR1=${VAR2:-$1}', 'TESTUNSET'],
+      ['VAR1=${VAR2:-${1}}', 'TESTUNSET'],
+      ['VAR1=${1:-}', 'TESTUNSET'],
+      ['VAR1=${1:-2}', '2'],
+      ['VAR1=${1:-$2}', 'TESTUNSET'],
+
+      // Other forms.
+      ['VAR1=${VAR2-val2}', 'val2'],
+      ['VAR1=${VAR2-$VAR3}', '${VAR3}'],
+      ['VAR1=${VAR2-"$VAR3"}', '${VAR3}'],
+      ['VAR1=${VAR2-${VAR3}}', '${VAR3}'],
+      ['VAR1=${VAR2-"${VAR3}"}', '${VAR3}'],
+      ['VAR1=${VAR2:-val2}', 'val2'],
+      ['VAR1=${VAR2-val2}', 'val2'],
+      ['VAR1=${VAR2-${VAR3:-${VAR4-val4}}}', 'val4'],
+      ['VAR1=${VAR2-${VAR3:-${VAR4-}}}', '${VAR4}'],
+
+      ['VAR1=${VAR2-${VAR3:-${VAR4?val4}}}', '${VAR4}'],
+      ['VAR1=${VAR2-${VAR3:-}}', '${VAR3}'],
+      ['VAR1=${VAR2-"${VAR3:-}"}', '${VAR3}'],
+
+      ['VAR1=${VAR2:=$VAR3}', '${VAR3}'],
+      ['VAR1=${VAR2+=$VAR3}', '${VAR3}'],
+      ['VAR1=${VAR2?Some message}', '${VAR2}'],
+
+      // Middle of the string.
+      ['VAR1=${VAR1:-./other/${VAR2}/path}', './other/${VAR2}/path'],
+      ['VAR1=${VAR1:-"./other/${VAR2}/path}"', './other/${VAR2}/path'],
+
+      ['VAR1=${VAR1:-"${VAR2}"-"${VAR3}"}', '${VAR2}-${VAR3}'],
+      ['VAR1=${VAR1:-${VAR2}-${VAR3}}', '${VAR2}-${VAR3}'],
+      ['VAR1=${VAR1:-${VAR2}-${VAR3-val3}}', '${VAR2}-val3'],
+      ['VAR0=${VAR1:-${VAR2-${VAR3-val3}-val4}}', 'val3-val4'],
+
+      ['VAR1="${VAR2} \"${VAR3}\""', '${VAR2} \"${VAR3}\"'],
+
+      ['VAR1=$(pwd)', '$(pwd)'],
+    ];
+  }
+
+  /**
    * Tests the parseValue() method.
    *
    * @dataProvider dataProviderParseValueNotation
-   * @covers ::parseValueNotation
+   * @covers ::parseNotation
    */
   public function testParseValueNotation(string $line, string $name, ?string $operator, ?string $default): void {
     $extractor = $this->prepareMock(VariableParser::class, [], FALSE);
-    $actual = (array) $this->callProtectedMethod($extractor, 'parseValueNotation', [$line, 'TESTUNSET']);
+    $actual = (array) $this->callProtectedMethod($extractor, 'parseNotation', [$line, 'TESTUNSET']);
     $this->assertSame($name, $actual['name']);
     $this->assertSame($operator, $actual['operator']);
     $this->assertSame($default, $actual['default']);
@@ -81,133 +224,6 @@ class VariableParserUnitTest extends UnitTestBase {
   }
 
   /**
-   * Tests the parseValue() method.
-   *
-   * @dataProvider dataProviderExtractVariableValue
-   * @covers ::parseValue
-   * @covers ::validateValue
-   * @covers ::resolveNestedNotations
-   * @group wip4
-   */
-  public function testExtractVariableValue(string $line, string|int $expected): void {
-    $actual = VariableParser::parseValue($line, 'TESTUNSET');
-    $this->assertSame($expected, $actual);
-  }
-
-  /**
-   * Data provider for testExtractVariable().
-   *
-   * Note that we only assert for assignment expressions. Non-assignment
-   * expressions would not reach this method.
-   */
-  public static function dataProviderExtractVariableValue(): array {
-    return [
-      ['VAR1=', 'TESTUNSET'],
-      ['VAR1= ', 'TESTUNSET'],
-      ['VAR1=   ', 'TESTUNSET'],
-      ['VAR1=""', 'TESTUNSET'],
-      ['VAR1= ""', 'TESTUNSET'],
-
-      ['VAR1=" "', ' '],
-      ['VAR1= " "', ' '],
-
-      ['VAR1=123', '123'],
-      ['VAR1="123"', '123'],
-
-      ['VAR1=$VAR2', 'VAR2'],
-      ['VAR1="$VAR2"', 'VAR2'],
-      ['VAR1=${VAR2}', 'VAR2'],
-      ['VAR1="${VAR2}"', 'VAR2'],
-
-      ['VAR1=${VAR2:-}', 'VAR2'],
-      ['VAR1="${VAR2:-}"', 'VAR2'],
-      ['VAR1=${VAR2:-123}', '123'],
-      ['VAR1="${VAR2:-123}"', '123'],
-
-      ['VAR1=${VAR2:-$VAR3}', 'VAR3'],
-      ['VAR1="${VAR2:-$VAR3}"', 'VAR3'],
-      ['VAR1="${VAR2:-"$VAR3"}"', 'VAR3'],
-      ['VAR1=${VAR2:-${VAR3}}', 'VAR3'],
-      ['VAR1=${VAR2:-"${VAR3}"}', 'VAR3'],
-      ['VAR1="${VAR2:-"${VAR3}"}"', 'VAR3'],
-      ['VAR1="${VAR2:-${VAR3}}"', 'VAR3'],
-      ['VAR1="${VAR2:-${VAR3:-}}"', 'VAR3'],
-      ['VAR1="${VAR2:-${VAR3:-567}}"', '567'],
-      ['VAR1="${VAR2:-${VAR3:-567}}"', '567'],
-      ['VAR1="${VAR2:-${VAR3:-"${VAR4:-567}"}}"', '567'],
-
-      // Still a valid expression in the context of this method.
-      ['$VAR1=123', '123'],
-      ['${VAR1}=123', '123'],
-
-      // Script arguments.
-      ['VAR1=${VAR2:-$1}', 'TESTUNSET'],
-      ['VAR1=${VAR2:-${1}}', 'TESTUNSET'],
-      ['VAR1=${1:-}', 'TESTUNSET'],
-      ['VAR1=${1:-2}', '2'],
-      ['VAR1=${1:-$2}', 'TESTUNSET'],
-
-      // Other forms.
-      ['VAR1=${VAR2-val2}', 'val2'],
-      ['VAR1=${VAR2-$VAR3}', 'VAR3'],
-      ['VAR1=${VAR2-"$VAR3"}', 'VAR3'],
-      ['VAR1=${VAR2-${VAR3}}', 'VAR3'],
-      ['VAR1=${VAR2-"${VAR3}"}', 'VAR3'],
-      ['VAR1=${VAR2:-val2}', 'val2'],
-      ['VAR1=${VAR2-val2}', 'val2'],
-      ['VAR1=${VAR2-${VAR3:-${VAR4-val4}}}', 'val4'],
-      ['VAR1=${VAR2-${VAR3:-${VAR4-}}}', 'VAR4'],
-
-      ['VAR1=${VAR2-${VAR3:-${VAR4?val4}}}', 'VAR4'],
-      ['VAR1=${VAR2-${VAR3:-}}', 'VAR3'],
-      ['VAR1=${VAR2-"${VAR3:-}"}', 'VAR3'],
-
-      ['VAR1=${VAR2:=$VAR3}', 'VAR3'],
-      ['VAR1=${VAR2+=$VAR3}', 'VAR3'],
-      ['VAR1=${VAR2?Some message}', 'VAR2'],
-
-      // Middle of the string.
-      ['VAR1=${VAR1:-./other/${VAR2}/path}', './other/${VAR2}/path'],
-      ['VAR1=${VAR1:-"./other/${VAR2}/path}"', './other/${VAR2}/path'],
-    ];
-  }
-
-  /**
-   * Tests the parseValue() method.
-   *
-   * @dataProvider dataProviderExtractVariableDescription
-   * @covers ::parseDescription
-   */
-  public function testExtractVariableDescription(array $lines, int $line_num, array $skip_prefix, string $expected): void {
-    $actual = VariableParser::parseDescription($lines, $line_num, $skip_prefix);
-    $this->assertEquals($expected, $actual);
-  }
-
-  /**
-   * Data provider for testExtractVariableDescription().
-   */
-  public static function dataProviderExtractVariableDescription(): array {
-    return [
-      [[], 0, [], ''],
-      [[], 10, [], ''],
-      [['string'], 0, [], ''],
-      [['string'], 10, [], ''],
-      [['# first second', 'VAR1'], 1, [], 'first second'],
-      [[' ', '# first second', 'VAR1'], 2, [], 'first second'],
-      [['# zero', ' ', '# first second', 'VAR1'], 3, [], 'first second'],
-      [['# zero', ' ', '# first second', '#', '# third', 'VAR1'], 5, [], "first second\n" . "\n" . 'third'],
-      [['# zero', ' ', '# first second', '#', '# third', '# forth', 'VAR1'], 6, [], "first second\n" . "\n" . "third\n" . 'forth'],
-      //
-      // Description prefixes.
-      [['# zero', ' ', '#;< first second', '# third', '# forth', 'VAR1'], 5, ['#;<'], "third\nforth"],
-      [['# zero', ' ', '#;< first second', '#;> third', '# forth', 'VAR1'], 5, ['#;<', '#;>'], 'forth'],
-      [['# zero', ' ', '#;< first second', '#;> third', '# forth', 'VAR1'], 5, [';<', ';>'], 'forth'],
-      // Special case: removing the skipped prefix should avoid additional line.
-      [['# zero', ' ', '# first second', '#', '#;> third', '# forth', 'VAR1'], 6, [';<', ';>'], "first second\n" . "\n" . 'forth'],
-    ];
-  }
-
-  /**
    * Tests the validateValue() method.
    *
    * @param string $value
@@ -229,7 +245,8 @@ class VariableParserUnitTest extends UnitTestBase {
       $this->expectNotToPerformAssertions();
     }
 
-    VariableParser::validateValue($value);
+    $extractor = $this->prepareMock(VariableParser::class, [], FALSE);
+    $this->callProtectedMethod($extractor, 'validateValue', [$value]);
   }
 
   /**

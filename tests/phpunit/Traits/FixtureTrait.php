@@ -74,4 +74,35 @@ trait FixtureTrait {
     return $file;
   }
 
+  /**
+   * Get path to an expectation fixture file.
+   */
+  protected static function fixtureExpectationFile(string $filename): string {
+    return static::fixtureDir() . DIRECTORY_SEPARATOR . 'expected' . DIRECTORY_SEPARATOR . $filename;
+  }
+
+  /**
+   * Get the contents of an expectation fixture file.
+   */
+  protected function fixtureExpectationDataProviderFileGetContents(string $ext = ''): string|false {
+    $filename = sprintf('%s.%s%s', (new \ReflectionClass(static::class))->getShortName(), $this->dataName(), $ext);
+
+    $path = static::fixtureExpectationFile($filename);
+
+    if (!is_readable($path)) {
+      throw new \RuntimeException(sprintf('Unable to find expectation fixture file %s.', $path));
+    }
+
+    return file_get_contents($path);
+  }
+
+  /**
+   * Put the contents to an expectation fixture file.
+   */
+  protected function fixtureExpectationDataProviderFilePutContents(string $contents, string $ext = ''):void {
+    $filename = sprintf('%s.%s%s', (new \ReflectionClass(static::class))->getShortName(), $this->dataName(), $ext);
+
+    file_put_contents(static::fixtureExpectationFile($filename), $contents);
+  }
+
 }
