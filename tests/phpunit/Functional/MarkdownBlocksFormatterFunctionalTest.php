@@ -18,7 +18,7 @@ namespace AlexSkrypnyk\Shellvar\Tests\Functional;
  */
 class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestCase {
 
-  public static function dataProviderFormatter() : array {
+  public static function dataProviderFormatter(): array {
     return [
       [
         [
@@ -617,6 +617,21 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestCase 
         @skip
 
         Default value: `val1`
+
+        EOD,
+      ],
+
+      [
+        [
+          '--exclude-local' => TRUE,
+          '--sort' => TRUE,
+          '--format' => 'md-blocks',
+          'paths' => [self::fixtureFile('test-data-real.sh')],
+        ],
+        <<<'EOD'
+        ### `DREVOPS_DRUPAL_PRIVATE_FILES`
+
+        Default value: `./${DREVOPS_WEBROOT}/sites/default/files/private`
 
         EOD,
       ],
