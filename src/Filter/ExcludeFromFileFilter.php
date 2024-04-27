@@ -50,6 +50,7 @@ class ExcludeFromFileFilter extends AbstractFilter {
   public function filter(array $variables): array {
     $files = $this->config->get('exclude-from-file');
     $files = is_array($files) ? $files : [$files];
+
     return array_diff_key($variables, array_flip($files));
   }
 

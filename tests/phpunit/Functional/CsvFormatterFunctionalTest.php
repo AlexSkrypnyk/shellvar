@@ -17,7 +17,7 @@ namespace AlexSkrypnyk\Shellvar\Tests\Functional;
  */
 class CsvFormatterFunctionalTest extends FormatterFunctionalTestCase {
 
-  public static function dataProviderFormatter() : array {
+  public static function dataProviderFormatter(): array {
     return [
       // Extract all variables.
       [

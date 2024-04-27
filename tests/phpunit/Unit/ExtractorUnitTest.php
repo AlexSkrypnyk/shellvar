@@ -22,7 +22,7 @@ class ExtractorUnitTest extends UnitTestBase {
    * @dataProvider dataProviderExtractVariable
    * @covers ::extractVariable
    */
-  public function testExtractVariable(string $line, ?Variable $expected) : void {
+  public function testExtractVariable(string $line, ?Variable $expected): void {
     $extractor = $this->prepareMock(ShellExtractor::class, [], FALSE);
     $actual = $this->callProtectedMethod($extractor, 'extractVariable', [$line]);
     $this->assertEquals($expected, $actual);
@@ -31,7 +31,7 @@ class ExtractorUnitTest extends UnitTestBase {
   /**
    * Data provider for testExtractVariable().
    */
-  public static function dataProviderExtractVariable() : array {
+  public static function dataProviderExtractVariable(): array {
     return [
       ['', NULL],
       [' ', NULL],

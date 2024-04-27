@@ -18,7 +18,7 @@ namespace AlexSkrypnyk\Shellvar\Tests\Functional;
  */
 class MarkdownTableFormatterFunctionalTest extends FormatterFunctionalTestCase {
 
-  public static function dataProviderFormatter() : array {
+  public static function dataProviderFormatter(): array {
     return [
       [
         [
