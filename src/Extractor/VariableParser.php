@@ -18,16 +18,16 @@ class VariableParser {
    *
    * @param string $line
    *   A line to extract a variable value from.
-   * @param mixed $default_value
+   * @param string $default_value
    *   The default value to return if a value was not extracted.
    *
-   * @return string|mixed
+   * @return string
    *   A variable value.
    *
    * @SuppressWarnings(PHPMD.CyclomaticComplexity)
    * @SuppressWarnings(PHPMD.NPathComplexity)
    */
-  public static function parseValue($line, mixed $default_value) {
+  public static function parseValue($line, string $default_value): string {
     [, $value] = explode('=', $line, 2);
 
     $value = trim($value);
@@ -56,7 +56,7 @@ class VariableParser {
       // the default value.
       $value = str_starts_with($value, '$') && is_numeric(trim($value, '$')) ? $default_value : $value;
 
-      $value = is_string($value) ? trim($value, '$') : $value;
+      $value = trim($value, '$');
     }
 
     return empty($value) ? $default_value : $value;
@@ -198,6 +198,9 @@ class VariableParser {
     // Replace double quotes enclosed by single quotes with a placeholder to
     // not count them.
     $processed = preg_replace("/'[^']*\"[^']*'/", '', $value) ?? $value;
+
+    // Remove escaped double quotes to only count unescaped ones.
+    $processed = preg_replace('/\\\\\"/', '', (string) $processed) ?? $processed;
 
     // Even number of quotes in the processed value.
     if (str_contains($processed, '"') && substr_count($processed, '"') % 2 !== 0) {

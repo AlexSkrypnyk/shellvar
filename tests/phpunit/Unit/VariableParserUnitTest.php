@@ -245,6 +245,7 @@ class VariableParserUnitTest extends UnitTestBase {
 
       ['"${\'"\'}"', NULL, ''],
       ['"${s//\'"\'/%22}"', NULL, ''],
+      ['"${HOME}/.ssh/id_rsa_${file//\"/}"', NULL, ''],
 
       // Invalid values.
       ['Hello "World', \RuntimeException::class, 'Invalid number of quotes in the value: Hello "World'],

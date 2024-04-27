@@ -52,6 +52,8 @@ class ShellExtractor extends AbstractExtractor {
 
     $lines = Utils::getLinesFromFiles([$filepath]);
 
+    $lines = self::concatenateLines($lines);
+
     foreach ($lines as $num => $line) {
       $var = $this->extractVariable($line);
 
@@ -68,7 +70,7 @@ class ShellExtractor extends AbstractExtractor {
       $var->addPath($absolute_filepath);
 
       if ($var->getIsAssignment()) {
-        $default_value = VariableParser::parseValue($line, $this->config->get('unset'));
+        $default_value = VariableParser::parseValue($line, is_string($this->config->get('unset')) ? $this->config->get('unset') : 'UNSET');
         // Assign a value, but not if it defaults to a variable name.
         if ($default_value && $default_value !== $var->getName()) {
           $var->setDefaultValue($default_value);
@@ -95,6 +97,60 @@ class ShellExtractor extends AbstractExtractor {
   }
 
   /**
+   * Concatenate lines that look like multi-sline strings.
+   *
+   * @param array<int, string> $lines
+   *   An array of lines to concatenate.
+   *
+   * @return array<int, string>
+   *   An array of concatenated lines.
+   */
+  protected function concatenateLines(array $lines): array {
+    $merged_lines = [];
+
+    $carry = '';
+    $is_concatenating = FALSE;
+
+    foreach ($lines as $line) {
+      if (!is_string($line)) {
+        continue;
+      }
+
+      // Replace double quotes enclosed by single quotes with a placeholder to
+      // not count them.
+      $processed = preg_replace("/'[^']*\"[^']*'/", '', $line) ?? $line;
+
+      // Remove escaped double quotes to only count unescaped ones.
+      $processed = preg_replace('/\\\\\"/', '', (string) $processed) ?? $processed;
+
+      // Count unescaped double quotes.
+      $quote_count = substr_count($processed, '"');
+
+      // Toggle concatenating mode if the number of quotes is odd.
+      if ($quote_count % 2 !== 0) {
+        $is_concatenating = !$is_concatenating;
+      }
+
+      if ($is_concatenating) {
+        $carry .= $line . PHP_EOL;
+      }
+      elseif (!empty($carry)) {
+        $merged_lines[] = $carry . $line;
+        $carry = '';
+      }
+      else {
+        $merged_lines[] = $line;
+      }
+    }
+
+    if (!empty($carry)) {
+      $merged_lines[] = trim($carry);
+    }
+
+    return $merged_lines;
+  }
+
+  /**
    * Extract variable from a line.
    *
    * @param string $line
@@ -116,7 +172,7 @@ class ShellExtractor extends AbstractExtractor {
     }
 
     // Assignment.
-    if (preg_match('/^([a-zA-Z]\w*)=.*$/', $line, $matches)) {
+    if (preg_match('/^([a-zA-Z]\w*)=.*$/s', $line, $matches)) {
       return (new Variable($matches[1]))->setIsAssignment(TRUE);
     }
 
