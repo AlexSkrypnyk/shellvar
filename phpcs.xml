@@ -5,6 +5,9 @@
     <!-- Coding standard. -->
     <rule ref="Drupal"/>
 
+    <!-- Checks that the strict_types has been declared. -->
+    <rule ref="Generic.PHP.RequireStrictTypes" />
+
     <!-- Show sniff codes in all reports -->
     <arg value="s"/>
     <!-- Show progress of the run. -->
