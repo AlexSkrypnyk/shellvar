@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AlexSkrypnyk\Shellvar\Tests\Functional;
 
 use AlexSkrypnyk\Shellvar\Tests\Traits\AssertTrait;

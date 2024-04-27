@@ -5,6 +5,8 @@
  * Main entry point for the application.
  */
 
+declare(strict_types=1);
+
 use AlexSkrypnyk\Shellvar\Command\ExtractCommand;
 use AlexSkrypnyk\Shellvar\Command\LintCommand;
 use Symfony\Component\Console\Application;
