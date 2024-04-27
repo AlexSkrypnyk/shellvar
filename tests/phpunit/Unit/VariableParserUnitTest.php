@@ -243,8 +243,12 @@ class VariableParserUnitTest extends UnitTestBase {
       ['{}', NULL, ''],
       ['{ "key": "value" }', NULL, ''],
 
+      ['"${\'"\'}"', NULL, ''],
+      ['"${s//\'"\'/%22}"', NULL, ''],
+
       // Invalid values.
       ['Hello "World', \RuntimeException::class, 'Invalid number of quotes in the value: Hello "World'],
+      ['"${\'"}"', \RuntimeException::class, 'Invalid number of quotes in the value: "${\'"}"'],
       ['{Hello} World}', \RuntimeException::class, 'Unbalanced braces in the value: {Hello} World}'],
     ];
   }
