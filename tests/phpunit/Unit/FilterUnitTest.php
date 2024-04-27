@@ -25,7 +25,7 @@ class FilterUnitTest extends UnitTestBase {
    * @covers \AlexSkrypnyk\Shellvar\Filter\AbstractFilter::__construct
    * @covers \AlexSkrypnyk\Shellvar\Config\ConfigAwareTrait::setConfig
    */
-  public function testFilterExcludedPrefixedVars(array $var_names, array $prefixes, array $expected) : void {
+  public function testFilterExcludedPrefixedVars(array $var_names, array $prefixes, array $expected): void {
     $vars = [];
     foreach ($var_names as $var_name) {
       $vars[] = new Variable($var_name);
@@ -48,7 +48,7 @@ class FilterUnitTest extends UnitTestBase {
   /**
    * Data provider for testFilterExcludedPrefixedVars().
    */
-  public static function dataProviderFilterExcludedPrefixedVars() : array {
+  public static function dataProviderFilterExcludedPrefixedVars(): array {
     return [
       [[], [], []],
       [['VAR1'], [], ['VAR1']],

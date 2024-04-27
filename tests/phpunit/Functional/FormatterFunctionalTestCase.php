@@ -40,7 +40,7 @@ abstract class FormatterFunctionalTestCase extends FunctionalTestCase {
   public function testFormatter(array|string $input, string $expected_output): void {
     $input = is_array($input) ? $input : [$input];
     $result = $this->runExecute(ExtractCommand::class, $input);
-    $this->assertEquals($expected_output . \PHP_EOL, implode(\PHP_EOL, $result));
+    $this->assertEquals($expected_output . PHP_EOL, implode(PHP_EOL, $result));
   }
 
   abstract public static function dataProviderFormatter(): array;

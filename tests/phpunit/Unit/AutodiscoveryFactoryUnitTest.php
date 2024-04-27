@@ -26,7 +26,7 @@ class AutodiscoveryFactoryUnitTest extends UnitTestBase {
    * @covers ::__construct
    * @covers ::getEntityClasses
    */
-  public function testDiscovery() : void {
+  public function testDiscovery(): void {
     $autodiscovery = new AutodiscoveryFactory('tests/phpunit/Fixtures');
     $discovered_classes = $autodiscovery->getEntityClasses();
     $this->assertEquals([
@@ -44,7 +44,7 @@ class AutodiscoveryFactoryUnitTest extends UnitTestBase {
    * @covers ::registerEntityClass
    * @covers ::getEntityClasses
    */
-  public function testDiscoveryTyped() : void {
+  public function testDiscoveryTyped(): void {
     $autodiscovery = new AutodiscoveryFactory('tests/phpunit/Fixtures/Discovery1');
     $discovered_classes = $autodiscovery->getEntityClasses();
     $this->assertEquals([
@@ -65,7 +65,7 @@ class AutodiscoveryFactoryUnitTest extends UnitTestBase {
    *
    * @covers ::create
    */
-  public function testCreate() : void {
+  public function testCreate(): void {
     $autodiscovery = new AutodiscoveryFactory('tests/phpunit/Fixtures');
     $discovered = $autodiscovery->create('DummyDiscoverable11', new Config());
     $this->assertEquals('DummyDiscoverable11', $discovered::getName());
@@ -78,12 +78,12 @@ class AutodiscoveryFactoryUnitTest extends UnitTestBase {
    *
    * @covers ::createAll
    */
-  public function testCreateAll() : void {
+  public function testCreateAll(): void {
     $config = new Config();
     $autodiscovery = new AutodiscoveryFactory('tests/phpunit/Fixtures');
     $discovered_all = $autodiscovery->createAll($config);
     $this->assertCount(4, $discovered_all);
-    usort($discovered_all, static function ($a, $b) : int {
+    usort($discovered_all, static function ($a, $b): int {
       return strcmp($a::getName(), $b::getName());
     });
     $this->assertEquals('DummyDiscoverable11', $discovered_all[0]::getName());
@@ -97,7 +97,7 @@ class AutodiscoveryFactoryUnitTest extends UnitTestBase {
    *
    * @covers ::create
    */
-  public function testException() : void {
+  public function testException(): void {
     $this->expectException(\Exception::class);
     $this->expectExceptionMessage('Invalid entity: non-existent');
     $autodiscovery = new AutodiscoveryFactory('tests/phpunit/Fixtures');
