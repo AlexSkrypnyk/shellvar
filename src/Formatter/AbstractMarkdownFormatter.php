@@ -205,7 +205,7 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
       $variable->setName('`' . $variable->getName() . '`');
 
       $default_value = strval($variable->getDefaultValue());
-      if (!empty($default_value)) {
+      if ($default_value !== '') {
         // Wrap default value in code block if it contains new lines.
         if (str_contains($default_value, PHP_EOL)) {
           $default_value = PHP_EOL . '```' . PHP_EOL . $default_value . PHP_EOL . '```';

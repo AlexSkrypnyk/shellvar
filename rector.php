@@ -19,6 +19,7 @@ use Rector\CodingStyle\Rector\FuncCall\ArraySpreadInsteadOfArrayMergeRector;
 use Rector\CodingStyle\Rector\FuncCall\CountArrayToEmptyArrayComparisonRector;
 use Rector\CodingStyle\Rector\PostInc\PostIncDecToPreIncDecRector;
 use Rector\CodingStyle\Rector\Stmt\NewlineAfterStatementRector;
+use Rector\CodingStyle\Rector\String_\SymplifyQuoteEscapeRector;
 use Rector\Config\RectorConfig;
 use Rector\DeadCode\Rector\If_\RemoveAlwaysTrueIfConditionRector;
 use Rector\Set\ValueObject\SetList;
@@ -53,6 +54,9 @@ return static function (RectorConfig $rectorConfig): void {
     PostIncDecToPreIncDecRector::class,
     RemoveAlwaysTrueIfConditionRector::class,
     SimplifyEmptyCheckOnEmptyArrayRector::class,
+    SymplifyQuoteEscapeRector::class => [
+      '*Test.php',
+    ],
     // Dependencies.
     '*/vendor/*',
     '*/node_modules/*',

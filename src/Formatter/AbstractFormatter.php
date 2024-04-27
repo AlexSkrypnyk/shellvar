@@ -162,7 +162,7 @@ abstract class AbstractFormatter implements FormatterInterface, FactoryDiscovera
    */
   protected function processUnset(array $variables, string $unset): array {
     foreach ($variables as $variable) {
-      if (empty($variable->getDefaultValue())) {
+      if (is_null($variable->getDefaultValue())) {
         $variable->setDefaultValue($unset);
       }
     }

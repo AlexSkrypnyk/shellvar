@@ -72,7 +72,7 @@ class ShellExtractor extends AbstractExtractor {
       if ($var->getIsAssignment()) {
         $default_value = VariableParser::parseValue($line, is_string($this->config->get('unset')) ? $this->config->get('unset') : 'UNSET');
         // Assign a value, but not if it defaults to a variable name.
-        if ($default_value && $default_value !== $var->getName()) {
+        if ($default_value !== $var->getName()) {
           $var->setDefaultValue($default_value);
         }
       }

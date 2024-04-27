@@ -19,6 +19,11 @@ use AlexSkrypnyk\Shellvar\Command\ExtractCommand;
 abstract class FormatterFunctionalTestCase extends FunctionalTestCase {
 
   /**
+   * {@inheritdoc}
+   */
+  public static string $extension = '.md';
+
+  /**
    * @dataProvider dataProviderFormatter
    * @covers       \AlexSkrypnyk\Shellvar\AbstractManager
    * @covers       \AlexSkrypnyk\Shellvar\Utils
@@ -39,10 +44,17 @@ abstract class FormatterFunctionalTestCase extends FunctionalTestCase {
    * @covers       \AlexSkrypnyk\Shellvar\Traits\SingletonTrait
    * @runInSeparateProcess
    */
-  public function testFormatter(array|string $input, string $expected_output): void {
+  public function testFormatter(string $message, array|string $input): void {
     $input = is_array($input) ? $input : [$input];
     $result = $this->runExecute(ExtractCommand::class, $input);
-    $this->assertEquals($expected_output . PHP_EOL, implode(PHP_EOL, $result));
+    $actual = implode(PHP_EOL, $result);
+
+    if (!empty(getenv('UPDATE_FIXTURES'))) {
+      $this->fixtureExpectationDataProviderFilePutContents($actual, static::$extension);
+    }
+
+    $expected_output = $this->fixtureExpectationDataProviderFileGetContents(static::$extension);
+    $this->assertEquals($expected_output, $actual, $message);
   }
 
   abstract public static function dataProviderFormatter(): array;
