@@ -204,8 +204,16 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
     foreach ($variables as $variable) {
       $variable->setName('`' . $variable->getName() . '`');
 
-      if (!empty($variable->getDefaultValue())) {
-        $variable->setDefaultValue('`' . $variable->getDefaultValue() . '`');
+      $default_value = strval($variable->getDefaultValue());
+      if (!empty($default_value)) {
+        // Wrap default value in code block if it contains new lines.
+        if (str_contains($default_value, PHP_EOL)) {
+          $default_value = PHP_EOL . '```' . PHP_EOL . $default_value . PHP_EOL . '```';
+        }
+        else {
+          $default_value = '`' . $default_value . '`';
+        }
+        $variable->setDefaultValue($default_value);
       }
 
       $updated_paths = [];

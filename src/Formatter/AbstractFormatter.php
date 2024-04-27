@@ -100,7 +100,9 @@ abstract class AbstractFormatter implements FormatterInterface, FactoryDiscovera
 
     $this->processVariables();
 
-    return $this->doFormat();
+    $formatted = $this->doFormat();
+
+    return $this->postFormat($formatted);
   }
 
   /**
@@ -233,6 +235,19 @@ abstract class AbstractFormatter implements FormatterInterface, FactoryDiscovera
     $replaced_description = preg_replace('/(\n){3,}/', "\n\n", $description);
 
     return $replaced_description ?: $description;
+  }
+
+  /**
+   * Post format the content.
+   *
+   * @param string $content
+   *   The content to post format.
+   *
+   * @return string
+   *   The post formatted content.
+   */
+  protected function postFormat(string $content): string {
+    return implode(PHP_EOL, array_map('trim', explode(PHP_EOL, $content)));
   }
 
 }

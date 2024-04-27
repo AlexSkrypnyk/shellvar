@@ -100,24 +100,24 @@ class Variable {
   /**
    * Get the variable default value.
    *
-   * @return mixed
+   * @return string|null
    *   The variable default value.
    */
-  public function getDefaultValue(): mixed {
-    return $this->defaultValue;
+  public function getDefaultValue(): string|null {
+    return is_string($this->defaultValue) ? $this->defaultValue : NULL;
   }
 
   /**
    * Set the variable default value.
    *
-   * @param string|mixed $defaultValue
+   * @param string|null $value
    *   The variable default value.
    *
    * @return Variable
    *   The variable instance.
    */
-  public function setDefaultValue(mixed $defaultValue): Variable {
-    $this->defaultValue = $defaultValue;
+  public function setDefaultValue(string|null $value): Variable {
+    $this->defaultValue = $value;
 
     return $this;
   }
@@ -247,7 +247,6 @@ class Variable {
       'path' => count($this->getPaths()) > 0 ? $this->getPaths()[0] : '',
     ];
 
-    // @phpstan-ignore-next-line
     return array_intersect_key(array_merge(array_flip($fields), $values), array_flip($fields));
   }
 

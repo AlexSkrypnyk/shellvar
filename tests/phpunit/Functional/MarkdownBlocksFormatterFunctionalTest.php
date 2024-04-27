@@ -631,6 +631,17 @@ class MarkdownBlocksFormatterFunctionalTest extends FormatterFunctionalTestCase 
           'paths' => [self::fixtureFile('test-data-real.sh')],
         ],
         <<<'EOD'
+        ### `CONTENT`
+
+        Default value:
+        ```
+        ## This is an automated message ##
+
+        Site ${DREVOPS_NOTIFY_EMAIL_PROJECT} \"${DREVOPS_NOTIFY_EMAIL_REF}\" branch has been deployed at ${timestamp} and is available at ${DREVOPS_NOTIFY_EMAIL_ENVIRONMENT_URL}.
+
+        Login at: ${DREVOPS_NOTIFY_EMAIL_ENVIRONMENT_URL}/user/login
+        ```
+
         ### `DREVOPS_DRUPAL_PRIVATE_FILES`
 
         Default value: `./${DREVOPS_WEBROOT}/sites/default/files/private`
