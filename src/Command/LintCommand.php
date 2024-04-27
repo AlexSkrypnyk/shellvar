@@ -119,7 +119,9 @@ class LintCommand extends Command {
       $result['messages'][] = sprintf('Replaced %s variables in file "%s".', $changed_count, $file_name);
     }
     else {
-      $result['messages'][] = sprintf('Found %s variables in file "%s" that are not wrapped in ${}.', $changed_count, $file_name);
+      if ($changed_count > 0) {
+        $result['messages'][] = sprintf('Found %s variables in file "%s" that are not wrapped in ${}.', $changed_count, $file_name);
+      }
       $result['success'] = $changed_count === 0;
     }
 

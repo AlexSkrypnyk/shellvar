@@ -53,9 +53,7 @@ class LintUnitTest extends UnitTestBase {
     $validFile = $this->createTempFileFromFixtureFile('wrapped.sh');
     $result = $lintCommand->processFile($validFile);
     $this->assertEquals(TRUE, $result['success']);
-    $this->assertEquals([
-      sprintf('Found 0 variables in file "%s" that are not wrapped in ${}.', $validFile),
-    ], $result['messages']);
+    $this->assertEquals([], $result['messages']);
     $result = $lintCommand->processFile($validFile, TRUE);
     $this->assertEquals(TRUE, $result['success']);
     $this->assertEquals([

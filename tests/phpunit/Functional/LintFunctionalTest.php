@@ -36,7 +36,7 @@ class LintFunctionalTest extends FunctionalTestCase {
 
     $output = $this->runExecute($command, ['path' => $valid_file]);
     $this->assertEquals(0, $this->commandTester->getStatusCode());
-    $this->assertEquals(sprintf('Found 0 variables in file "%s" that are not wrapped in ${}.', $valid_file) . PHP_EOL, implode(PHP_EOL, $output));
+    $this->assertEquals('', implode(PHP_EOL, $output));
 
     $output = $this->runExecute($command, ['path' => $valid_file, '-f' => TRUE]);
     $this->assertEquals(0, $this->commandTester->getStatusCode());
@@ -98,7 +98,6 @@ class LintFunctionalTest extends FunctionalTestCase {
       '12: var="$VAR2"',
       '14: var=$VAR3',
       sprintf('Found 3 variables in file "%s" that are not wrapped in ${}.', $invalid_file),
-      sprintf('Found 0 variables in file "%s" that are not wrapped in ${}.', $valid_file),
       '',
     ], $output);
 
