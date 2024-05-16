@@ -401,3 +401,5 @@ the following tags:
 - `XX.YY.ZZ` tag - when release tag is published on GitHub.
 - `latest` - when release tag is published on GitHub.
 - `canary` - on every push to `main` branch
+---
+Repository created using https://getscaffold.dev/ project scaffold template
