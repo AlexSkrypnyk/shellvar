@@ -288,10 +288,11 @@ class VariableParser {
    * @return string
    *   Unwrapped variable notation.
    */
-  protected static function unwrapNotation($notation):string {
+  protected static function unwrapNotation($notation): string {
     if (str_starts_with($notation, '"')) {
       $notation = substr($notation, 1);
     }
+
     if (str_ends_with($notation, '"')) {
       $notation = substr($notation, 0, -1);
     }
@@ -299,6 +300,7 @@ class VariableParser {
     if (str_starts_with($notation, '${')) {
       $notation = substr($notation, 2);
     }
+
     if (str_ends_with($notation, '}')) {
       $notation = substr($notation, 0, -1);
     }

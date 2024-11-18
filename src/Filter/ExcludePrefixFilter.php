@@ -40,6 +40,7 @@ class ExcludePrefixFilter extends AbstractFilter {
   public function filter($variables): array {
     $prefixes = $this->config->get('exclude-prefix');
     $prefixes = is_array($prefixes) ? $prefixes : [$prefixes];
+    $prefixes = array_filter($prefixes);
 
     return array_filter($variables, static function ($variable) use ($prefixes): bool {
       if (!$variable instanceof Variable) {

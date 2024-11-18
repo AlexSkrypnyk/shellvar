@@ -37,10 +37,10 @@ class AutodiscoveryFactory {
   /**
    * Create class instance from discovered classes by entity name.
    *
-   * @param mixed $name
+   * @param string $name
    *   Entity name.
    * @param \AlexSkrypnyk\Shellvar\Config\Config $config
-   *   Formatter configuration.
+   *   Entity configuration.
    *
    * @return \AlexSkrypnyk\Shellvar\Factory\FactoryDiscoverableInterface
    *   Instantiated entity class instance.
@@ -48,7 +48,7 @@ class AutodiscoveryFactory {
    * @throws \Exception
    *   If the requested entity does not exist.
    */
-  public function create(mixed $name, Config $config): FactoryDiscoverableInterface {
+  public function create(string $name, Config $config): FactoryDiscoverableInterface {
     if (!isset($this->classes[$name])) {
       throw new \Exception('Invalid entity: ' . $name);
     }
@@ -56,7 +56,9 @@ class AutodiscoveryFactory {
     $instance = new $this->classes[$name]($config);
 
     if (!$instance instanceof FactoryDiscoverableInterface) {
+      // @codeCoverageIgnoreStart
       throw new \Exception('Invalid entity: ' . $name);
+      // @codeCoverageIgnoreEnd
     }
 
     return $instance;

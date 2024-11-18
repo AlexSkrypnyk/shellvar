@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AlexSkrypnyk\Shellvar\Tests\Unit;
 
 use AlexSkrypnyk\Shellvar\Config\Config;
+use AlexSkrypnyk\Shellvar\Filter\ExcludeLocalFilter;
 use AlexSkrypnyk\Shellvar\Filter\ExcludePrefixFilter;
 use AlexSkrypnyk\Shellvar\Variable\Variable;
 
@@ -14,8 +15,6 @@ use AlexSkrypnyk\Shellvar\Variable\Variable;
  * Unit tests for the Filter class.
  *
  * phpcs:disable Drupal.Arrays.Array.LongLineDeclaration
- *
- * @coversDefaultClass \AlexSkrypnyk\Shellvar\Filter\ExcludePrefixFilter
  */
 class FilterUnitTest extends UnitTestBase {
 
@@ -23,7 +22,7 @@ class FilterUnitTest extends UnitTestBase {
    * Tests the filterExcludedPrefixedVars() method.
    *
    * @dataProvider dataProviderFilterExcludedPrefixedVars
-   * @covers ::filter
+   * @covers \AlexSkrypnyk\Shellvar\Filter\ExcludePrefixFilter::filter
    * @covers \AlexSkrypnyk\Shellvar\Filter\AbstractFilter::__construct
    * @covers \AlexSkrypnyk\Shellvar\Config\ConfigAwareTrait::setConfig
    */
@@ -61,6 +60,48 @@ class FilterUnitTest extends UnitTestBase {
       [['VAR1', 'VAR2', 'VAR3_VAR31', 'VAR4_VAR41'], ['VAR3', 'VAR4', 'RAND'], ['VAR1', 'VAR2']],
       [['VAR1', 'VAR2', 'VAR31_VAR31', 'VAR4_VAR41'], ['VAR3_', 'VAR4', 'RAND'], ['VAR1', 'VAR2', 'VAR31_VAR31']],
     ];
+  }
+
+  /**
+   * Tests the filterExcludedPrefixedVars() method.
+   *
+   * @covers \AlexSkrypnyk\Shellvar\Filter\ExcludePrefixFilter::filter
+   * @covers \AlexSkrypnyk\Shellvar\Filter\AbstractFilter::__construct
+   * @covers \AlexSkrypnyk\Shellvar\Config\ConfigAwareTrait::setConfig
+   */
+  public function testFilterExcludedPrefixedVarsInvalid(): void {
+    $vars = ['invalid1', new Variable('VAR1'), 'invalid2'];
+
+    $filter = new ExcludePrefixFilter(new Config());
+    $actual = $filter->filter($vars);
+
+    $actual_names = [];
+    foreach ($actual as $item) {
+      // @phpstan-ignore-next-line
+      $actual_names[] = $item->getName();
+    }
+
+    $this->assertEquals(['VAR1'], $actual_names);
+  }
+
+  /**
+   * Tests the filterExcludedPrefixedVars() method.
+   *
+   * @covers \AlexSkrypnyk\Shellvar\Filter\ExcludeLocalFilter::filter
+   */
+  public function testFilterExcludedLocalVarsInvalid(): void {
+    $vars = ['invalid1', new Variable('VAR1'), new Variable('var2'), 'invalid2'];
+
+    $filter = new ExcludeLocalFilter(new Config());
+    $actual = $filter->filter($vars);
+
+    $actual_names = [];
+    foreach ($actual as $item) {
+      // @phpstan-ignore-next-line
+      $actual_names[] = $item->getName();
+    }
+
+    $this->assertEquals(['VAR1'], $actual_names);
   }
 
 }

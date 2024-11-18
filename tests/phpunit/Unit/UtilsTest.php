@@ -15,12 +15,24 @@ use Symfony\Component\Console\Exception\InvalidOptionException;
 class UtilsTest extends UnitTestBase {
 
   /**
-   * @covers ::getLinesFromFiles
    * @covers ::resolvePath
    */
-  public function testUtils(): void {
+  public function testResolvePath(): void {
     $this->assertEquals('', Utils::resolvePath(''));
+  }
 
+  /**
+   * @covers ::resolvePath
+   */
+  public function testResolvePathInvalid(): void {
+    $this->expectException(InvalidOptionException::class);
+    Utils::resolvePath('/a-fake-path/' . rand(1, 10) . '.txt');
+  }
+
+  /**
+   * @covers ::getLinesFromFiles
+   */
+  public function testGetLinesFromFiles(): void {
     $lines = Utils::getLinesFromFiles([$this->fixtureFile('.env')]);
     $this->assertEquals([
       'VARENV1=valenv1_dotenv',
@@ -46,10 +58,14 @@ class UtilsTest extends UnitTestBase {
       '# multiple lines.',
       'VARENV4=',
     ], $lines_removed_empty);
+  }
 
+  /**
+   * @covers ::getLinesFromFiles
+   */
+  public function testGetLinesFromFilesInvalid(): void {
     $this->expectException(InvalidOptionException::class);
-    Utils::resolvePath('/a-fake-path/' . rand(1, 10) . '.txt');
-
+    Utils::getLinesFromFiles(['/a-fake-path/' . rand(1, 10) . '.txt']);
   }
 
   /**

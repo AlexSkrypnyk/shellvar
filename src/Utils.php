@@ -28,16 +28,24 @@ class Utils {
     $lines = [];
 
     foreach ($paths as $path) {
+      if (!is_readable($path)) {
+        throw new InvalidOptionException(sprintf('Unable to read a file path %s.', $path));
+      }
+
       $content = file_get_contents($path);
 
       if ($content === FALSE) {
+        // @codeCoverageIgnoreStart
         throw new InvalidOptionException(sprintf('Unable to read a file path %s.', $path));
+        // @codeCoverageIgnoreEnd
       }
 
       $new_lines = preg_split("/(\r\n|\n|\r)/", $content);
 
       if ($new_lines === FALSE) {
+        // @codeCoverageIgnoreStart
         throw new InvalidOptionException(sprintf('Unable to split file content into lines for a file path %s.', $path));
+        // @codeCoverageIgnoreEnd
       }
 
       $lines = array_merge($lines, $new_lines);
@@ -139,32 +147,20 @@ class Utils {
    *   A data to replace placeholders in.
    * @param array<string, string> $replacements
    *   A list of replacements.
-   * @param array<string,bool> $visited
-   *   A list of visited data. Internal.
-   * @param null $original_data
-   *   Original data reference. Internal.
    *
    * @return string
    *   A string with replaced placeholders.
    *
    * @SuppressWarnings(PHPMD.CyclomaticComplexity)
    */
-  public static function recursiveStrtr(string $data, array $replacements, array &$visited = [], &$original_data = NULL): string {
+  public static function recursiveStrtr(string $data, array $replacements): string {
     if (empty($replacements) && is_string($data)) {
       return $data;
     }
 
-    if ($original_data === NULL) {
-      $original_data = $data;
-    }
-
-    if (isset($visited[$data])) {
-      throw new \Exception(sprintf("Circular reference detected for '%s'", $data));
-    }
-
-    $visited[$data] = TRUE;
-
+    $original_data = $data;
     $processed = $data;
+
     do {
       $last = $processed;
       $processed = strtr($processed, $replacements);
