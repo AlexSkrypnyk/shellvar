@@ -108,7 +108,7 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
   protected function processDescription(string $description): string {
     $description = parent::processDescription($description);
 
-    $br = '<br />';
+    $br = '<br/>';
     $nl = "\n";
 
     $lines = explode($nl, $description);

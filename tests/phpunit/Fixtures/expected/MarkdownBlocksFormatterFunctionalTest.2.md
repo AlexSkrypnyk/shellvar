@@ -10,13 +10,13 @@ Default value: `val10`
 
 ### `VAR11`
 
-Description without a leading space that goes on<br />multiple lines and has a `VAR7`, `$VAR8`, `$VAR9`, VAR10 and VAR12 variable reference.
+Description without a leading space that goes on<br/>multiple lines and has a `VAR7`, `$VAR8`, `$VAR9`, VAR10 and VAR12 variable reference.
 
 Default value: `val11`
 
 ### `VAR12`
 
-Description without a leading space that goes on<br />multiple lines.
+Description without a leading space that goes on<br/>multiple lines.
 
 And has a comment with no content.
 
@@ -98,7 +98,7 @@ Default value: `valenv3`
 
 ### `VARENV4`
 
-Comment `2` from script without a leading space that goes on<br />multiple lines.
+Comment `2` from script without a leading space that goes on<br/>multiple lines.
 
 Default value: `UNSET`
 

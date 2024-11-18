@@ -52,14 +52,14 @@ class FormatterUnitTest extends UnitTestBase {
         'string1',
       ],
 
-      // Immediate new lines are replaced with '<br />'.
+      // Immediate new lines are replaced with '<br/>'.
       [
         <<<'EOD'
         string1
         string2
         EOD,
         <<<'EOD'
-        string1<br />string2
+        string1<br/>string2
         EOD,
       ],
 
@@ -140,10 +140,10 @@ class FormatterUnitTest extends UnitTestBase {
         List header
 
         - Item
-        - Item<br />Line
+        - Item<br/>Line
         - Item
 
-        Not a list line1<br />Line2
+        Not a list line1<br/>Line2
         EOD,
       ],
 
@@ -160,10 +160,10 @@ class FormatterUnitTest extends UnitTestBase {
         EOD,
         <<<'EOD'
         - Item
-        - Item<br />Line
+        - Item<br/>Line
         - Item
 
-        Not a list line1<br />Line2
+        Not a list line1<br/>Line2
         EOD,
       ],
 

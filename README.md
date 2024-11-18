@@ -29,12 +29,12 @@
   - Fix shell variables that are not in `${VAR}` format.
 - Extract variables:
   - Scan a file or a directory containing shell scripts and extract found
-    variables with comments and assigned values with [advanced interpolation 
+    variables with comments and assigned values with [advanced interpolation
     support](tests/phpunit/Fixtures/test-data-real.sh).
   - Filter variables: exclude local, exclude by prefix, exclude from a list in
     file.
-  - Format output as a _CSV_, _Markdown table_ or _Markdown blocks_ (defined in the
-    template).
+  - Format output as a _CSV_, _Markdown table_ or _Markdown blocks_ (defined in
+    the template).
   - Extend filters and formatters with your own custom classes.
 
 ## Installation
@@ -152,17 +152,17 @@ Continuation of the multi-line comment."
 | `VAR1` | `val1`        | Assignment to scalar value.                                                                                                      |
 | `VAR2` | `${VAR1}`     | Assignment to another variable.                                                                                                  |
 | `VAR3` | `abc`         | Parameter expansion.                                                                                                             |
-| `VAR4` | `${VAR3}`     | Parameter expansion with a default value using<br />another variable `$VAR3`.<br /><br />Continuation of the multi-line comment. |
+| `VAR4` | `${VAR3}`     | Parameter expansion with a default value using<br/>another variable `$VAR3`.<br/><br/>Continuation of the multi-line comment. |
 ```
 
 which renders as
 
-| Name   | Default value | Description                                                                                                                      |
-|--------|---------------|----------------------------------------------------------------------------------------------------------------------------------|
-| `VAR1` | `val1`        | Assignment to scalar value.                                                                                                      |
-| `VAR2` | `${VAR1}`     | Assignment to another variable.                                                                                                  |
-| `VAR3` | `abc`         | Parameter expansion.                                                                                                             |
-| `VAR4` | `${VAR3}`     | Parameter expansion with a default value using<br />another variable `$VAR3`.<br /><br />Continuation of the multi-line comment. |
+| Name   | Default value | Description                                                                                                                   |
+|--------|---------------|-------------------------------------------------------------------------------------------------------------------------------|
+| `VAR1` | `val1`        | Assignment to scalar value.                                                                                                   |
+| `VAR2` | `${VAR1}`     | Assignment to another variable.                                                                                               |
+| `VAR3` | `abc`         | Parameter expansion.                                                                                                          |
+| `VAR4` | `${VAR3}`     | Parameter expansion with a default value using<br/>another variable `$VAR3`.<br/><br/>Continuation of the multi-line comment. |
 
 </details>
 
@@ -196,7 +196,7 @@ Default value: `abc`
 
 ### `VAR4`
 
-Parameter expansion with a default value using<br />another variable `$VAR3`.
+Parameter expansion with a default value using<br/>another variable `$VAR3`.
 
 Continuation of the multi-line comment.
 
@@ -228,7 +228,7 @@ Default value: `abc`
 
 ### `VAR4`
 
-Parameter expansion with a default value using<br />another variable `$VAR3`.
+Parameter expansion with a default value using<br/>another variable `$VAR3`.
 
 Continuation of the multi-line comment.
 
@@ -280,7 +280,7 @@ Paths: `1.sh`
 
 ### `VAR4`
 
-Parameter expansion with a default value using<br />another
+Parameter expansion with a default value using<br/>another
 variable [`$VAR3`](#VAR3).
 
 Continuation of the multi-line comment.
@@ -329,7 +329,7 @@ Paths: `1.sh`
 
 ### `VAR4`
 
-Parameter expansion with a default value using<br />another
+Parameter expansion with a default value using<br/>another
 variable [`$VAR3`](#VAR3).
 
 Continuation of the multi-line comment.
@@ -401,5 +401,6 @@ the following tags:
 - `XX.YY.ZZ` tag - when release tag is published on GitHub.
 - `latest` - when release tag is published on GitHub.
 - `canary` - on every push to `main` branch
+
 ---
 Repository created using https://getscaffold.dev/ project scaffold template
