@@ -45,7 +45,9 @@ class CsvFormatter extends AbstractFormatter {
     $file = fopen('php://temp/maxmemory:' . (5 * 1024 * 1024), 'r+');
 
     if ($file === FALSE) {
+      // @codeCoverageIgnoreStart
       throw new \RuntimeException('Failed to open temporary file.');
+      // @codeCoverageIgnoreEnd
     }
 
     $header = $this->config->get('fields');
@@ -63,7 +65,9 @@ class CsvFormatter extends AbstractFormatter {
 
     $content = stream_get_contents($file);
     if ($content === FALSE) {
+      // @codeCoverageIgnoreStart
       throw new \RuntimeException('Failed to read temporary file.');
+      // @codeCoverageIgnoreEnd
     }
 
     return $content;

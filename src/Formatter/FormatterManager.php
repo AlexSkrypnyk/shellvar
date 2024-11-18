@@ -40,6 +40,12 @@ class FormatterManager extends AbstractManager {
   public function format(array $variables): string {
     $format = $this->config->get('format');
 
+    if (!is_scalar($format)) {
+      throw new \RuntimeException('No format specified.');
+    }
+
+    $format = (string) $format;
+
     /** @var \AlexSkrypnyk\Shellvar\Formatter\FormatterInterface $formatter */
     $formatter = $this->factory->create($format, $this->config);
 

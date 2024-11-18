@@ -64,7 +64,9 @@ class ShellExtractor extends AbstractExtractor {
       $absolute_filepath = realpath($filepath);
 
       if ($absolute_filepath === FALSE) {
+        // @codeCoverageIgnoreStart
         throw new \RuntimeException('Failed to resolve the absolute path for the file: ' . $filepath);
+        // @codeCoverageIgnoreEnd
       }
 
       $var->addPath($absolute_filepath);
@@ -112,10 +114,6 @@ class ShellExtractor extends AbstractExtractor {
     $is_concatenating = FALSE;
 
     foreach ($lines as $line) {
-      if (!is_string($line)) {
-        continue;
-      }
-
       // Replace double quotes enclosed by single quotes with a placeholder to
       // not count them.
       $processed = preg_replace("/'[^']*\"[^']*'/", '', $line) ?? $line;
@@ -143,10 +141,11 @@ class ShellExtractor extends AbstractExtractor {
       }
     }
 
+    // @codeCoverageIgnoreStart
     if (!empty($carry)) {
       $merged_lines[] = trim($carry);
     }
-
+    // @codeCoverageIgnoreEnd
     return $merged_lines;
   }
 

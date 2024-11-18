@@ -128,7 +128,9 @@ abstract class AbstractFormatter implements FormatterInterface, FactoryDiscovera
 
     if ($this->config->get('path-strip-prefix')) {
       $path_strip_prefix = is_string($this->config->get('path-strip-prefix')) ? $this->config->get('path-strip-prefix') : '';
-      $this->variables = $this->processPathStripPrefix($this->variables, $path_strip_prefix);
+      if (!empty($path_strip_prefix)) {
+        $this->variables = $this->processPathStripPrefix($this->variables, $path_strip_prefix);
+      }
     }
 
     $this->variables = $this->processDescriptions($this->variables);
@@ -182,10 +184,6 @@ abstract class AbstractFormatter implements FormatterInterface, FactoryDiscovera
    *   An array of processed variables.
    */
   protected function processPathStripPrefix(array $variables, string $prefix): array {
-    if (empty($prefix)) {
-      return $variables;
-    }
-
     foreach ($variables as $variable) {
       $updated_paths = [];
       foreach ($variable->getPaths() as $path) {
