@@ -18,7 +18,7 @@
     },
     "require": {
         "php": ">=8.2",
-        "alexskrypnyk/csvtable": "^0.3",
+        "alexskrypnyk/csvtable": "^1",
         "symfony/console": "^7"
     },
     "require-dev": {

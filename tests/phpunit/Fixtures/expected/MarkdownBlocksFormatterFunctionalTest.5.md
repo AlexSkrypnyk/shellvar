@@ -1,6 +1,6 @@
 ### `VAR11`
 
-Description from bash without a leading space that goes on<br />multiple lines.
+Description from bash without a leading space that goes on<br/>multiple lines.
 
 Default value: `val11bash`
 

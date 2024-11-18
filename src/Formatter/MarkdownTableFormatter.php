@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace AlexSkrypnyk\Shellvar\Formatter;
 
 use AlexSkrypnyk\CsvTable\CsvTable;
-use AlexSkrypnyk\CsvTable\Markdown;
 
 /**
  * Class MarkdownTableFormatter.
@@ -31,7 +30,7 @@ class MarkdownTableFormatter extends AbstractMarkdownFormatter {
     // is rendered correctly.
     $csv = (new CsvFormatter($this->config))->format($this->variables);
 
-    return (new CsvTable($csv, ';'))->render(Markdown::class);
+    return (new CsvTable($csv, ';'))->format('markdown_table');
   }
 
 }
