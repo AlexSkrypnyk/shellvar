@@ -152,11 +152,11 @@ class LintCommand extends Command {
       $pos = $matches[0][1];
 
       // Only replace within interpolation context.
-      if (is_numeric($pos) && $this->isInterpolation($line, (int) $pos)) {
+      if (is_numeric($pos) && $this->isInterpolation($line, $pos)) {
         $value = '${' . substr($value, 1) . '}';
       }
 
-      return $value;
+      return $value ?: '';
     }, $line, -1, $count, PREG_OFFSET_CAPTURE);
 
     return $updated_line ?: $line;

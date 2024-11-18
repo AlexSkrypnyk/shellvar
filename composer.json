@@ -1,8 +1,8 @@
 {
     "name": "alexskrypnyk/shellvar",
-    "type": "library",
     "description": "Utility to work with shell variables.",
     "license": "GPL-2.0-or-later",
+    "type": "library",
     "authors": [
         {
             "name": "Alex Skrypnyk",
@@ -18,13 +18,14 @@
     },
     "require": {
         "php": ">=8.2",
-        "symfony/console": "^7",
-        "alexskrypnyk/csvtable": "^0.3"
+        "alexskrypnyk/csvtable": "^0.3",
+        "symfony/console": "^7"
     },
     "require-dev": {
         "bamarni/composer-bin-plugin": "^1.8.2",
         "dealerdirect/phpcodesniffer-composer-installer": "^1",
         "drupal/coder": "^8.3",
+        "ergebnis/composer-normalize": "^2.44",
         "mikey179/vfsstream": "^1.6",
         "opis/closure": "^3.6",
         "phpmd/phpmd": "^2.15",
@@ -45,13 +46,22 @@
             "AlexSkrypnyk\\Shellvar\\Tests\\": "tests/phpunit"
         }
     },
+    "bin": [
+        "shellvar"
+    ],
     "config": {
         "allow-plugins": {
             "bamarni/composer-bin-plugin": true,
-            "dealerdirect/phpcodesniffer-composer-installer": true
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "ergebnis/composer-normalize": true
         }
     },
     "scripts": {
+        "build": [
+            "@composer bin box require --dev humbug/box",
+            "box validate",
+            "box compile"
+        ],
         "lint": [
             "phpcs",
             "phpmd --exclude vendor,vendor-bin,node_modules . text phpmd.xml",
@@ -62,15 +72,8 @@
             "rector --clear-cache",
             "phpcbf"
         ],
+        "reset": "rm -Rf vendor vendor-bin composer.lock",
         "test": "phpunit --no-coverage",
-        "test-coverage": "phpunit",
-        "build": [
-            "@composer bin box require --dev humbug/box",
-            "box validate",
-            "box compile"
-        ]
-    },
-    "bin": [
-        "shellvar"
-    ]
+        "test-coverage": "phpunit"
+    }
 }
