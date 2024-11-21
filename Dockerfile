@@ -1,4 +1,4 @@
-FROM php:8.3-cli AS builder
+FROM php:8.4-cli AS builder
 
 RUN apt-get update \
     && apt-get install --no-install-recommends -y libzip-dev=1.7.3-1+b1 \
@@ -29,7 +29,7 @@ COPY . /app
 
 RUN composer build && cp /app/.build/shellvar /app/shellvar
 
-FROM php:8.3-cli
+FROM php:8.4-cli
 
 RUN apt-get update \
     && apt-get install --no-install-recommends -y libzip-dev=1.7.3-1+b1 \
