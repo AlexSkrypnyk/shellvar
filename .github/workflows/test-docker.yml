@@ -15,16 +15,24 @@ jobs:
 
     strategy:
       matrix:
-        docker-version: ['23.0', '25.0', '26.1', '27.3']
+        include:
+          - docker-name: '25'
+            docker-version: 'v25.0.5'
+          - docker-name: '26'
+            docker-version: 'v26.1.4'
+          - docker-name: '27'
+            docker-version: 'v27.4.1'
+
+    name: test-docker (${{ matrix.docker-name }})
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Setup Docker
-        uses: docker-practice/actions-setup-docker@master
+        uses: docker/setup-docker-action@v4
         with:
-          docker_version: ${{ matrix.docker-version }}
+          version: ${{ matrix.docker-version }}
 
       - name: Check coding standards
         uses: hadolint/hadolint-action@v3.1.0
