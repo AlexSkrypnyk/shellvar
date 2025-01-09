@@ -28,10 +28,9 @@
         "ergebnis/composer-normalize": "^2.44",
         "mikey179/vfsstream": "^1.6",
         "opis/closure": "^4.0",
-        "phpmd/phpmd": "^2.15",
-        "phpstan/phpstan": "^1.10",
+        "phpstan/phpstan": "^2",
         "phpunit/phpunit": "^10.5",
-        "rector/rector": "^1"
+        "rector/rector": "^2"
     },
     "replace": {
         "alexskrypnyk/shell-variables-extractor": "self.version"
@@ -64,7 +63,6 @@
         ],
         "lint": [
             "phpcs",
-            "phpmd --exclude vendor,vendor-bin,node_modules . text phpmd.xml",
             "phpstan",
             "rector --clear-cache --dry-run"
         ],

@@ -83,9 +83,10 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
     parent::processVariables();
 
     if (!$this->config->get('md-no-inline-code-wrap-vars')) {
-      $extra_file = $this->config->get('md-inline-code-extra-file');
-      $extra_file = is_array($extra_file) ? $extra_file : [$extra_file];
-      $this->variables = $this->processInlineCodeVars($this->variables, $extra_file);
+      $extra_files = $this->config->get('md-inline-code-extra-file');
+      $extra_files = is_array($extra_files) ? $extra_files : [$extra_files];
+      $extra_files = array_filter($extra_files, static fn($file): bool => is_string($file));
+      $this->variables = $this->processInlineCodeVars($this->variables, $extra_files);
     }
 
     if (!$this->config->get('md-no-inline-code-wrap-numbers')) {
@@ -102,8 +103,6 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
 
   /**
    * {@inheritdoc}
-   *
-   * @SuppressWarnings(PHPMD.CyclomaticComplexity)
    */
   protected function processDescription(string $description): string {
     $description = parent::processDescription($description);

@@ -150,11 +150,9 @@ class Utils {
    *
    * @return string
    *   A string with replaced placeholders.
-   *
-   * @SuppressWarnings(PHPMD.CyclomaticComplexity)
    */
   public static function recursiveStrtr(string $data, array $replacements): string {
-    if (empty($replacements) && is_string($data)) {
+    if (empty($replacements)) {
       return $data;
     }
 
