@@ -12,8 +12,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Lint for shell script variable.
- *
- * @SuppressWarnings(PHPMD.UnusedLocalVariable)
  */
 class LintCommand extends Command {
 
@@ -152,7 +150,7 @@ class LintCommand extends Command {
       $pos = $matches[0][1];
 
       // Only replace within interpolation context.
-      if (is_numeric($pos) && $this->isInterpolation($line, $pos)) {
+      if ($this->isInterpolation($line, $pos)) {
         $value = '${' . substr($value, 1) . '}';
       }
 
@@ -175,8 +173,6 @@ class LintCommand extends Command {
    *
    * @return bool
    *   TRUE if the line at position is within interpolation context.
-   *
-   * @SuppressWarnings(PHPMD.CyclomaticComplexity)
    */
   public function isInterpolation(string $line, int $pos): bool {
     // Normalize position.

@@ -73,7 +73,7 @@ class VariableParser {
 
     $value = trim($value);
 
-    if (empty($value) || !is_string($value)) {
+    if (empty($value)) {
       return $unset_value;
     }
 

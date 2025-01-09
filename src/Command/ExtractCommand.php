@@ -36,13 +36,13 @@ class ExtractCommand extends Command {
 
     $this->config = new Config();
 
+    /** @var array<class-string<\AlexSkrypnyk\Shellvar\AbstractManager>> $classes */
     $classes = [
       ExtractorManager::class,
       FilterManager::class,
       FormatterManager::class,
     ];
 
-    /** @var \AlexSkrypnyk\Shellvar\Traits\SingletonInterface[] $classes */
     foreach ($classes as $class) {
       $instance = $class::getInstance($this->config);
       foreach ($instance->getAllConsoleArguments() as $argument) {

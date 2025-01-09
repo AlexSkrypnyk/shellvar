@@ -36,6 +36,7 @@ class ShellExtractor extends AbstractExtractor {
     array_walk($this->variables, static function (&$var): void {
       $var = $var->getIsAssignment() ? $var : FALSE;
     });
+    // @phpstan-ignore-next-line
     $this->variables = array_filter($this->variables);
 
     return $this->variables;
@@ -43,9 +44,6 @@ class ShellExtractor extends AbstractExtractor {
 
   /**
    * {@inheritdoc}
-   *
-   * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-   * @SuppressWarnings(PHPMD.NPathComplexity)
    */
   protected function extractVariablesFromFile(string $filepath): void {
     $skip = is_scalar($this->config->get('skip-text')) ? (string) $this->config->get('skip-text') : '';
@@ -79,7 +77,9 @@ class ShellExtractor extends AbstractExtractor {
         }
       }
 
-      $description_prefix = is_array($this->config->get('skip-description-prefix')) ? $this->config->get('skip-description-prefix') : [];
+      $description_prefix = $this->config->get('skip-description-prefix');
+      $description_prefix = is_array($description_prefix) ? array_filter($description_prefix, 'is_string') : [];
+
       $description = VariableParser::parseDescription($lines, $num, $description_prefix, self::COMMENT_SEPARATOR);
       if (!empty($description)) {
         if ($skip && str_contains($description, $skip)) {
@@ -145,6 +145,7 @@ class ShellExtractor extends AbstractExtractor {
     if (!empty($carry)) {
       $merged_lines[] = trim($carry);
     }
+
     // @codeCoverageIgnoreEnd
     return $merged_lines;
   }

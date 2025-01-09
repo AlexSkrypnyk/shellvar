@@ -46,8 +46,11 @@ class FormatterManager extends AbstractManager {
 
     $format = (string) $format;
 
-    /** @var \AlexSkrypnyk\Shellvar\Formatter\FormatterInterface $formatter */
     $formatter = $this->factory->create($format, $this->config);
+
+    if (!$formatter instanceof FormatterInterface) {
+      throw new \RuntimeException('Invalid formatter.');
+    }
 
     return $formatter->format($variables);
   }

@@ -46,8 +46,6 @@ trait ConfigAwareTrait {
    *
    * @param \AlexSkrypnyk\Shellvar\Config\Config $config
    *   The configuration to process.
-   *
-   * @SuppressWarnings(PHPMD.UnusedFormalParameter)
    */
   protected function processConfig(Config $config): void {
     // Intentionally left empty.
