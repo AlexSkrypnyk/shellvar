@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AlexSkrypnyk\Shellvar\Tests\Unit;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use AlexSkrypnyk\Shellvar\Config\Config;
 use AlexSkrypnyk\Shellvar\Factory\AutodiscoveryFactory;
 use AlexSkrypnyk\Shellvar\Tests\Fixtures\Discovery1\DummyDiscoverable11;
@@ -15,16 +16,12 @@ use AlexSkrypnyk\Shellvar\Tests\Fixtures\Discovery2\DummyDiscoverable22;
  * Class AutodiscoveryFactoryUnitTest.
  *
  * Unit tests for theAutodiscoveryFactory class.
- *
- * @coversDefaultClass \AlexSkrypnyk\Shellvar\Factory\AutodiscoveryFactory
  */
+#[CoversClass(AutodiscoveryFactory::class)]
 class AutodiscoveryFactoryUnitTest extends UnitTestBase {
 
   /**
    * Test that the autodiscovery can discover only items set to be discovered.
-   *
-   * @covers ::__construct
-   * @covers ::getEntityClasses
    */
   public function testDiscovery(): void {
     $autodiscovery = new AutodiscoveryFactory('tests/phpunit/Fixtures');
@@ -39,10 +36,6 @@ class AutodiscoveryFactoryUnitTest extends UnitTestBase {
 
   /**
    * Test that the autodiscovery can discover only items of a certain type.
-   *
-   * @covers ::discoverOwn
-   * @covers ::registerEntityClass
-   * @covers ::getEntityClasses
    */
   public function testDiscoveryTyped(): void {
     $autodiscovery = new AutodiscoveryFactory('tests/phpunit/Fixtures/Discovery1');
@@ -62,8 +55,6 @@ class AutodiscoveryFactoryUnitTest extends UnitTestBase {
 
   /**
    * Test creating a single auto discovered entity.
-   *
-   * @covers ::create
    */
   public function testCreate(): void {
     $autodiscovery = new AutodiscoveryFactory('tests/phpunit/Fixtures');
@@ -75,8 +66,6 @@ class AutodiscoveryFactoryUnitTest extends UnitTestBase {
 
   /**
    * Test creating all auto discovered entities.
-   *
-   * @covers ::createAll
    */
   public function testCreateAll(): void {
     $config = new Config();
@@ -94,8 +83,6 @@ class AutodiscoveryFactoryUnitTest extends UnitTestBase {
 
   /**
    * Test that exception is thrown when an invalid autodiscovery is requested.
-   *
-   * @covers ::create
    */
   public function testException(): void {
     $this->expectException(\Exception::class);

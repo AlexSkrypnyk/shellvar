@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace AlexSkrypnyk\Shellvar\Tests\Unit;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use AlexSkrypnyk\Shellvar\Extractor\ShellExtractor;
 use AlexSkrypnyk\Shellvar\Variable\Variable;
 
@@ -11,19 +13,14 @@ use AlexSkrypnyk\Shellvar\Variable\Variable;
  * Class ExtractorUnitTest.
  *
  * Unit tests for the Extractor class.
- *
- * phpcs:disable Drupal.Arrays.Array.LongLineDeclaration
- *
- * @coversDefaultClass \AlexSkrypnyk\Shellvar\Extractor\ShellExtractor
  */
+#[CoversClass(ShellExtractor::class)]
 class ExtractorUnitTest extends UnitTestBase {
 
   /**
    * Tests the extractVariable() method.
-   *
-   * @dataProvider dataProviderExtractVariable
-   * @covers ::extractVariable
    */
+  #[DataProvider('dataProviderExtractVariable')]
   public function testExtractVariable(string $line, ?Variable $expected): void {
     $extractor = $this->prepareMock(ShellExtractor::class, [], FALSE);
     $actual = $this->callProtectedMethod($extractor, 'extractVariable', [$line]);

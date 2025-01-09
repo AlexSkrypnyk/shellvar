@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace AlexSkrypnyk\Shellvar\Tests\Unit;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use AlexSkrypnyk\Shellvar\Config\Config;
 use AlexSkrypnyk\Shellvar\Formatter\AbstractMarkdownFormatter;
 use AlexSkrypnyk\Shellvar\Formatter\MarkdownBlocksFormatter;
@@ -13,19 +15,14 @@ use AlexSkrypnyk\Shellvar\Variable\Variable;
  * Class FormatterUnitTest.
  *
  * Unit tests for the Formatter class.
- *
- * phpcs:disable Drupal.Arrays.Array.LongLineDeclaration
- *
- * @coversDefaultClass \AlexSkrypnyk\Shellvar\Formatter\MarkdownBlocksFormatter
  */
+#[CoversClass(MarkdownBlocksFormatter::class)]
 class FormatterUnitTest extends UnitTestBase {
 
   /**
    * Tests the processDescription() method.
-   *
-   * @dataProvider dataProviderProcessDescription
-   * @covers ::processDescription
    */
+  #[DataProvider('dataProviderProcessDescription')]
   public function testProcessDescription(string $string, string $expected): void {
     $formatter = new MarkdownBlocksFormatter((new Config()));
     $actual = $this->callProtectedMethod($formatter, 'processDescription', [$string]);
@@ -195,10 +192,8 @@ class FormatterUnitTest extends UnitTestBase {
 
   /**
    * Tests the processInlineCodeVars() method.
-   *
-   * @dataProvider dataProviderProcessInlineCodeVars
-   * @covers ::processInlineCodeVars
    */
+  #[DataProvider('dataProviderProcessInlineCodeVars')]
   public function testProcessInlineCodeVars(array $variables, array $tokens, array $expected): void {
     $formatter = new MarkdownBlocksFormatter((new Config()));
     $actual = $this->callProtectedMethod($formatter, 'processInlineCodeVars', [$variables, $tokens]);
@@ -343,10 +338,8 @@ class FormatterUnitTest extends UnitTestBase {
 
   /**
    * Tests the processLinks() method.
-   *
-   * @dataProvider dataProviderProcessLinks
-   * @covers ::processLinks
    */
+  #[DataProvider('dataProviderProcessLinks')]
   public function testProcessLinks(array $variables, string $anchor_case, array $expected): void {
     $formatter = new MarkdownBlocksFormatter((new Config()));
     $actual = $this->callProtectedMethod($formatter, 'processLinks', [$variables, $anchor_case]);

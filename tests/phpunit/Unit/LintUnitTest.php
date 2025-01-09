@@ -4,22 +4,21 @@ declare(strict_types=1);
 
 namespace AlexSkrypnyk\Shellvar\Tests\Unit;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use AlexSkrypnyk\Shellvar\Command\LintCommand;
 use AlexSkrypnyk\Shellvar\Tests\Traits\FixtureTrait;
 
 /**
  * Unit test for Lint Command.
- *
- * @coversDefaultClass \AlexSkrypnyk\Shellvar\Command\LintCommand
  */
+#[CoversClass(LintCommand::class)]
 class LintUnitTest extends UnitTestBase {
 
   use FixtureTrait;
 
   /**
    * Test process file.
-   *
-   * @covers ::processFile
    *
    * @throws \Exception
    */
@@ -68,11 +67,8 @@ class LintUnitTest extends UnitTestBase {
    *   Text.
    * @param string $expected_text
    *   Expected text.
-   *
-   * @dataProvider dataProviderProcessLine
-   *
-   * @covers ::processLine
    */
+  #[DataProvider('dataProviderProcessLine')]
   public function testProcessLine(string $text, string $expected_text): void {
     $lintCommand = new LintCommand();
     $this->assertEquals($expected_text, $lintCommand->processLine($text));
@@ -194,11 +190,8 @@ class LintUnitTest extends UnitTestBase {
    *   Line text.
    * @param bool $expected
    *   Expected line text.
-   *
-   * @dataProvider dataProviderIsInterpolation
-   *
-   * @covers ::isInterpolation
    */
+  #[DataProvider('dataProviderIsInterpolation')]
   public function testIsInterpolation(string $line, bool $expected): void {
     $lintCommand = new LintCommand();
     $pos = strpos($line, 'var');
