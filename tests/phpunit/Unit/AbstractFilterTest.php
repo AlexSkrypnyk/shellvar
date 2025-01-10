@@ -4,18 +4,15 @@ declare(strict_types=1);
 
 namespace AlexSkrypnyk\Shellvar\Tests\Unit;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use AlexSkrypnyk\Shellvar\Filter\AbstractFilter;
 
 /**
  * Test AbstractFilter.
- *
- * @coversDefaultClass \AlexSkrypnyk\Shellvar\Filter\AbstractFilter
  */
+#[CoversClass(AbstractFilter::class)]
 class AbstractFilterTest extends UnitTestBase {
 
-  /**
-   * @covers ::getConsoleOptions
-   */
   public function testAbstractFilter(): void {
     $this->assertEquals([], AbstractFilter::getConsoleOptions());
   }

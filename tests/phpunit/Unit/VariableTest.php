@@ -6,21 +6,16 @@ namespace AlexSkrypnyk\Shellvar\Tests\Unit;
 
 use AlexSkrypnyk\Shellvar\Variable\Variable;
 use AlexSkrypnyk\Shellvar\Variable\VariableAwareTrait;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * Test Variable.
- *
- * @coversDefaultClass \AlexSkrypnyk\Shellvar\Variable\Variable
- * @covers \AlexSkrypnyk\Shellvar\Variable\VariableAwareTrait
  */
+#[CoversClass(Variable::class)]
 class VariableTest extends UnitTestBase {
 
   use VariableAwareTrait;
 
-  /**
-   * @covers ::getIsInlineCode
-   * @covers ::setIsInlineCode
-   */
   public function testVariable(): void {
     $variable = new Variable('foo');
     $variable->setIsInlineCode(TRUE);

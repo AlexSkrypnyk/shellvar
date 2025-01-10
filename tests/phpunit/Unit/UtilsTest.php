@@ -4,34 +4,26 @@ declare(strict_types=1);
 
 namespace AlexSkrypnyk\Shellvar\Tests\Unit;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use AlexSkrypnyk\Shellvar\Utils;
 use Symfony\Component\Console\Exception\InvalidOptionException;
 
 /**
  * Test Utils.
- *
- * @coversDefaultClass \AlexSkrypnyk\Shellvar\Utils
  */
+#[CoversClass(Utils::class)]
 class UtilsTest extends UnitTestBase {
 
-  /**
-   * @covers ::resolvePath
-   */
   public function testResolvePath(): void {
     $this->assertEquals('', Utils::resolvePath(''));
   }
 
-  /**
-   * @covers ::resolvePath
-   */
   public function testResolvePathInvalid(): void {
     $this->expectException(InvalidOptionException::class);
     Utils::resolvePath('/a-fake-path/' . rand(1, 10) . '.txt');
   }
 
-  /**
-   * @covers ::getLinesFromFiles
-   */
   public function testGetLinesFromFiles(): void {
     $lines = Utils::getLinesFromFiles([$this->fixtureFile('.env')]);
     $this->assertEquals([
@@ -60,9 +52,6 @@ class UtilsTest extends UnitTestBase {
     ], $lines_removed_empty);
   }
 
-  /**
-   * @covers ::getLinesFromFiles
-   */
   public function testGetLinesFromFilesInvalid(): void {
     $this->expectException(InvalidOptionException::class);
     Utils::getLinesFromFiles(['/a-fake-path/' . rand(1, 10) . '.txt']);
@@ -70,10 +59,8 @@ class UtilsTest extends UnitTestBase {
 
   /**
    * Test for removeDoubleQuotes.
-   *
-   * @dataProvider dataProviderRemoveDoubleQuotes
-   * @covers ::removeDoubleQuotes
    */
+  #[DataProvider('dataProviderRemoveDoubleQuotes')]
   public function testRemoveDoubleQuotes(string $input, string $expected): void {
     $this->assertEquals($expected, Utils::removeDoubleQuotes($input));
   }
@@ -93,10 +80,8 @@ class UtilsTest extends UnitTestBase {
 
   /**
    * Test for recursiveStrtr().
-   *
-   * @dataProvider dataProviderRecursiveStrtr
-   * @covers ::recursiveStrtr
    */
+  #[DataProvider('dataProviderRecursiveStrtr')]
   public function testRecursiveStrtr(string $input, array $replacements, string|array $expected, ?string $expected_exception_message = NULL): void {
     if ($expected === 'Exception' && is_string($expected_exception_message)) {
       $this->expectException(\Exception::class);

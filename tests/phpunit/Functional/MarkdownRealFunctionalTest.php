@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace AlexSkrypnyk\Shellvar\Tests\Functional;
 
+use AlexSkrypnyk\Shellvar\Extractor\ShellExtractor;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use AlexSkrypnyk\Shellvar\Command\ExtractCommand;
 
 /**
@@ -11,6 +16,7 @@ use AlexSkrypnyk\Shellvar\Command\ExtractCommand;
  *
  * Functional tests for real file.
  */
+#[CoversClass(ShellExtractor::class)]
 class MarkdownRealFunctionalTest extends FunctionalTestCase {
 
   /**
@@ -20,12 +26,10 @@ class MarkdownRealFunctionalTest extends FunctionalTestCase {
 
   /**
    * Test real file.
-   *
-   * @dataProvider dataProviderRealFile
-   * @covers \AlexSkrypnyk\Shellvar\Extractor\ShellExtractor
-   * @runInSeparateProcess
-   * @group real
    */
+  #[DataProvider('dataProviderRealFile')]
+  #[Group('real')]
+  #[RunInSeparateProcess]
   public function testRealFile(array|string $input): void {
     $input = is_array($input) ? $input : [$input];
     $result = $this->runExecute(ExtractCommand::class, $input);

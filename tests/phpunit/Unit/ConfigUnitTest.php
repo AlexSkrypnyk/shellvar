@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace AlexSkrypnyk\Shellvar\Tests\Unit;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use AlexSkrypnyk\Shellvar\Config\Config;
 
 /**
  * Unit Config test.
- *
- * @covers \AlexSkrypnyk\Shellvar\Config\Config
  */
+#[CoversClass(Config::class)]
 class ConfigUnitTest extends UnitTestBase {
 
   public function testConfig(): void {

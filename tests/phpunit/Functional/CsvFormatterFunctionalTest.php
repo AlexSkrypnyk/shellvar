@@ -4,19 +4,45 @@ declare(strict_types=1);
 
 namespace AlexSkrypnyk\Shellvar\Tests\Functional;
 
+use AlexSkrypnyk\Shellvar\AbstractManager;
+use AlexSkrypnyk\Shellvar\Command\ExtractCommand;
+use AlexSkrypnyk\Shellvar\Extractor\AbstractExtractor;
+use AlexSkrypnyk\Shellvar\Extractor\ExtractorManager;
+use AlexSkrypnyk\Shellvar\Extractor\ShellExtractor;
+use AlexSkrypnyk\Shellvar\Filter\AbstractFilter;
+use AlexSkrypnyk\Shellvar\Filter\ExcludeFromFileFilter;
+use AlexSkrypnyk\Shellvar\Filter\ExcludeLocalFilter;
+use AlexSkrypnyk\Shellvar\Filter\ExcludePrefixFilter;
+use AlexSkrypnyk\Shellvar\Filter\FilterManager;
+use AlexSkrypnyk\Shellvar\Formatter\AbstractFormatter;
+use AlexSkrypnyk\Shellvar\Formatter\CsvFormatter;
+use AlexSkrypnyk\Shellvar\Formatter\FormatterManager;
+use AlexSkrypnyk\Shellvar\Utils;
+use AlexSkrypnyk\Shellvar\Variable\Variable;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
+
 /**
  * Class CsvFormatterFunctionalTest.
  *
  * Functional tests for extractions.
- *
- * @group scripts
- *
- * @covers \AlexSkrypnyk\Shellvar\Command\ExtractCommand
- * @covers \AlexSkrypnyk\Shellvar\Formatter\CsvFormatter
- *
- * phpcs:disable Drupal.Commenting.DocComment.MissingShort
- * phpcs:disable Drupal.Commenting.FunctionComment.Missing
  */
+#[CoversClass(AbstractExtractor::class)]
+#[CoversClass(AbstractFilter::class)]
+#[CoversClass(AbstractFormatter::class)]
+#[CoversClass(AbstractManager::class)]
+#[CoversClass(CsvFormatter::class)]
+#[CoversClass(ExcludeFromFileFilter::class)]
+#[CoversClass(ExcludeLocalFilter::class)]
+#[CoversClass(ExcludePrefixFilter::class)]
+#[CoversClass(ExtractCommand::class)]
+#[CoversClass(ExtractorManager::class)]
+#[CoversClass(FilterManager::class)]
+#[CoversClass(FormatterManager::class)]
+#[CoversClass(ShellExtractor::class)]
+#[CoversClass(Utils::class)]
+#[CoversClass(Variable::class)]
+#[Group('scripts')]
 class CsvFormatterFunctionalTest extends FormatterFunctionalTestCase {
 
   /**

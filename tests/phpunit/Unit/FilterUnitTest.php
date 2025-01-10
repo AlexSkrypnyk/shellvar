@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace AlexSkrypnyk\Shellvar\Tests\Unit;
 
+use AlexSkrypnyk\Shellvar\Filter\AbstractFilter;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use AlexSkrypnyk\Shellvar\Config\Config;
 use AlexSkrypnyk\Shellvar\Filter\ExcludeLocalFilter;
 use AlexSkrypnyk\Shellvar\Filter\ExcludePrefixFilter;
@@ -13,19 +16,16 @@ use AlexSkrypnyk\Shellvar\Variable\Variable;
  * Class FilterUnitTest.
  *
  * Unit tests for the Filter class.
- *
- * phpcs:disable Drupal.Arrays.Array.LongLineDeclaration
  */
+#[CoversClass(ExcludePrefixFilter::class)]
+#[CoversClass(AbstractFilter::class)]
+#[CoversClass(ExcludeLocalFilter::class)]
 class FilterUnitTest extends UnitTestBase {
 
   /**
    * Tests the filterExcludedPrefixedVars() method.
-   *
-   * @dataProvider dataProviderFilterExcludedPrefixedVars
-   * @covers \AlexSkrypnyk\Shellvar\Filter\ExcludePrefixFilter::filter
-   * @covers \AlexSkrypnyk\Shellvar\Filter\AbstractFilter::__construct
-   * @covers \AlexSkrypnyk\Shellvar\Config\ConfigAwareTrait::setConfig
    */
+  #[DataProvider('dataProviderFilterExcludedPrefixedVars')]
   public function testFilterExcludedPrefixedVars(array $var_names, array $prefixes, array $expected): void {
     $vars = [];
     foreach ($var_names as $var_name) {
@@ -64,10 +64,6 @@ class FilterUnitTest extends UnitTestBase {
 
   /**
    * Tests the filterExcludedPrefixedVars() method.
-   *
-   * @covers \AlexSkrypnyk\Shellvar\Filter\ExcludePrefixFilter::filter
-   * @covers \AlexSkrypnyk\Shellvar\Filter\AbstractFilter::__construct
-   * @covers \AlexSkrypnyk\Shellvar\Config\ConfigAwareTrait::setConfig
    */
   public function testFilterExcludedPrefixedVarsInvalid(): void {
     $vars = ['invalid1', new Variable('VAR1'), 'invalid2'];
@@ -86,8 +82,6 @@ class FilterUnitTest extends UnitTestBase {
 
   /**
    * Tests the filterExcludedPrefixedVars() method.
-   *
-   * @covers \AlexSkrypnyk\Shellvar\Filter\ExcludeLocalFilter::filter
    */
   public function testFilterExcludedLocalVarsInvalid(): void {
     $vars = ['invalid1', new Variable('VAR1'), new Variable('var2'), 'invalid2'];

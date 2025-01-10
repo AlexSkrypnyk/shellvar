@@ -11,15 +11,16 @@
          displayDetailsOnTestsThatTriggerWarnings="true"
          displayDetailsOnTestsThatTriggerErrors="true"
          displayDetailsOnTestsThatTriggerNotices="true"
-         displayDetailsOnTestsThatTriggerDeprecations="true">
+         displayDetailsOnTestsThatTriggerDeprecations="true"
+         displayDetailsOnPhpunitDeprecations="true">
     <testsuites>
         <testsuite name="default">
             <directory>tests/phpunit</directory>
         </testsuite>
     </testsuites>
-    <source restrictDeprecations="true"
-            restrictNotices="true"
-            restrictWarnings="true">
+    <source restrictNotices="true"
+            restrictWarnings="true"
+            ignoreIndirectDeprecations="true">
         <include>
             <directory>src</directory>
         </include>

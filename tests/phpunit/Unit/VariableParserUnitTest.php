@@ -4,25 +4,23 @@ declare(strict_types=1);
 
 namespace AlexSkrypnyk\Shellvar\Tests\Unit;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use AlexSkrypnyk\Shellvar\Extractor\VariableParser;
 
 /**
  * Class ExtractorUnitTest.
  *
  * Unit tests for the Extractor class.
- *
- * phpcs:disable Drupal.Arrays.Array.LongLineDeclaration
- *
- * @coversDefaultClass \AlexSkrypnyk\Shellvar\Extractor\VariableParser
  */
+#[CoversClass(VariableParser::class)]
 class VariableParserUnitTest extends UnitTestBase {
 
   /**
    * Tests the parseDescription() method.
-   *
-   * @dataProvider dataProviderParseDescription
-   * @covers ::parseDescription
    */
+  #[DataProvider('dataProviderParseDescription')]
   public function testParseDescription(array $lines, int $line_num, array $skip_prefix, string $expected): void {
     $actual = VariableParser::parseDescription($lines, $line_num, $skip_prefix);
     $this->assertEquals($expected, $actual);
@@ -54,17 +52,9 @@ class VariableParserUnitTest extends UnitTestBase {
 
   /**
    * Tests the parseValue() method.
-   *
-   * @dataProvider dataProviderParseVariableValue
-   * @covers ::parseValue
-   * @covers ::validateValue
-   * @covers ::resolveNestedNotations
-   * @covers ::resolveNotation
-   * @covers ::notationIsVariable
-   * @covers ::normaliseNotation
-   * @covers ::unwrapNotation
-   * @group parse_variable_value
    */
+  #[DataProvider('dataProviderParseVariableValue')]
+  #[Group('parse_variable_value')]
   public function testParseVariableValue(string $line, string|int $expected): void {
     $actual = VariableParser::parseValue($line, 'TESTUNSET');
     $this->assertSame($expected, $actual);
@@ -162,10 +152,8 @@ class VariableParserUnitTest extends UnitTestBase {
 
   /**
    * Tests the parseValue() method.
-   *
-   * @dataProvider dataProviderParseValueNotation
-   * @covers ::parseNotation
    */
+  #[DataProvider('dataProviderParseValueNotation')]
   public function testParseValueNotation(string $line, string $name, ?string $operator, ?string $default): void {
     $extractor = $this->prepareMock(VariableParser::class, [], FALSE);
     $actual = (array) $this->callProtectedMethod($extractor, 'parseNotation', [$line, 'TESTUNSET']);
@@ -232,10 +220,8 @@ class VariableParserUnitTest extends UnitTestBase {
    *   The expected exception class.
    * @param string $expected_message
    *   The expected exception message.
-   *
-   * @dataProvider dataProvidervValidateValue
-   * @covers ::validateValue
    */
+  #[DataProvider('dataProvidervValidateValue')]
   public function testValidateValue(string $value, ?string $expected_exception, string $expected_message): void {
     if ($expected_exception) {
       $this->expectException($expected_exception);
