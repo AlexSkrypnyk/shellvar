@@ -154,7 +154,7 @@ class LintCommand extends Command {
         $value = '${' . substr($value, 1) . '}';
       }
 
-      return $value ?: '';
+      return $value;
     }, $line, -1, $count, PREG_OFFSET_CAPTURE);
 
     return $updated_line ?: $line;
