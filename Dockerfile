@@ -1,23 +1,28 @@
 FROM php:8.4-cli AS builder
 
-RUN apt-get update \
-    && apt-get install --no-install-recommends -y libzip-dev=1.7.3-1+b1 \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+# hadolint ignore=DL3008
+RUN apt-get update && \
+    apt-get install --no-install-recommends -y libzip-dev && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 RUN docker-php-ext-install zip
 
 # Install composer.
 # @see https://getcomposer.org/download
-ENV COMPOSER_VERSION=2.8.3
-ENV COMPOSER_SHA=dac665fdc30fdd8ec78b38b9800061b4150413ff2e3b6f88543c636f7cd84f6db9189d43a81e5503cda447da73c7e5b6
+# renovate: datasource=github-releases depName=composer/composer extractVersion=^(?<version>.*)$
 ENV COMPOSER_ALLOW_SUPERUSER=1
 # hadolint ignore=DL4006
-RUN curl -L -o "/usr/local/bin/composer" "https://getcomposer.org/download/${COMPOSER_VERSION}/composer.phar" \
-    && echo "${COMPOSER_SHA} /usr/local/bin/composer" | sha256sum \
-    && chmod +x /usr/local/bin/composer \
-    && composer --version \
-    && composer clear-cache
+RUN version=2.8.10 && \
+    curl -sS https://getcomposer.org/download/${version}/composer.phar.sha256sum | awk '{ print $1, "composer.phar" }' > composer.phar.sha256sum && \
+    curl -sS -o composer.phar https://getcomposer.org/download/${version}/composer.phar && \
+    sha256sum -c composer.phar.sha256sum && \
+    chmod +x composer.phar && \
+    mv composer.phar /usr/local/bin/composer && \
+    rm composer.phar.sha256sum && \
+    composer --version && \
+    composer clear-cache
+ENV PATH=/root/.composer/vendor/bin:$PATH
 
 WORKDIR /app
 
@@ -31,10 +36,11 @@ RUN composer build && cp /app/.build/shellvar /app/shellvar
 
 FROM php:8.4-cli
 
-RUN apt-get update \
-    && apt-get install --no-install-recommends -y libzip-dev=1.7.3-1+b1 \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+# hadolint ignore=DL3008
+RUN apt-get update && \
+    apt-get install --no-install-recommends -y libzip-dev && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /usr/local/lib/php/extensions /usr/local/lib/php/extensions
 COPY --from=builder /usr/local/bin /usr/local/bin
