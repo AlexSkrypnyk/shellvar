@@ -33,7 +33,6 @@ use PHPUnit\Framework\Attributes\Group;
 #[CoversClass(AbstractFormatter::class)]
 #[CoversClass(AbstractManager::class)]
 #[CoversClass(AbstractMarkdownFormatter::class)]
-#[CoversClass(AbstractMarkdownFormatter::class)]
 #[CoversClass(ExcludeFromFileFilter::class)]
 #[CoversClass(ExcludeLocalFilter::class)]
 #[CoversClass(ExcludePrefixFilter::class)]
