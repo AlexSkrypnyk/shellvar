@@ -38,7 +38,7 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
         name: 'md-link-vars-anchor-case',
         mode: InputOption::VALUE_REQUIRED,
         description: 'The case of the anchors when linking variables. Can be one of "preserve", "lower" or "upper".',
-        default: static::VARIABLE_LINK_CASE_PRESERVE
+        default: self::VARIABLE_LINK_CASE_PRESERVE
       ),
       new InputOption(
         name: 'md-no-inline-code-wrap-vars',
@@ -196,7 +196,7 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
    *   A list of processed variables.
    */
   protected function processInlineCodeVars(array $variables, array $tokens = []): array {
-    $var_tokens = array_map(static function ($v): string {
+    $var_tokens = array_map(static function (int|string $v): string {
       return ltrim((string) $v, '$');
     }, array_keys($variables));
 
@@ -280,7 +280,7 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
    *   A list of processed variables.
    */
   protected function processLinks(array $variables, $anchor_case = self::VARIABLE_LINK_CASE_PRESERVE): array {
-    $var_tokens = array_map(static function ($v): string {
+    $var_tokens = array_map(static function (int|string $v): string {
       return ltrim((string) $v, '$');
     }, array_keys($variables));
 

@@ -49,7 +49,7 @@ trait MockTrait {
       $builder->disableOriginalConstructor();
     }
 
-    $method_names = array_values(array_filter(array_keys($methods), fn($method): bool => !empty($method)));
+    $method_names = array_values(array_filter(array_keys($methods), fn(string $method): bool => !empty($method)));
     if (!empty($method_names)) {
       $builder->onlyMethods($method_names);
     }
