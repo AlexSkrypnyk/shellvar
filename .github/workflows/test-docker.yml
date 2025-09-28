@@ -35,7 +35,7 @@ jobs:
           version: ${{ matrix.docker-version }}
 
       - name: Check coding standards
-        uses: hadolint/hadolint-action@v3.1.0
+        uses: hadolint/hadolint-action@v3.3.0
 
       - name: Build Docker image
         run: docker build -t "drevops/shellvar:test" .
