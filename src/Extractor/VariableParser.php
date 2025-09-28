@@ -41,7 +41,7 @@ class VariableParser {
 
     $comment_lines = array_reverse($comment_lines);
 
-    $comment_lines = array_filter($comment_lines, static function ($value) use ($skip_prefixes, $comment_separator): bool {
+    $comment_lines = array_filter($comment_lines, static function (string $value) use ($skip_prefixes, $comment_separator): bool {
       foreach ($skip_prefixes as $prefix) {
         if (str_starts_with($value, ltrim($prefix, $comment_separator))) {
           return FALSE;
