@@ -130,10 +130,9 @@ class Utils {
         \'\[^\'\]*\'|  # Match single-quoted strings
         "|           # Match double quotes
     /x',
-      static function (array $matches): string {
-        // If the match is a double quote, remove it.
-        return ($matches[0] === '"' ? '' : $matches[0]);
-      },
+      static fn(array $matches): string =>
+          // If the match is a double quote, remove it.
+          $matches[0] === '"' ? '' : $matches[0],
       $string
     );
 

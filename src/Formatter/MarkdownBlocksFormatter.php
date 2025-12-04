@@ -67,9 +67,7 @@ class MarkdownBlocksFormatter extends AbstractMarkdownFormatter {
 
     foreach ($this->variables as $variable) {
       // @phpstan-ignore-next-line
-      $placeholders_tokens = array_map(static function (string $v): string {
-        return '{{ ' . $v . ' }}';
-      }, array_keys($variable->toArray($fields)));
+      $placeholders_tokens = array_map(static fn(string $v): string => '{{ ' . $v . ' }}', array_keys($variable->toArray($fields)));
 
       $placeholders_values = $variable->toArray($fields);
 

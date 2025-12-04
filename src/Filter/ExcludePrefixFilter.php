@@ -41,7 +41,7 @@ class ExcludePrefixFilter extends AbstractFilter {
     $prefixes = $this->config->get('exclude-prefix');
     $prefixes = is_array($prefixes) ? $prefixes : [$prefixes];
     $prefixes = array_filter($prefixes);
-    $prefixes = array_filter($prefixes, static fn($prefix): bool => is_string($prefix));
+    $prefixes = array_filter($prefixes, is_string(...));
 
     return array_filter($variables, static function ($variable) use ($prefixes): bool {
       if (!$variable instanceof Variable) {

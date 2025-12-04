@@ -35,9 +35,7 @@ class FilterManager extends AbstractManager {
 
     $this->filters = $filters;
 
-    usort($this->filters, static function (FilterInterface $a, FilterInterface $b): int {
-      return $b::getPriority() <=> $a::getPriority();
-    });
+    usort($this->filters, static fn(FilterInterface $a, FilterInterface $b): int => $b::getPriority() <=> $a::getPriority());
   }
 
   /**
