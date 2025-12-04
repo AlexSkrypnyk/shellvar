@@ -1,4 +1,4 @@
-FROM php:8.4-cli AS builder
+FROM php:8.5-cli AS builder
 
 # hadolint ignore=DL3008
 RUN apt-get update && \
@@ -34,7 +34,7 @@ COPY . /app
 
 RUN composer build && cp /app/.build/shellvar /app/shellvar
 
-FROM php:8.4-cli
+FROM php:8.5-cli
 
 # hadolint ignore=DL3008
 RUN apt-get update && \

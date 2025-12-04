@@ -1,0 +1,14 @@
+diff --git a/src/RequirementChecker/RequirementsBuilder.php b/src/RequirementChecker/RequirementsBuilder.php
+index 1cf8a9339..77e558fef 100644
+--- a/src/RequirementChecker/RequirementsBuilder.php
++++ b/src/RequirementChecker/RequirementsBuilder.php
+@@ -58,6 +58,9 @@ public function addRequirement(Requirement $requirement): void
+
+     public function addRequiredExtension(Extension $extension, ?string $source): void
+     {
++        if (!$source) {
++            $source = '';
++        }
+         $this->requiredExtensions[$extension->name][] = $source;
+         $this->allExtensions[$extension->name][$source] = [$source, RequirementType::EXTENSION];
+     }
