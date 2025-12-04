@@ -245,7 +245,7 @@ abstract class AbstractFormatter implements FormatterInterface, FactoryDiscovera
    *   The post formatted content.
    */
   protected function postFormat(string $content): string {
-    return implode(PHP_EOL, array_map('trim', explode(PHP_EOL, $content)));
+    return implode(PHP_EOL, array_map(trim(...), explode(PHP_EOL, $content)));
   }
 
 }

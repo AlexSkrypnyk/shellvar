@@ -52,9 +52,7 @@ class CsvFormatter extends AbstractFormatter {
 
     $header = $this->config->get('fields');
     $header = is_array($header) ? $header : [];
-    $header = array_map(static function ($value): string {
-      return is_scalar($value) || $value === NULL ? strval($value) : '';
-    }, $header);
+    $header = array_map(static fn($value): string => is_scalar($value) || $value === NULL ? strval($value) : '', $header);
 
     $separator = is_string($this->config->get('csv-separator', ',')) ? $this->config->get('csv-separator', ',') : ',';
 

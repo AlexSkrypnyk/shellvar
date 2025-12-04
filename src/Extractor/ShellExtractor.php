@@ -78,7 +78,7 @@ class ShellExtractor extends AbstractExtractor {
       }
 
       $description_prefix = $this->config->get('skip-description-prefix');
-      $description_prefix = is_array($description_prefix) ? array_filter($description_prefix, 'is_string') : [];
+      $description_prefix = is_array($description_prefix) ? array_filter($description_prefix, is_string(...)) : [];
 
       $description = VariableParser::parseDescription($lines, $num, $description_prefix, self::COMMENT_SEPARATOR);
       if (!empty($description)) {

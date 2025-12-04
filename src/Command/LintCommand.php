@@ -42,11 +42,7 @@ class LintCommand extends Command {
     $extensions = is_array($input->getOption('extension')) ? $input->getOption('extension') : ['sh', 'bash'];
 
     if (is_dir($path)) {
-      $files = array_map(static function (\SplFileInfo $f): string|false {
-        return $f->getRealPath();
-      }, array_filter(iterator_to_array(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path))), static function (mixed $f) use ($extensions): bool {
-        return $f instanceof \SplFileInfo && $f->isFile() && in_array($f->getExtension(), $extensions, TRUE);
-      }));
+      $files = array_map(static fn(\SplFileInfo $f): string|false => $f->getRealPath(), array_filter(iterator_to_array(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path))), static fn(mixed $f): bool => $f instanceof \SplFileInfo && $f->isFile() && in_array($f->getExtension(), $extensions, TRUE)));
 
       sort($files);
     }
@@ -194,7 +190,7 @@ class LintCommand extends Command {
       }
     }
 
-    $double_even = substr_count($prefix, '"') % 2 == 0;
+    $double_even = substr_count($prefix, '"') % 2 === 0;
 
     if ($prev === '"' && $double_even) {
       return TRUE;

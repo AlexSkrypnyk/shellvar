@@ -71,7 +71,7 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
 
     if (!empty($config->get('md-inline-code-extra-file'))) {
       $paths = (array) $config->get('md-inline-code-extra-file');
-      $paths = array_filter($paths, static fn($path): bool => is_string($path));
+      $paths = array_filter($paths, is_string(...));
       $config->set('md-inline-code-extra-file', Utils::getNonEmptyLinesFromFiles(Utils::resolvePaths($paths)));
     }
   }
@@ -85,7 +85,7 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
     if (!$this->config->get('md-no-inline-code-wrap-vars')) {
       $extra_files = $this->config->get('md-inline-code-extra-file');
       $extra_files = is_array($extra_files) ? $extra_files : [$extra_files];
-      $extra_files = array_filter($extra_files, static fn($file): bool => is_string($file));
+      $extra_files = array_filter($extra_files, is_string(...));
       $this->variables = $this->processInlineCodeVars($this->variables, $extra_files);
     }
 
@@ -136,7 +136,7 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
     $in_list = FALSE;
     foreach ($lines as $k => $line) {
       // Last line - do nothing.
-      if ($k == count($lines) - 1) {
+      if ($k === count($lines) - 1) {
         continue;
       }
       // Current line is empty and previous line is empty - preserve NL.
@@ -196,9 +196,7 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
    *   A list of processed variables.
    */
   protected function processInlineCodeVars(array $variables, array $tokens = []): array {
-    $var_tokens = array_map(static function (int|string $v): string {
-      return ltrim((string) $v, '$');
-    }, array_keys($variables));
+    $var_tokens = array_map(static fn(int|string $v): string => ltrim((string) $v, '$'), array_keys($variables));
 
     foreach ($variables as $variable) {
       $variable->setName('`' . $variable->getName() . '`');
@@ -240,9 +238,7 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
       foreach ($tokens as $token) {
         $token = trim($token);
 
-        $description = preg_replace_callback('/(`.*?`)|\b' . preg_quote($token, '/') . '\b/', static function (array $matches) use ($token): string {
-          return $matches[0] === $token ? sprintf('`%s`', $token) : $matches[0];
-        }, (string) $description);
+        $description = preg_replace_callback('/(`.*?`)|\b' . preg_quote($token, '/') . '\b/', static fn(array $matches): string => $matches[0] === $token ? sprintf('`%s`', $token) : $matches[0], (string) $description);
       }
 
       $variable->setDescription((string) $description);
@@ -280,9 +276,7 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
    *   A list of processed variables.
    */
   protected function processLinks(array $variables, $anchor_case = self::VARIABLE_LINK_CASE_PRESERVE): array {
-    $var_tokens = array_map(static function (int|string $v): string {
-      return ltrim((string) $v, '$');
-    }, array_keys($variables));
+    $var_tokens = array_map(static fn(int|string $v): string => ltrim((string) $v, '$'), array_keys($variables));
 
     foreach ($variables as $variable) {
       $description = $variable->getDescription();

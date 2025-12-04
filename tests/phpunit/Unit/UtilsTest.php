@@ -21,7 +21,7 @@ class UtilsTest extends UnitTestBase {
 
   public function testResolvePathInvalid(): void {
     $this->expectException(InvalidOptionException::class);
-    Utils::resolvePath('/a-fake-path/' . rand(1, 10) . '.txt');
+    Utils::resolvePath('/a-fake-path/' . random_int(1, 10) . '.txt');
   }
 
   public function testGetLinesFromFiles(): void {
@@ -54,7 +54,7 @@ class UtilsTest extends UnitTestBase {
 
   public function testGetLinesFromFilesInvalid(): void {
     $this->expectException(InvalidOptionException::class);
-    Utils::getLinesFromFiles(['/a-fake-path/' . rand(1, 10) . '.txt']);
+    Utils::getLinesFromFiles(['/a-fake-path/' . random_int(1, 10) . '.txt']);
   }
 
   /**
@@ -72,8 +72,8 @@ class UtilsTest extends UnitTestBase {
     return [
       ['Hello "world"', 'Hello world'],
       ['This is a \\"test\\" string', 'This is a \\"test\\" string'],
-      ['"Hello" \'world\'', 'Hello \'world\''],
-      ['"She said, \'You\'re here.\'"', 'She said, \'You\'re here.\''],
+      ['"Hello" \'world\'', "Hello 'world'"],
+      ['"She said, \'You\'re here.\'"', "She said, 'You're here.'"],
       ['Just a string', 'Just a string'],
     ];
   }

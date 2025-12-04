@@ -72,9 +72,7 @@ class AutodiscoveryFactoryUnitTest extends UnitTestBase {
     $autodiscovery = new AutodiscoveryFactory('tests/phpunit/Fixtures');
     $discovered_all = $autodiscovery->createAll($config);
     $this->assertCount(4, $discovered_all);
-    usort($discovered_all, static function ($a, $b): int {
-      return strcmp($a::getName(), $b::getName());
-    });
+    usort($discovered_all, static fn($a, $b): int => strcmp($a::getName(), $b::getName()));
     $this->assertEquals('DummyDiscoverable11', $discovered_all[0]::getName());
     $this->assertEquals('DummyDiscoverable12', $discovered_all[1]::getName());
     $this->assertEquals('DummyDiscoverable21', $discovered_all[2]::getName());

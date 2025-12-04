@@ -71,7 +71,7 @@ abstract class AbstractExtractor implements ExtractorInterface, ConsoleAwareInte
   protected function processConfig(Config $config): void {
     $paths = $config->get('paths', []);
     $paths = is_array($paths) ? $paths : [$paths];
-    $paths = array_filter($paths, static fn($path): bool => is_string($path));
+    $paths = array_filter($paths, is_string(...));
     $config->set('paths', $this->scanPaths(Utils::resolvePaths($paths)));
 
     $config->set('skip-text', $config->get('skip-text', '@skip'));
