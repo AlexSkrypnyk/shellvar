@@ -38,6 +38,86 @@ class MarkdownTableFormatter extends AbstractMarkdownFormatter {
   /**
    * {@inheritdoc}
    */
+  protected function processDescription(string $description): string {
+    // Start with base processing (trims and normalizes multiple newlines).
+    $description = AbstractFormatter::processDescription($description);
+
+    $br = '<br/>';
+    $nl = "\n";
+
+    $lines = explode($nl, $description);
+    $separators = [];
+
+    // Convert single newlines to spaces for regular text,
+    // but preserve list structure with <br/> tags.
+    // Double newlines become <br/><br/> since table cells can't have
+    // actual newlines.
+    $in_list = FALSE;
+    foreach ($lines as $k => $line) {
+      // Last line - no separator after it.
+      if ($k === count($lines) - 1) {
+        $separators[$k] = '';
+        continue;
+      }
+
+      $next_line = $lines[$k + 1] ?? '';
+
+      // Current line is empty (from double newline) - skip it,
+      // previous line handles the spacing.
+      if (empty($line)) {
+        $separators[$k] = '';
+        $in_list = FALSE;
+      }
+      elseif ($this->isListItem($line) && empty($next_line)) {
+        // List item followed by empty line (double newline) - use <br/><br/>.
+        $separators[$k] = $br . $br;
+        $in_list = TRUE;
+      }
+      elseif ($this->isListItem($line)) {
+        $separators[$k] = $br;
+        $in_list = TRUE;
+      }
+      elseif ($in_list) {
+        // List continuation line - trim it and add <br/>.
+        $lines[$k] = trim($line);
+        if (empty($next_line)) {
+          // Before double newline.
+          $separators[$k] = $br . $br;
+        }
+        else {
+          $separators[$k] = $br;
+        }
+        $in_list = TRUE;
+      }
+      elseif ($this->isListItem($next_line)) {
+        // Line before a list item should have <br/> to start the list.
+        $separators[$k] = $br;
+        $in_list = FALSE;
+      }
+      elseif (empty($next_line)) {
+        // Regular text before double newline - no trailing space.
+        $separators[$k] = $br . $br;
+        $in_list = FALSE;
+      }
+      else {
+        // For regular text, convert single newlines to spaces.
+        $separators[$k] = ' ';
+        $in_list = FALSE;
+      }
+    }
+
+    // Rebuild description with separators.
+    $result = '';
+    foreach ($lines as $k => $line) {
+      $result .= $line . ($separators[$k] ?? '');
+    }
+
+    return $result;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   protected function doFormat(): string {
     // Use the CsvFormatter to format the variables data as CSV to then render
     // it as a CsvTable with Markdown renderer.
