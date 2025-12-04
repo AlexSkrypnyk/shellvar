@@ -58,6 +58,7 @@
     "scripts": {
         "build": [
             "@composer bin box require --dev humbug/box",
+            "patch vendor-bin/box/vendor/humbug/box/src/RequirementChecker/RequirementsBuilder.php < box-php85.patch",
             "box validate",
             "box compile"
         ],
