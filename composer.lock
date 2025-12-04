@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a928ebd3434d12aabb618ee083dce8fc",
+    "content-hash": "331ccb0a0608a445e5e926767cb39098",
     "packages": [
         {
             "name": "alexskrypnyk/csvtable",
@@ -946,6 +946,85 @@
                 }
             ],
             "time": "2025-11-11T04:32:07+00:00"
+        },
+        {
+            "name": "drevops/phpcs-standard",
+            "version": "0.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/drevops/phpcs-standard.git",
+                "reference": "08ceac68b88f1662a7cde32df0d3f3c7202547cb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/drevops/phpcs-standard/zipball/08ceac68b88f1662a7cde32df0d3f3c7202547cb",
+                "reference": "08ceac68b88f1662a7cde32df0d3f3c7202547cb",
+                "shasum": ""
+            },
+            "require": {
+                "dealerdirect/phpcodesniffer-composer-installer": "^1",
+                "php": ">=8.2",
+                "squizlabs/php_codesniffer": "^3.10 || ^4"
+            },
+            "require-dev": {
+                "alexskrypnyk/phpunit-helpers": "^0.13.0",
+                "drupal/coder": "^8.3 || ^9@alpha",
+                "ergebnis/composer-normalize": "^2.42",
+                "phpstan/phpstan": "^2",
+                "phpunit/phpunit": "^12",
+                "rector/rector": "^2"
+            },
+            "type": "phpcodesniffer-standard",
+            "extra": {
+                "phpcodesniffer-standard": [
+                    "DrevOps"
+                ]
+            },
+            "autoload": {
+                "psr-4": {
+                    "DrevOps\\": "src/DrevOps/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Alex Skrypnyk",
+                    "email": "alex@drevops.com",
+                    "homepage": "https://github.com/alexskrypnyk",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "DrevOps PHP_CodeSniffer rules: enforce consistent naming (snakeCase or camelCase) for variables and parameters, PHPUnit data provider conventions.",
+            "homepage": "https://github.com/drevops/phpcs-standard",
+            "keywords": [
+                "PHPCodeSniffer",
+                "camelcase",
+                "code-quality",
+                "data-providers",
+                "naming-conventions",
+                "phpcs",
+                "phpunit",
+                "snakecase",
+                "standards"
+            ],
+            "support": {
+                "issues": "https://github.com/drevops/phpcs-standard/issues",
+                "source": "https://github.com/drevops/phpcs-standard"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/drevops",
+                    "type": "github"
+                },
+                {
+                    "url": "https://www.patreon.com/drevops",
+                    "type": "patreon"
+                }
+            ],
+            "time": "2025-11-24T12:16:33+00:00"
         },
         {
             "name": "drupal/coder",

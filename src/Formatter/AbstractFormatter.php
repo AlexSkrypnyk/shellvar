@@ -275,23 +275,23 @@ abstract class AbstractFormatter implements FormatterInterface, FactoryDiscovera
    */
   protected function applyColumnTransformations(CsvTable $csvTable): CsvTable {
     // Apply onlyColumns filter.
-    $onlyColumns = $this->config->get('only-columns');
-    if (is_string($onlyColumns) && !empty($onlyColumns)) {
-      $columns = array_map(trim(...), explode(',', $onlyColumns));
+    $only_columns = $this->config->get('only-columns');
+    if (is_string($only_columns) && !empty($only_columns)) {
+      $columns = array_map(trim(...), explode(',', $only_columns));
       $csvTable->onlyColumns($columns);
     }
 
     // Apply withoutColumns exclusion.
-    $excludeColumns = $this->config->get('exclude-columns');
-    if (is_string($excludeColumns) && !empty($excludeColumns)) {
-      $columns = array_map(trim(...), explode(',', $excludeColumns));
+    $exclude_columns = $this->config->get('exclude-columns');
+    if (is_string($exclude_columns) && !empty($exclude_columns)) {
+      $columns = array_map(trim(...), explode(',', $exclude_columns));
       $csvTable->withoutColumns($columns);
     }
 
     // Apply columnOrder reordering.
-    $columnOrder = $this->config->get('column-order');
-    if (is_string($columnOrder) && !empty($columnOrder)) {
-      $columns = array_map(trim(...), explode(',', $columnOrder));
+    $column_order = $this->config->get('column-order');
+    if (is_string($column_order) && !empty($column_order)) {
+      $columns = array_map(trim(...), explode(',', $column_order));
       $csvTable->columnOrder($columns);
     }
 

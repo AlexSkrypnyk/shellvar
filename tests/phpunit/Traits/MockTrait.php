@@ -56,19 +56,19 @@ trait MockTrait {
     $mock = $builder->getMock();
 
     foreach ($methods as $method => $value) {
-      $methodName = (string) $method;
-      if (empty($methodName)) {
+      $method_name = (string) $method;
+      if (empty($method_name)) {
         continue;
       }
       // Handle callback value differently based on its type.
       if (is_object($value) && str_contains($value::class, 'Callback')) {
-        $mock->expects($this->any())->method($methodName)->willReturnCallback($value);
+        $mock->expects($this->any())->method($method_name)->willReturnCallback($value);
       }
       elseif (is_object($value) && str_contains($value::class, 'Closure')) {
-        $mock->expects($this->any())->method($methodName)->willReturnCallback($value);
+        $mock->expects($this->any())->method($method_name)->willReturnCallback($value);
       }
       else {
-        $mock->expects($this->any())->method($methodName)->willReturn($value);
+        $mock->expects($this->any())->method($method_name)->willReturn($value);
       }
     }
 
