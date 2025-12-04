@@ -344,6 +344,42 @@ Paths: `1.sh`
 
 </details>
 
+### Column manipulation
+
+Control the order and visibility of columns in tabular output formats (CSV and Markdown table).
+
+#### Reorder columns
+
+```bash
+./shellvar extract --format=csv --column-order="Description,Name" path/to/script.sh
+```
+
+This will output columns in the order: Description, Name, Default value (unspecified columns are appended).
+
+#### Show only specific columns
+
+```bash
+./shellvar extract --format=md-table --only-columns="Name,Description" path/to/script.sh
+```
+
+This will output only the Name and Description columns.
+
+#### Exclude columns
+
+```bash
+./shellvar extract --format=csv --exclude-columns="Default value" path/to/script.sh
+```
+
+This will output all columns except "Default value".
+
+#### Combine column options
+
+```bash
+./shellvar extract --format=csv --only-columns="Name,Description,Default value" --column-order="Description,Name" path/to/script.sh
+```
+
+This will first filter to only the specified columns, then reorder them.
+
 ### Options
 
 There are options for different phases: extraction, filtering and formatting.
@@ -377,6 +413,9 @@ like so: `--exclude-prefix=VAR1 --exclude-prefix=VAR2` etc.
 | `--fields=FIELDS`                  | Semicolon-separated list of fields. Each field is a key-label pair in the format "key=label". If label is omitted, key is used as label.                                                                 | `name=Name;default_value="Default value;description=Description` |
 | `--path-strip-prefix=PREFIX`       | Strip the provided prefix from the path.                                                                                                                                                                 |                                                                  |
 | `--csv-separator=SEPARATOR`        | Separator for the CSV output format.                                                                                                                                                                     | `;`                                                              |
+| `--column-order=COLUMNS`           | Comma-separated list of column names to specify output order. Columns not specified are appended in their original order. Only applies to tabular formats (csv, md-table).                               |                                                                  |
+| `--only-columns=COLUMNS`           | Comma-separated list of column names to include. Only these columns will appear in output. Only applies to tabular formats (csv, md-table).                                                              |                                                                  |
+| `--exclude-columns=COLUMNS`        | Comma-separated list of column names to exclude from output. Only applies to tabular formats (csv, md-table).                                                                                            |                                                                  |
 | `--md-link-vars`                   | Link variables within usages to their definitions in the Markdown output format.                                                                                                                         |                                                                  |
 | `--md-link-vars-anchor-case`       | The case of the anchors when linking variables. Can be one of "preserve", "lower" or "upper".                                                                                                            | `preserve`                                                       |
 | `--md-no-inline-code-wrap-vars`    | Do not wrap variables to show them as inline code in the Markdown output format.                                                                                                                         |                                                                  |

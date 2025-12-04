@@ -117,6 +117,47 @@ class CsvFormatterFunctionalTest extends FormatterFunctionalTestCase {
           ],
         ],
       ],
+
+      [
+        'Column order',
+        [
+          '--exclude-local' => TRUE,
+          '--sort' => TRUE,
+          '--column-order' => 'Description,Name',
+          'paths' => [self::fixtureFile('test-data.sh')],
+        ],
+      ],
+
+      [
+        'Only columns',
+        [
+          '--exclude-local' => TRUE,
+          '--sort' => TRUE,
+          '--only-columns' => 'Name,Description',
+          'paths' => [self::fixtureFile('test-data.sh')],
+        ],
+      ],
+
+      [
+        'Exclude columns',
+        [
+          '--exclude-local' => TRUE,
+          '--sort' => TRUE,
+          '--exclude-columns' => 'Default value',
+          'paths' => [self::fixtureFile('test-data.sh')],
+        ],
+      ],
+
+      [
+        'Combined column options',
+        [
+          '--exclude-local' => TRUE,
+          '--sort' => TRUE,
+          '--only-columns' => 'Name,Description,Default value',
+          '--column-order' => 'Description,Name',
+          'paths' => [self::fixtureFile('test-data.sh')],
+        ],
+      ],
     ];
   }
 

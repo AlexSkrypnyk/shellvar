@@ -111,6 +111,51 @@ class MarkdownTableFormatterFunctionalTest extends FormatterFunctionalTestCase {
           'paths' => [self::fixtureFile('test-data.sh')],
         ],
       ],
+
+      [
+        'Column order',
+        [
+          '--exclude-local' => TRUE,
+          '--format' => 'md-table',
+          '--sort' => TRUE,
+          '--column-order' => 'Description,Name',
+          'paths' => [self::fixtureFile('test-data.sh')],
+        ],
+      ],
+
+      [
+        'Only columns',
+        [
+          '--exclude-local' => TRUE,
+          '--format' => 'md-table',
+          '--sort' => TRUE,
+          '--only-columns' => 'Name,Description',
+          'paths' => [self::fixtureFile('test-data.sh')],
+        ],
+      ],
+
+      [
+        'Exclude columns',
+        [
+          '--exclude-local' => TRUE,
+          '--format' => 'md-table',
+          '--sort' => TRUE,
+          '--exclude-columns' => 'Default value',
+          'paths' => [self::fixtureFile('test-data.sh')],
+        ],
+      ],
+
+      [
+        'Combined column options',
+        [
+          '--exclude-local' => TRUE,
+          '--format' => 'md-table',
+          '--sort' => TRUE,
+          '--only-columns' => 'Name,Description,Default value',
+          '--column-order' => 'Description,Name',
+          'paths' => [self::fixtureFile('test-data.sh')],
+        ],
+      ],
     ];
   }
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AlexSkrypnyk\Shellvar\Formatter;
 
+use AlexSkrypnyk\CsvTable\CsvTable;
 use Symfony\Component\Console\Input\InputOption;
 
 /**
@@ -71,7 +72,17 @@ class CsvFormatter extends AbstractFormatter {
       // @codeCoverageIgnoreEnd
     }
 
-    return $content;
+    fclose($file);
+
+    // Apply column transformations using CsvTable.
+    $csvTable = new CsvTable($content, $separator);
+    $csvTable = $this->applyColumnTransformations($csvTable);
+
+    return $csvTable->format('csv', [
+      'separator' => $separator,
+      'enclosure' => '"',
+      'escape' => '\\',
+    ]);
   }
 
   /**
