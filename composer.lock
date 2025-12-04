@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "alexskrypnyk/csvtable",
-            "version": "1.1.0",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/AlexSkrypnyk/CsvTable.git",
-                "reference": "3fcaa58a7410c6bca4b45e6c8bc435e01cc999d8"
+                "reference": "71be5e2f066f3c7c0e85412e1f8c4043485d7bd8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AlexSkrypnyk/CsvTable/zipball/3fcaa58a7410c6bca4b45e6c8bc435e01cc999d8",
-                "reference": "3fcaa58a7410c6bca4b45e6c8bc435e01cc999d8",
+                "url": "https://api.github.com/repos/AlexSkrypnyk/CsvTable/zipball/71be5e2f066f3c7c0e85412e1f8c4043485d7bd8",
+                "reference": "71be5e2f066f3c7c0e85412e1f8c4043485d7bd8",
                 "shasum": ""
             },
             "require": {
@@ -59,7 +59,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2025-10-27T01:29:30+00:00"
+            "time": "2025-12-04T05:05:29+00:00"
         },
         {
             "name": "psr/container",
@@ -3902,8 +3902,5 @@
         "php": ">=8.2"
     },
     "platform-dev": {},
-    "platform-overrides": {
-        "php": "8.3.0"
-    },
     "plugin-api-version": "2.9.0"
 }
