@@ -75,10 +75,10 @@ class CsvFormatter extends AbstractFormatter {
     fclose($file);
 
     // Apply column transformations using CsvTable.
-    $csvTable = new CsvTable($content, $separator);
-    $csvTable = $this->applyColumnTransformations($csvTable);
+    $csv_table = new CsvTable($content, $separator);
+    $csv_table = $this->applyColumnTransformations($csv_table);
 
-    return $csvTable->format('csv', [
+    return $csv_table->format('csv', [
       'separator' => $separator,
       'enclosure' => '"',
       'escape' => '\\',

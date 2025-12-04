@@ -94,13 +94,13 @@ class AutodiscoveryFactory {
    */
   protected function discoverOwn(): void {
     $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($this->dir));
-    $phpFiles = new \RegexIterator($iterator, '/\.php$/');
+    $php_files = new \RegexIterator($iterator, '/\.php$/');
 
-    /** @var \SplFileInfo $phpFile */
-    foreach ($phpFiles as $phpFile) {
-      require_once $phpFile->getPathname();
+    /** @var \SplFileInfo $php_file */
+    foreach ($php_files as $php_file) {
+      require_once $php_file->getPathname();
       // Use the last part of the entity namespace as the entity type.
-      $entity_type = $phpFile->getPathInfo()->getFilename();
+      $entity_type = $php_file->getPathInfo()->getFilename();
       foreach (get_declared_classes() as $class) {
         $reflection = new \ReflectionClass($class);
         if ($reflection->isUserDefined()

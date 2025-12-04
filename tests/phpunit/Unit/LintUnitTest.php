@@ -24,39 +24,39 @@ class LintUnitTest extends UnitTestBase {
    */
   public function testProcessFile(): void {
     // Test file no existing.
-    $lintCommand = new LintCommand();
-    $result = $lintCommand->processFile('no-existing-file.sh');
+    $lint_command = new LintCommand();
+    $result = $lint_command->processFile('no-existing-file.sh');
     $this->assertEquals(FALSE, $result['success']);
     $this->assertEquals(['Could not open file no-existing-file.sh'], $result['messages']);
 
     // Test invalid file.
-    $invalidFile = $this->createTempFileFromFixtureFile('unwrapped.sh');
-    $result = $lintCommand->processFile($invalidFile);
+    $invalid_file = $this->createTempFileFromFixtureFile('unwrapped.sh');
+    $result = $lint_command->processFile($invalid_file);
     $this->assertEquals(FALSE, $result['success']);
     $this->assertEquals([
       "11: var=\$VAR1",
       "12: var=\"\$VAR2\"",
       "14: var=\$VAR3",
-      sprintf('Found 3 variables in file "%s" that are not wrapped in ${}.', $invalidFile),
+      sprintf('Found 3 variables in file "%s" that are not wrapped in ${}.', $invalid_file),
     ], $result['messages']);
-    $result = $lintCommand->processFile($invalidFile, TRUE);
+    $result = $lint_command->processFile($invalid_file, TRUE);
     $this->assertEquals(TRUE, $result['success']);
     $this->assertEquals([
       "Replaced in line 11: var=\$VAR1",
       "Replaced in line 12: var=\"\$VAR2\"",
       "Replaced in line 14: var=\$VAR3",
-      sprintf('Replaced 3 variables in file "%s".', $invalidFile),
+      sprintf('Replaced 3 variables in file "%s".', $invalid_file),
     ], $result['messages']);
 
     // Test valid file.
-    $validFile = $this->createTempFileFromFixtureFile('wrapped.sh');
-    $result = $lintCommand->processFile($validFile);
+    $valid_file = $this->createTempFileFromFixtureFile('wrapped.sh');
+    $result = $lint_command->processFile($valid_file);
     $this->assertEquals(TRUE, $result['success']);
     $this->assertEquals([], $result['messages']);
-    $result = $lintCommand->processFile($validFile, TRUE);
+    $result = $lint_command->processFile($valid_file, TRUE);
     $this->assertEquals(TRUE, $result['success']);
     $this->assertEquals([
-      sprintf('Replaced 0 variables in file "%s".', $validFile),
+      sprintf('Replaced 0 variables in file "%s".', $valid_file),
     ], $result['messages']);
   }
 
@@ -70,8 +70,8 @@ class LintUnitTest extends UnitTestBase {
    */
   #[DataProvider('dataProviderProcessLine')]
   public function testProcessLine(string $text, string $expected_text): void {
-    $lintCommand = new LintCommand();
-    $this->assertEquals($expected_text, $lintCommand->processLine($text));
+    $lint_command = new LintCommand();
+    $this->assertEquals($expected_text, $lint_command->processLine($text));
   }
 
   /**
@@ -193,10 +193,10 @@ class LintUnitTest extends UnitTestBase {
    */
   #[DataProvider('dataProviderIsInterpolation')]
   public function testIsInterpolation(string $line, bool $expected): void {
-    $lintCommand = new LintCommand();
+    $lint_command = new LintCommand();
     $pos = strpos($line, 'var');
     $pos = $pos === FALSE ? 0 : $pos;
-    $this->assertEquals($expected, $lintCommand->isInterpolation($line, $pos));
+    $this->assertEquals($expected, $lint_command->isInterpolation($line, $pos));
   }
 
   public static function dataProviderIsInterpolation(): array {
