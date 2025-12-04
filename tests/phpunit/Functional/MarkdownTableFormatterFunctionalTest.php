@@ -156,6 +156,42 @@ class MarkdownTableFormatterFunctionalTest extends FormatterFunctionalTestCase {
           'paths' => [self::fixtureFile('test-data.sh')],
         ],
       ],
+
+      [
+        'Links',
+        [
+          '--exclude-local' => TRUE,
+          '--sort' => TRUE,
+          '--format' => 'md-table',
+          '--md-link-vars' => TRUE,
+          '--md-link-vars-anchor-case' => 'lower',
+          'paths' => [self::fixtureFile('test-data-links.sh')],
+        ],
+      ],
+
+      [
+        'Links - upper case',
+        [
+          '--exclude-local' => TRUE,
+          '--sort' => TRUE,
+          '--format' => 'md-table',
+          '--md-link-vars' => TRUE,
+          '--md-link-vars-anchor-case' => 'upper',
+          'paths' => [self::fixtureFile('test-data-links.sh')],
+        ],
+      ],
+
+      [
+        'Links - preserve case',
+        [
+          '--exclude-local' => TRUE,
+          '--sort' => TRUE,
+          '--format' => 'md-table',
+          '--md-link-vars' => TRUE,
+          '--md-link-vars-anchor-case' => 'preserve',
+          'paths' => [self::fixtureFile('test-data-links.sh')],
+        ],
+      ],
     ];
   }
 
