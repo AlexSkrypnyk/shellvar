@@ -56,10 +56,10 @@ class CsvFormatter extends AbstractFormatter {
 
     $separator = is_string($this->config->get('csv-separator', ',')) ? $this->config->get('csv-separator', ',') : ',';
 
-    fputcsv($file, array_values($header), $separator);
+    fputcsv($file, array_values($header), $separator, '"', '\\');
 
     foreach ($this->variables as $variable) {
-      fputcsv($file, $variable->toArray(array_keys($header)), $separator);
+      fputcsv($file, $variable->toArray(array_keys($header)), $separator, '"', '\\');
     }
 
     rewind($file);
