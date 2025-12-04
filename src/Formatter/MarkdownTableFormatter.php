@@ -28,6 +28,7 @@ class MarkdownTableFormatter extends AbstractMarkdownFormatter {
     // it as a CsvTable with Markdown renderer.
     // Also, using ';' as a CSV separator to make sure that the Markdown table
     // is rendered correctly.
+    // Note: Column transformations are already applied by CsvFormatter.
     $csv = (new CsvFormatter($this->config))->format($this->variables);
 
     return (new CsvTable($csv, ';'))->format('markdown_table');

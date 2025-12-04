@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AlexSkrypnyk\Shellvar\Formatter;
 
+use AlexSkrypnyk\CsvTable\CsvTable;
 use AlexSkrypnyk\Shellvar\Config\Config;
 use AlexSkrypnyk\Shellvar\Config\ConfigAwareTrait;
 use AlexSkrypnyk\Shellvar\Factory\FactoryDiscoverableInterface;
@@ -69,6 +70,21 @@ abstract class AbstractFormatter implements FormatterInterface, FactoryDiscovera
         name: 'path-strip-prefix',
         mode: InputOption::VALUE_REQUIRED,
         description: 'Strip the provided prefix from the path.',
+      ),
+      new InputOption(
+        name: 'column-order',
+        mode: InputOption::VALUE_REQUIRED,
+        description: 'Comma-separated list of column names to specify output order. Columns not specified are appended in their original order. Only applies to tabular formats (csv, md-table).',
+      ),
+      new InputOption(
+        name: 'only-columns',
+        mode: InputOption::VALUE_REQUIRED,
+        description: 'Comma-separated list of column names to include. Only these columns will appear in output. Only applies to tabular formats (csv, md-table).',
+      ),
+      new InputOption(
+        name: 'exclude-columns',
+        mode: InputOption::VALUE_REQUIRED,
+        description: 'Comma-separated list of column names to exclude from output. Only applies to tabular formats (csv, md-table).',
       ),
     ];
   }
@@ -246,6 +262,40 @@ abstract class AbstractFormatter implements FormatterInterface, FactoryDiscovera
    */
   protected function postFormat(string $content): string {
     return implode(PHP_EOL, array_map(trim(...), explode(PHP_EOL, $content)));
+  }
+
+  /**
+   * Apply column transformations to a CsvTable instance.
+   *
+   * @param \AlexSkrypnyk\CsvTable\CsvTable $csvTable
+   *   The CsvTable instance.
+   *
+   * @return \AlexSkrypnyk\CsvTable\CsvTable
+   *   The CsvTable instance with transformations applied.
+   */
+  protected function applyColumnTransformations(CsvTable $csvTable): CsvTable {
+    // Apply onlyColumns filter.
+    $onlyColumns = $this->config->get('only-columns');
+    if (is_string($onlyColumns) && !empty($onlyColumns)) {
+      $columns = array_map(trim(...), explode(',', $onlyColumns));
+      $csvTable->onlyColumns($columns);
+    }
+
+    // Apply withoutColumns exclusion.
+    $excludeColumns = $this->config->get('exclude-columns');
+    if (is_string($excludeColumns) && !empty($excludeColumns)) {
+      $columns = array_map(trim(...), explode(',', $excludeColumns));
+      $csvTable->withoutColumns($columns);
+    }
+
+    // Apply columnOrder reordering.
+    $columnOrder = $this->config->get('column-order');
+    if (is_string($columnOrder) && !empty($columnOrder)) {
+      $columns = array_map(trim(...), explode(',', $columnOrder));
+      $csvTable->columnOrder($columns);
+    }
+
+    return $csvTable;
   }
 
 }
