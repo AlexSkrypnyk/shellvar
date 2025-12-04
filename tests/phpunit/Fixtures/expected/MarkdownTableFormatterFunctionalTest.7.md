@@ -2,8 +2,8 @@
 |-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `VAR1`    |                                                                                                                                                                                            |
 | `VAR10`   | Description without a leading space.                                                                                                                                                       |
-| `VAR11`   | Description without a leading space that goes on<br/>multiple lines and has a `VAR7`, `$VAR8`, `$VAR9`, VAR10 and VAR12 variable reference.                                                |
-| `VAR12`   | Description without a leading space that goes on<br/>multiple lines.<br/><br/>And has a comment with no content.                                                                           |
+| `VAR11`   | Description without a leading space that goes on multiple lines and has a `VAR7`, `$VAR8`, `$VAR9`, VAR10 and VAR12 variable reference.                                                    |
+| `VAR12`   | Description without a leading space that goes on multiple lines.<br/><br/>And has a comment with no content.                                                                               |
 | `VAR13`   | And has an empty line before it without a content.                                                                                                                                         |
 | `VAR14`   |                                                                                                                                                                                            |
 | `VAR15`   |                                                                                                                                                                                            |
@@ -21,4 +21,4 @@
 | `VARENV1` |                                                                                                                                                                                            |
 | `VARENV2` |                                                                                                                                                                                            |
 | `VARENV3` | Comment from script with reference to composer.lock and `composer.lock` again and somespecialtoken and `somespecialtoken` again and testorg/test-package and `testorg/test-package` again. |
-| `VARENV4` | Comment `2` from script without a leading space that goes on<br/>multiple lines.                                                                                                           |
+| `VARENV4` | Comment `2` from script without a leading space that goes on multiple lines.                                                                                                               |
