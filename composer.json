@@ -30,7 +30,7 @@
         "mikey179/vfsstream": "^1.6.12",
         "opis/closure": "^4.4",
         "phpstan/phpstan": "^2.1.38",
-        "phpunit/phpunit": "^12.5.8",
+        "phpunit/phpunit": "^13.0.0",
         "rector/rector": "^2.3.5"
     },
     "replace": {
