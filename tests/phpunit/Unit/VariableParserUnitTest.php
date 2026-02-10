@@ -136,6 +136,8 @@ class VariableParserUnitTest extends UnitTestBase {
       ['VAR1=${VAR2:=$VAR3}', '${VAR3}'],
       ['VAR1=${VAR2+=$VAR3}', '${VAR3}'],
       ['VAR1=${VAR2?Some message}', '${VAR2}'],
+      ['VAR1=${VAR2:?Some message}', '${VAR2}'],
+      ['VAR1="${VORTEX_DOWNLOAD_DB_LAGOON_PROJECT:-${LAGOON_PROJECT:?Missing required environment variable LAGOON_PROJECT.}}"', '${LAGOON_PROJECT}'],
 
       // Middle of the string.
       ['VAR1=${VAR1:-./other/${VAR2}/path}', './other/${VAR2}/path'],
@@ -178,34 +180,42 @@ class VariableParserUnitTest extends UnitTestBase {
       ['VAR1:=', 'VAR1', ':=', NULL],
       ['VAR1+=', 'VAR1', '+=', NULL],
       ['VAR1?', 'VAR1', '?', NULL],
+      ['VAR1:?', 'VAR1', ':?', NULL],
 
       ['VAR1-val', 'VAR1', '-', 'val'],
       ['VAR1:-val', 'VAR1', ':-', 'val'],
       ['VAR1:=val', 'VAR1', ':=', 'val'],
       ['VAR1+=val', 'VAR1', '+=', 'val'],
-      // Special case for '?'.
+      // Special case for '?' and ':?'.
       ['VAR1?val', 'VAR1', '?', NULL],
+      ['VAR1:?val', 'VAR1', ':?', NULL],
 
       ['VAR1-"val"', 'VAR1', '-', '"val"'],
       ['VAR1:-"val"', 'VAR1', ':-', '"val"'],
       ['VAR1:="val"', 'VAR1', ':=', '"val"'],
       ['VAR1+="val"', 'VAR1', '+=', '"val"'],
-      // Special case for '?'.
+      // Special case for '?' and ':?'.
       ['VAR1?"val"', 'VAR1', '?', NULL],
+      ['VAR1:?"val"', 'VAR1', ':?', NULL],
 
       ['VAR1-$VAR2', 'VAR1', '-', '$VAR2'],
       ['VAR1:-$VAR2', 'VAR1', ':-', '$VAR2'],
       ['VAR1:=$VAR2', 'VAR1', ':=', '$VAR2'],
       ['VAR1+=$VAR2', 'VAR1', '+=', '$VAR2'],
-      // Special case for '?'.
+      // Special case for '?' and ':?'.
       ['VAR1?$VAR2', 'VAR1', '?', NULL],
+      ['VAR1:?$VAR2', 'VAR1', ':?', NULL],
 
       ['VAR1-"$VAR2"', 'VAR1', '-', '"$VAR2"'],
       ['VAR1:-"$VAR2"', 'VAR1', ':-', '"$VAR2"'],
       ['VAR1:="$VAR2"', 'VAR1', ':=', '"$VAR2"'],
       ['VAR1+="$VAR2"', 'VAR1', '+=', '"$VAR2"'],
-      // Special case for '?'.
+      // Special case for '?' and ':?'.
       ['VAR1?"$VAR2"', 'VAR1', '?', NULL],
+      ['VAR1:?"$VAR2"', 'VAR1', ':?', NULL],
+
+      // Special case for ':?' with error message.
+      ['VAR1:?Missing required environment variable VAR1.', 'VAR1', ':?', NULL],
 
       // Negative.
       ['VAR1=', 'VAR1=', NULL, NULL],

@@ -224,7 +224,7 @@ class VariableParser {
       'default' => NULL,
     ];
 
-    preg_match('/([^:+=?-]+)(-|:-|:=|\+=|\?)(.+)?/', $string, $matches);
+    preg_match('/([^:+=?-]+)(-|:-|:=|\+=|:\?|\?)(.+)?/', $string, $matches);
 
     if (empty($matches)) {
       return $parts;
@@ -236,7 +236,7 @@ class VariableParser {
       'default' => array_slice($matches, 1)[2] ?? NULL,
     ];
 
-    if ($parts['operator'] === '?') {
+    if ($parts['operator'] === '?' || $parts['operator'] === ':?') {
       $parts['default'] = NULL;
     }
 
