@@ -94,7 +94,37 @@ class LintCommand extends Command {
     // Process lines.
     $processed_lines = [];
     $changed_count = 0;
+    $ignore_next_line = FALSE;
+    $ignore_block = FALSE;
     foreach ($lines as $k => $line) {
+      $trimmed = trim($line);
+
+      // Check for ignore directives.
+      if (preg_match('/^#\s*shellvar-ignore-next-line\s*$/', $trimmed)) {
+        $ignore_next_line = TRUE;
+        $processed_lines[] = $line;
+        continue;
+      }
+
+      if (preg_match('/^#\s*shellvar-ignore-start\s*$/', $trimmed)) {
+        $ignore_block = TRUE;
+        $processed_lines[] = $line;
+        continue;
+      }
+
+      if (preg_match('/^#\s*shellvar-ignore-end\s*$/', $trimmed)) {
+        $ignore_block = FALSE;
+        $processed_lines[] = $line;
+        continue;
+      }
+
+      // Skip processing if line is ignored.
+      if ($ignore_next_line || $ignore_block) {
+        $ignore_next_line = FALSE;
+        $processed_lines[] = $line;
+        continue;
+      }
+
       $processed_line = $this->processLine($line);
       $line_number = $k + 1;
       if ($processed_line !== $line) {
