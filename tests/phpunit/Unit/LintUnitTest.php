@@ -98,6 +98,31 @@ class LintUnitTest extends UnitTestBase {
   }
 
   /**
+   * Test ignore directive edge cases.
+   *
+   * Covers: ignore-next-line before block, ignore-next-line inside block,
+   * and consecutive ignore-next-line directives.
+   *
+   * @throws \Exception
+   */
+  public function testProcessFileIgnoreDirectivesEdgeCases(): void {
+    $lint_command = new LintCommand();
+
+    $ignore_file = $this->createTempFileFromFixtureFile('unwrapped-ignore-edge-cases.sh');
+    $result = $lint_command->processFile($ignore_file);
+    $this->assertEquals(FALSE, $result['success']);
+    // VAR1 ignored (in block), VAR2 reported (line 12).
+    // VAR3 ignored (in block), VAR4 reported (line 19).
+    // VAR5 ignored (next-line), VAR6 reported (line 26).
+    $this->assertEquals([
+      "12: var=\$VAR2",
+      "19: var=\$VAR4",
+      "26: var=\$VAR6",
+      sprintf('Found 3 variables in file "%s" that are not wrapped in ${}.', $ignore_file),
+    ], $result['messages']);
+  }
+
+  /**
    * Test process line text.
    *
    * @param string $text

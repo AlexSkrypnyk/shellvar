@@ -108,12 +108,14 @@ class LintCommand extends Command {
 
       if (preg_match('/^#\s*shellvar-ignore-start\s*$/', $trimmed)) {
         $ignore_block = TRUE;
+        $ignore_next_line = FALSE;
         $processed_lines[] = $line;
         continue;
       }
 
       if (preg_match('/^#\s*shellvar-ignore-end\s*$/', $trimmed)) {
         $ignore_block = FALSE;
+        $ignore_next_line = FALSE;
         $processed_lines[] = $line;
         continue;
       }
