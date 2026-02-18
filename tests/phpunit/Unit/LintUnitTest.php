@@ -61,6 +61,68 @@ class LintUnitTest extends UnitTestBase {
   }
 
   /**
+   * Test process file with ignore directives.
+   *
+   * @throws \Exception
+   */
+  public function testProcessFileIgnoreDirectives(): void {
+    $lint_command = new LintCommand();
+
+    // Test ignore directives - lint mode.
+    $ignore_file = $this->createTempFileFromFixtureFile('unwrapped-ignore.sh');
+    $result = $lint_command->processFile($ignore_file);
+    $this->assertEquals(FALSE, $result['success']);
+    // Lines 7, 10, 15 should be reported (VAR1, VAR3, VAR6).
+    // Lines 9 (ignore-next-line), 12-13 (ignore block) should be skipped.
+    $this->assertEquals([
+      "7: var=\$VAR1",
+      "10: var=\$VAR3",
+      "15: var=\$VAR6",
+      sprintf('Found 3 variables in file "%s" that are not wrapped in ${}.', $ignore_file),
+    ], $result['messages']);
+
+    // Test ignore directives - fix mode.
+    $ignore_file_fix = $this->createTempFileFromFixtureFile('unwrapped-ignore.sh', 'fix');
+    $result = $lint_command->processFile($ignore_file_fix, TRUE);
+    $this->assertEquals(TRUE, $result['success']);
+    $this->assertEquals([
+      "Replaced in line 7: var=\$VAR1",
+      "Replaced in line 10: var=\$VAR3",
+      "Replaced in line 15: var=\$VAR6",
+      sprintf('Replaced 3 variables in file "%s".', $ignore_file_fix),
+    ], $result['messages']);
+
+    // Verify the fixed file matches expectation.
+    $expected_file = static::fixtureFile('unwrapped-ignore-fixed.sh');
+    $this->assertFileEquals($expected_file, $ignore_file_fix);
+  }
+
+  /**
+   * Test ignore directive edge cases.
+   *
+   * Covers: ignore-next-line before block, ignore-next-line inside block,
+   * and consecutive ignore-next-line directives.
+   *
+   * @throws \Exception
+   */
+  public function testProcessFileIgnoreDirectivesEdgeCases(): void {
+    $lint_command = new LintCommand();
+
+    $ignore_file = $this->createTempFileFromFixtureFile('unwrapped-ignore-edge-cases.sh');
+    $result = $lint_command->processFile($ignore_file);
+    $this->assertEquals(FALSE, $result['success']);
+    // VAR1 ignored (in block), VAR2 reported (line 12).
+    // VAR3 ignored (in block), VAR4 reported (line 19).
+    // VAR5 ignored (next-line), VAR6 reported (line 26).
+    $this->assertEquals([
+      "12: var=\$VAR2",
+      "19: var=\$VAR4",
+      "26: var=\$VAR6",
+      sprintf('Found 3 variables in file "%s" that are not wrapped in ${}.', $ignore_file),
+    ], $result['messages']);
+  }
+
+  /**
    * Test process line text.
    *
    * @param string $text

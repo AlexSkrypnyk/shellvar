@@ -71,6 +71,42 @@ class LintFunctionalTest extends FunctionalTestCase {
   }
 
   /**
+   * Test LintCommand with ignore directives.
+   *
+   * @throws \Exception
+   */
+  public function testLintCommandFileIgnoreDirectives(): void {
+    $command = new LintCommand();
+
+    // Lint - should only report non-ignored violations.
+    $ignore_file = $this->createTempFileFromFixtureFile('unwrapped-ignore.sh');
+    $output = $this->runExecute($command, ['path' => $ignore_file]);
+    $this->assertEquals(1, $this->commandTester->getStatusCode());
+    $this->assertEquals([
+      '7: var=$VAR1',
+      '10: var=$VAR3',
+      '15: var=$VAR6',
+      sprintf('Found 3 variables in file "%s" that are not wrapped in ${}.', $ignore_file),
+      '',
+    ], $output);
+
+    // Fix - should only fix non-ignored violations.
+    $output = $this->runExecute($command, ['path' => $ignore_file, '-f' => TRUE]);
+    $this->assertEquals(0, $this->commandTester->getStatusCode());
+    $this->assertEquals([
+      'Replaced in line 7: var=$VAR1',
+      'Replaced in line 10: var=$VAR3',
+      'Replaced in line 15: var=$VAR6',
+      sprintf('Replaced 3 variables in file "%s".', $ignore_file),
+      '',
+    ], $output);
+
+    // Verify fixed content preserves ignored lines untouched.
+    $expected_file = static::fixtureFile('unwrapped-ignore-fixed.sh');
+    $this->assertFileEquals($expected_file, $ignore_file);
+  }
+
+  /**
    * Test LintCommand.
    *
    * @throws \Exception
