@@ -64,6 +64,24 @@ Default value: \"val4\"
 
 Default value: val5
 
+### VAR50
+
+Indirect variable with a single bridge.
+
+Default value: UNSET
+
+### VAR51
+
+Indirect variable with multiple bridge lines.
+
+Default value: UNSET
+
+### VAR52
+
+Indirect variable with a fallback default.
+
+Default value: fallback_val
+
 ### VAR6
 
 Default value: ${VAR5}

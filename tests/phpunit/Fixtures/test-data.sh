@@ -67,3 +67,16 @@ export VAR43=${VAR41:-${VAR42}}
 
 # Another try with a comment. The variable above and below should not be included.
 export VAR46=${VAR44:-${VAR45}}
+
+# Indirect variable with a single bridge.
+_v="INDIRECT_VAR_NAME"
+VAR50="${!_v:-}"
+
+# Indirect variable with multiple bridge lines.
+_prefix="INDIRECT"
+_v="${_prefix}_MULTI_BRIDGE"
+VAR51="${!_v:-}"
+
+# Indirect variable with a fallback default.
+_v="INDIRECT_WITH_DEFAULT"
+VAR52="${!_v:-fallback_val}"

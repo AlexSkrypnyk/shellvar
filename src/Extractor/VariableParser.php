@@ -33,10 +33,25 @@ class VariableParser {
 
     $line_num = min($line_num, count($lines) - 1);
 
-    // Look behind until the first non-comment line.
-    while ($line_num > 0 && str_starts_with(trim($lines[$line_num - 1]), $comment_separator)) {
-      $comment_lines[] = trim(ltrim(trim($lines[$line_num - 1]), $comment_separator));
-      $line_num--;
+    // Look behind until the first non-comment line, skipping local variable
+    // bridge lines (lowercase variable assignments used for indirect
+    // expansion).
+    while ($line_num > 0) {
+      $prev_line = trim($lines[$line_num - 1]);
+
+      if (str_starts_with($prev_line, $comment_separator)) {
+        $comment_lines[] = trim(ltrim($prev_line, $comment_separator));
+        $line_num--;
+        continue;
+      }
+
+      // Skip local variable assignment lines (all-lowercase name before '=').
+      if (self::isLocalVariableAssignment($prev_line)) {
+        $line_num--;
+        continue;
+      }
+
+      break;
     }
 
     $comment_lines = array_reverse($comment_lines);
@@ -52,6 +67,30 @@ class VariableParser {
     });
 
     return implode("\n", $comment_lines);
+  }
+
+  /**
+   * Check if a line is a local variable assignment.
+   *
+   * Local variables have names that are entirely lowercase (including
+   * underscores and digits). These are used as bridge variables for indirect
+   * expansion patterns like: _v="VAR_NAME"; VAR="${!_v:-}".
+   *
+   * @param string $line
+   *   A trimmed line to check.
+   *
+   * @return bool
+   *   TRUE if the line is a local variable assignment.
+   */
+  public static function isLocalVariableAssignment(string $line): bool {
+    // Strip trailing semicolon for matching.
+    $line = rtrim($line, ';');
+
+    if (!preg_match('/^([a-z_]\w*)=/', $line, $matches)) {
+      return FALSE;
+    }
+
+    return $matches[1] === strtolower($matches[1]);
   }
 
   /**
@@ -187,12 +226,26 @@ class VariableParser {
 
     $parsed = VariableParser::parseNotation($notation);
 
+    // Indirect expansion cannot be resolved statically. Use the default
+    // value from the notation if available, otherwise return unset.
+    if (!empty($parsed['is_indirect'])) {
+      if (is_string($parsed['default'])) {
+        if (self::notationIsVariable($parsed['default'])) {
+          return self::resolveNestedNotations($parsed['default'], $unset_value);
+        }
+
+        return $parsed['default'];
+      }
+
+      return $unset_value;
+    }
+
     $value = '$' . $parsed['name'];
     $value = self::normaliseNotation($value);
 
     // Return the default value from the nested variable notation or use the
     // default value.
-    if (!is_null($parsed['default'])) {
+    if (is_string($parsed['default'])) {
       $value = $parsed['default'];
       if (self::notationIsVariable($parsed['default'])) {
         $value = self::resolveNestedNotations($parsed['default'], $unset_value);
@@ -211,11 +264,12 @@ class VariableParser {
    * @param string $string
    *   A value notation to parse.
    *
-   * @return array<string, string|null>
+   * @return array<string, bool|string|null>
    *   An array representation of a parsed value notation with the following:
    *   - name: The variable name.
    *   - operator: The operator.
    *   - default: The default value.
+   *   - is_indirect: Whether the variable uses indirect expansion.
    */
   protected static function parseNotation(string $string): array {
     $parts = [
@@ -223,6 +277,15 @@ class VariableParser {
       'operator' => NULL,
       'default' => NULL,
     ];
+
+    // Handle indirect expansion (${!var:-...}) by flagging and stripping the
+    // '!' prefix. Indirect variables cannot be resolved statically.
+    $is_indirect = FALSE;
+    if (str_starts_with($string, '!')) {
+      $is_indirect = TRUE;
+      $string = substr($string, 1);
+      $parts['name'] = $string;
+    }
 
     preg_match('/([^:+=?-]+)(-|:-|:=|\+=|:\?|\?)(.+)?/', $string, $matches);
 
@@ -234,6 +297,7 @@ class VariableParser {
       'name' => array_slice($matches, 1)[0] ?? $string,
       'operator' => array_slice($matches, 1)[1] ?? NULL,
       'default' => array_slice($matches, 1)[2] ?? NULL,
+      'is_indirect' => $is_indirect,
     ];
 
     if ($parts['operator'] === '?' || $parts['operator'] === ':?') {
