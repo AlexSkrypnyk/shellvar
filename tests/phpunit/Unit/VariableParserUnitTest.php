@@ -49,6 +49,20 @@ class VariableParserUnitTest extends UnitTestBase {
       [['# zero', ' ', '#;< first second', '#;> third', '# forth', 'VAR1'], 5, [';<', ';>'], 'forth'],
       // Special case: removing the skipped prefix should avoid additional line.
       [['# zero', ' ', '# first second', '#', '#;> third', '# forth', 'VAR1'], 6, [';<', ';>'], "first second\n\nforth"],
+
+      // Indirect variable: local variable bridge line between comment and
+      // target.
+      [['# Comment for indirect var', '_v="SOME_VAR_NAME"', 'VAR1="${!_v:-}"'], 2, [], 'Comment for indirect var'],
+      // Indirect variable: multiple local variable bridge lines.
+      [['# Comment for multi-bridge', '_a="something"', '_v="SOME_${_a}_VAR"', 'VAR1="${!_v:-}"'], 3, [], 'Comment for multi-bridge'],
+      // Indirect variable: no comment above bridge line.
+      [['_v="SOME_VAR"', 'VAR1="${!_v:-}"'], 1, [], ''],
+      // Indirect variable: blank line still breaks comment association.
+      [['# First comment', '', '# Second comment', '_v="SOME_VAR"', 'VAR1="${!_v:-}"'], 4, [], 'Second comment'],
+      // Indirect variable: multi-line comment above bridge line.
+      [['# First line of comment', '# Second line of comment', '_v="SOME_VAR"', 'VAR1="${!_v:-}"'], 3, [], "First line of comment\nSecond line of comment"],
+      // Indirect variable: bridge line with semicolon terminator.
+      [['# Comment with semicolon', '_v="SOME_VAR";', 'VAR1="${!_v:-}"'], 2, [], 'Comment with semicolon'],
     ];
   }
 
@@ -151,6 +165,12 @@ class VariableParserUnitTest extends UnitTestBase {
       ['VAR1="${VAR2} \"${VAR3}\""', '${VAR2} \"${VAR3}\"'],
 
       ['VAR1=$(pwd)', '$(pwd)'],
+
+      // Indirect variable expansion.
+      ['VAR1="${!_v:-}"', 'TESTUNSET'],
+      ['VAR1="${!_v:-default_val}"', 'default_val'],
+      ['VAR1="${!_v:-$FALLBACK}"', '${FALLBACK}'],
+      ['VAR1="${!_v:-${FALLBACK_VAR:?Missing required environment variable FALLBACK_VAR.}}"', '${FALLBACK_VAR}'],
     ];
   }
 

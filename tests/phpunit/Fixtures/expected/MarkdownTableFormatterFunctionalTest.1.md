@@ -14,6 +14,9 @@
 | VAR34   | /phpunit/Fixtures/test-data.sh   |
 | VAR4    | /phpunit/Fixtures/test-data.sh   |
 | VAR5    | /phpunit/Fixtures/test-data.sh   |
+| VAR50   | /phpunit/Fixtures/test-data.sh   |
+| VAR51   | /phpunit/Fixtures/test-data.sh   |
+| VAR52   | /phpunit/Fixtures/test-data.sh   |
 | VAR6    | /phpunit/Fixtures/test-data.sh   |
 | VAR7    | /phpunit/Fixtures/test-data.sh   |
 | VAR8    | /phpunit/Fixtures/test-data.sh   |

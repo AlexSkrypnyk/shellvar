@@ -14,6 +14,9 @@
 | `VAR34`   |                                                                                                                                                                                            |
 | `VAR4`    |                                                                                                                                                                                            |
 | `VAR5`    |                                                                                                                                                                                            |
+| `VAR50`   | Indirect variable with a single bridge.                                                                                                                                                    |
+| `VAR51`   | Indirect variable with multiple bridge lines.                                                                                                                                              |
+| `VAR52`   | Indirect variable with a fallback default.                                                                                                                                                 |
 | `VAR6`    |                                                                                                                                                                                            |
 | `VAR7`    |                                                                                                                                                                                            |
 | `VAR8`    |                                                                                                                                                                                            |

@@ -5,6 +5,9 @@ VAR33;${VAR32};
 VAR34;UNSET;
 VAR4;"\"val4\"";
 VAR5;val5;
+VAR50;UNSET;"Indirect variable with a single bridge."
+VAR51;UNSET;"Indirect variable with multiple bridge lines."
+VAR52;fallback_val;"Indirect variable with a fallback default."
 VAR6;${VAR5};
 VAR7;${VAR6};
 VAR8;${VAR5}-val6;
