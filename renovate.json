@@ -7,6 +7,12 @@
     "branchPrefix": "deps/",
     "packageRules": [
         {
+            "matchDepNames": ["php"],
+            "matchManagers": ["composer"],
+            "enabled": false
+        },
+        },
+        {
             "matchManagers": ["composer"],
             "matchUpdateTypes": ["major"],
             "enabled": false
