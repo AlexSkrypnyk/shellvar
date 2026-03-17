@@ -294,8 +294,8 @@ class VariableParser {
     }
 
     $parts = [
-      'name' => array_slice($matches, 1)[0] ?? $string,
-      'operator' => array_slice($matches, 1)[1] ?? NULL,
+      'name' => array_slice($matches, 1)[0],
+      'operator' => array_slice($matches, 1)[1],
       'default' => array_slice($matches, 1)[2] ?? NULL,
       'is_indirect' => $is_indirect,
     ];
