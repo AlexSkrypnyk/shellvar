@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c6379fa3df8bf0a51b7baaabb316b13c",
+    "content-hash": "acdf498f95dceb7a1c168fe4d18e43c1",
     "packages": [
         {
             "name": "alexskrypnyk/csvtable",
@@ -3991,7 +3991,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=8.2"
+        "php": ">=8.5.4"
     },
     "platform-dev": {},
     "plugin-api-version": "2.9.0"
