@@ -19,19 +19,19 @@
     "require": {
         "php": ">=8.2",
         "alexskrypnyk/csvtable": "^1.2",
-        "symfony/console": "^7.4.4"
+        "symfony/console": "^7.4.7"
     },
     "require-dev": {
-        "bamarni/composer-bin-plugin": "^1.9.0",
+        "bamarni/composer-bin-plugin": "^1.9.1",
         "dealerdirect/phpcodesniffer-composer-installer": "^1.2",
         "drevops/phpcs-standard": "^0.7.0",
         "drupal/coder": "^9.0.0",
-        "ergebnis/composer-normalize": "^2.49.0",
+        "ergebnis/composer-normalize": "^2.50.0",
         "mikey179/vfsstream": "^1.6.12",
-        "opis/closure": "^4.4",
-        "phpstan/phpstan": "^2.1.38",
-        "phpunit/phpunit": "^12.5.8",
-        "rector/rector": "^2.3.5"
+        "opis/closure": "^4.5.0",
+        "phpstan/phpstan": "^2.1.41",
+        "phpunit/phpunit": "^12.5.14",
+        "rector/rector": "^2.3.9"
     },
     "replace": {
         "alexskrypnyk/shell-variables-extractor": "self.version"

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c6379fa3df8bf0a51b7baaabb316b13c",
+    "content-hash": "04ff2edb097c02b57bc5f487162c29b4",
     "packages": [
         {
             "name": "alexskrypnyk/csvtable",
