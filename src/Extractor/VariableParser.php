@@ -125,7 +125,7 @@ class VariableParser {
       $value = NULL;
     }
 
-    return is_null($value) ? $unset_value : $value;
+    return $value ?? $unset_value;
   }
 
   /**
