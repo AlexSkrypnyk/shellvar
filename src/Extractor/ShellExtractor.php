@@ -33,11 +33,7 @@ class ShellExtractor extends AbstractExtractor {
     parent::extract();
 
     // Exclude non-assignments.
-    array_walk($this->variables, static function (Variable &$var): void {
-      $var = $var->getIsAssignment() ? $var : FALSE;
-    });
-    // @phpstan-ignore-next-line
-    $this->variables = array_filter($this->variables);
+    $this->variables = array_filter($this->variables, static fn (Variable $var): bool => $var->getIsAssignment());
 
     return $this->variables;
   }
