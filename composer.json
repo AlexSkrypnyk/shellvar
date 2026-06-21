@@ -25,13 +25,13 @@
         "bamarni/composer-bin-plugin": "^1.9.1",
         "dealerdirect/phpcodesniffer-composer-installer": "^1.2.1",
         "drevops/phpcs-standard": "^0.7.0",
-        "drupal/coder": "^9.0.0",
+        "drupal/coder": "^9.0.1",
         "ergebnis/composer-normalize": "^2.52.0",
         "mikey179/vfsstream": "^1.6.12",
         "opis/closure": "^4.5.0",
         "phpstan/phpstan": "^2.2.2",
         "phpunit/phpunit": "^12.5.30",
-        "rector/rector": "^2.5.0"
+        "rector/rector": "^2.5.1"
     },
     "replace": {
         "alexskrypnyk/shell-variables-extractor": "self.version"
@@ -54,6 +54,9 @@
             "bamarni/composer-bin-plugin": true,
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "ergebnis/composer-normalize": true
+        },
+        "platform": {
+            "php": "8.3"
         }
     },
     "scripts": {
