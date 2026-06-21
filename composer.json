@@ -54,6 +54,9 @@
             "bamarni/composer-bin-plugin": true,
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "ergebnis/composer-normalize": true
+        },
+        "platform": {
+            "php": "8.3"
         }
     },
     "scripts": {
