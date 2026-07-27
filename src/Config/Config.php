@@ -16,7 +16,7 @@ class Config implements ConfigInterface {
    *
    * @var array<mixed>
    */
-  protected array $values = [];
+  protected array $values;
 
   /**
    * Config constructor.

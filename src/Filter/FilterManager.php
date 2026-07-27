@@ -19,7 +19,7 @@ class FilterManager extends AbstractManager {
    *
    * @var \AlexSkrypnyk\Shellvar\Filter\FilterInterface[]
    */
-  protected array $filters = [];
+  protected array $filters;
 
   /**
    * FilterManager constructor.
