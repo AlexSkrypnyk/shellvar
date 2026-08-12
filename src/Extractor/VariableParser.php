@@ -204,7 +204,7 @@ class VariableParser {
     }
 
     if (!empty($tokens)) {
-      $value = Utils::recursiveStrtr($value, $tokens);
+      return Utils::recursiveStrtr($value, $tokens);
     }
 
     return $value;
@@ -337,7 +337,7 @@ class VariableParser {
     }
 
     if (str_starts_with($notation, '"$') && !str_starts_with($notation, '"${') && !str_starts_with($notation, '"$(')) {
-      $notation = '"${' . substr($notation, 2, -1) . '}"';
+      return '"${' . substr($notation, 2, -1) . '}"';
     }
 
     return $notation;
@@ -366,7 +366,7 @@ class VariableParser {
     }
 
     if (str_ends_with($notation, '}')) {
-      $notation = substr($notation, 0, -1);
+      return substr($notation, 0, -1);
     }
 
     return $notation;
