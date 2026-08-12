@@ -140,7 +140,7 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
         continue;
       }
       // Current line is empty and previous line is empty - preserve NL.
-      elseif ($k > 0 && empty($line[$k])) {
+      if ($k > 0 && empty($line[$k])) {
         $lines[$k - 1] = str_replace($br, '<NEWLINE>', $lines[$k - 1]);
         $lines[$k] .= '<NEWLINE>';
         $in_list = FALSE;

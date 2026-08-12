@@ -179,7 +179,7 @@ class LintCommand extends Command {
 
       // Only replace within interpolation context.
       if ($this->isInterpolation($line, $pos)) {
-        $value = '${' . substr($value, 1) . '}';
+        return '${' . substr($value, 1) . '}';
       }
 
       return $value;
@@ -229,17 +229,10 @@ class LintCommand extends Command {
     }
 
     if ($prev === "'") {
-      // Prev interpolation is closed - this is a new one.
-      if ($double_even) {
-        // New non-interpolation.
-        return FALSE;
-
-      }
-      else {
-        // Still within open interpolation.
-        return TRUE;
-
-      }
+      // Prev interpolation is closed - this is a new one. An even number of
+      // double quotes means a new non-interpolation, an odd number means the
+      // position is still within an open interpolation.
+      return !$double_even;
     }
 
     return TRUE;
