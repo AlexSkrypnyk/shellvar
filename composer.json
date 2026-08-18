@@ -31,7 +31,7 @@
         "opis/closure": "^4.5.0",
         "phpstan/phpstan": "^2.2.8",
         "phpunit/phpunit": "^12.5.33",
-        "rector/rector": "^2.6.2"
+        "rector/rector": "^2.6.3"
     },
     "replace": {
         "alexskrypnyk/shell-variables-extractor": "self.version"
