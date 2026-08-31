@@ -24,9 +24,7 @@ trait SingletonTrait {
   public static function getInstance(...$args) {
     $cls = static::class;
 
-    if (!isset(self::$instances[$cls])) {
-      self::$instances[$cls] = new static(...$args);
-    }
+    self::$instances[$cls] ??= new static(...$args);
 
     return self::$instances[$cls];
   }
