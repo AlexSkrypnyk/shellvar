@@ -1,4 +1,4 @@
-FROM php:8.5-cli@sha256:b9660b745bc6cb4caefcf6386b09102ad41c780a58d9b412186646e1ff82412d AS builder
+FROM php:8.5-cli@sha256:cf90c5eb5e79c89b0aa29ef72e74962d3194abf3e69d2cd4ba635af9d629985e AS builder
 
 # hadolint ignore=DL3008
 RUN apt-get update && \
@@ -34,7 +34,7 @@ COPY . /app
 
 RUN composer build && cp /app/.build/shellvar /app/shellvar
 
-FROM php:8.5-cli@sha256:b9660b745bc6cb4caefcf6386b09102ad41c780a58d9b412186646e1ff82412d
+FROM php:8.5-cli@sha256:cf90c5eb5e79c89b0aa29ef72e74962d3194abf3e69d2cd4ba635af9d629985e
 
 # hadolint ignore=DL3008
 RUN apt-get update && \
