@@ -164,6 +164,9 @@ class VariableParserUnitTest extends UnitTestBase {
 
       ['VAR1="${VAR2} \"${VAR3}\""', '${VAR2} \"${VAR3}\"'],
 
+      ['VAR1=\'val "quoted"\'', '\'val "quoted"\''],
+      ['VAR1="val \'single "quoted"\'"', 'val \'single "quoted"\''],
+
       ['VAR1=$(pwd)', '$(pwd)'],
 
       // Indirect variable expansion.
