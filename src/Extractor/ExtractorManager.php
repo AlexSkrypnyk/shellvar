@@ -20,7 +20,7 @@ class ExtractorManager extends AbstractManager {
    *   Array of extracted variables.
    */
   public function extract(): array {
-    // Using hardcoded 'extractor-shell' as we only have a single extractor.
+    // Only 1 extractor exists, so its name is hardcoded.
     /** @var \DrevOps\Shellvar\Extractor\ExtractorInterface $extractor */
     $extractor = $this->factory->create('extractor-shell', $this->config);
 

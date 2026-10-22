@@ -274,21 +274,18 @@ abstract class AbstractFormatter implements FormatterInterface, FactoryDiscovera
    *   The CsvTable instance with transformations applied.
    */
   protected function applyColumnTransformations(CsvTable $csvTable): CsvTable {
-    // Apply onlyColumns filter.
     $only_columns = $this->config->get('only-columns');
     if (is_string($only_columns) && !empty($only_columns)) {
       $columns = array_map(trim(...), explode(',', $only_columns));
       $csvTable->onlyColumns($columns);
     }
 
-    // Apply withoutColumns exclusion.
     $exclude_columns = $this->config->get('exclude-columns');
     if (is_string($exclude_columns) && !empty($exclude_columns)) {
       $columns = array_map(trim(...), explode(',', $exclude_columns));
       $csvTable->withoutColumns($columns);
     }
 
-    // Apply columnOrder reordering.
     $column_order = $this->config->get('column-order');
     if (is_string($column_order) && !empty($column_order)) {
       $columns = array_map(trim(...), explode(',', $column_order));

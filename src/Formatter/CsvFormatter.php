@@ -74,7 +74,6 @@ class CsvFormatter extends AbstractFormatter {
 
     fclose($file);
 
-    // Apply column transformations using CsvTable.
     $csv_table = new CsvTable($content, $separator);
     $csv_table = $this->applyColumnTransformations($csv_table);
 
