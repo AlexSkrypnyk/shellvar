@@ -1,7 +1,7 @@
 {
     "name": "drevops/shellvar",
     "description": "Utility to work with shell variables.",
-    "license": "GPL-2.0-or-later",
+    "license": "GPL-3.0-or-later",
     "type": "library",
     "authors": [
         {
