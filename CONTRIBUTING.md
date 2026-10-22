@@ -59,8 +59,7 @@ Pushing a tag runs the `Release PHP` workflow. It builds the PHAR and attaches i
 
 The [Docker image](https://hub.docker.com/r/drevops/shellvar) is built for `linux/amd64` and `linux/arm64` and pushed to Docker Hub with the following tags:
 
-- `XX.YY.ZZ` - when a release tag is pushed. The `Release Docker` workflow pushes it.
-- `latest` - when a release tag is pushed. The `Release Docker` workflow pushes it.
-- `canary` - on every push to the `main` branch, after the `Test Docker` tests pass on both architectures.
+- `XX.YY.ZZ` and `latest` - when a release tag is pushed, from the `Release Docker` workflow.
+- `canary` - on every push to the `main` branch, from the `Test Docker` workflow after its tests pass on both architectures.
 
 Both workflows log in to Docker Hub with the `DOCKER_USER` and `DOCKER_PASS` repository secrets. To push to a different image, set the `DOCKER_IMAGE` repository variable.
