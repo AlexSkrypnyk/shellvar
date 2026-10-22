@@ -138,8 +138,8 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
       if ($k === count($lines) - 1) {
         continue;
       }
-      // Current line is empty and previous line is empty - preserve NL.
-      if ($k > 0 && empty($line[$k])) {
+      // Current line is empty - preserve NL.
+      if ($k > 0 && $line === '') {
         $lines[$k - 1] = str_replace($br, '<NEWLINE>', $lines[$k - 1]);
         $lines[$k] .= '<NEWLINE>';
         $in_list = FALSE;
@@ -154,7 +154,7 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
         }
         $in_list = TRUE;
       }
-      elseif ($in_list && !$this->isListItem($line[$k])) {
+      elseif ($in_list) {
         $lines[$k - 1] = str_replace('<NEWLINE>', $br, $lines[$k - 1]);
         $lines[$k] = trim($lines[$k]) . '<NEWLINE>';
         $in_list = TRUE;

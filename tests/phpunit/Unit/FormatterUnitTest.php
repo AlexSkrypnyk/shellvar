@@ -187,6 +187,60 @@ class FormatterUnitTest extends UnitTestBase {
         - Item
         EOD,
       ],
+
+      // Line shorter than its line index is not an empty line.
+      [
+        <<<'EOD'
+        Line1
+        Line2
+        ab
+        cd
+        EOD,
+        <<<'EOD'
+        Line1<br/>Line2<br/>ab<br/>cd
+        EOD,
+      ],
+
+      // Line with '0' at its line index is not an empty line.
+      [
+        <<<'EOD'
+        first
+        x0y
+        last
+        EOD,
+        <<<'EOD'
+        first<br/>x0y<br/>last
+        EOD,
+      ],
+
+      // Line '0' is not an empty line.
+      [
+        <<<'EOD'
+        first
+        0
+        last
+        EOD,
+        <<<'EOD'
+        first<br/>0<br/>last
+        EOD,
+      ],
+
+      // List - short continuation line.
+      [
+        <<<'EOD'
+        Header
+
+        - Item
+          x
+        - Item
+        EOD,
+        <<<'EOD'
+        Header
+
+        - Item<br/>x
+        - Item
+        EOD,
+      ],
     ];
   }
 

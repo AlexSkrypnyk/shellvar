@@ -192,6 +192,39 @@ class MarkdownTableFormatterFunctionalTest extends FormatterFunctionalTestCase {
           'paths' => [self::fixtureFile('test-data-links.sh')],
         ],
       ],
+
+      [
+        'CSV separator - comma',
+        [
+          '--exclude-local' => TRUE,
+          '--format' => 'md-table',
+          '--sort' => TRUE,
+          '--csv-separator' => ',',
+          'paths' => [self::fixtureFile('test-data.sh')],
+        ],
+      ],
+
+      [
+        'CSV separator - pipe',
+        [
+          '--exclude-local' => TRUE,
+          '--format' => 'md-table',
+          '--sort' => TRUE,
+          '--csv-separator' => '|',
+          'paths' => [self::fixtureFile('test-data.sh')],
+        ],
+      ],
+
+      [
+        'CSV separator - multiple characters',
+        [
+          '--exclude-local' => TRUE,
+          '--format' => 'md-table',
+          '--sort' => TRUE,
+          '--csv-separator' => ',;',
+          'paths' => [self::fixtureFile('test-data.sh')],
+        ],
+      ],
     ];
   }
 
