@@ -456,9 +456,9 @@ class FormatterUnitTest extends UnitTestBase {
     $formatter = new MarkdownBlocksFormatter((new Config()));
     $variable = (new Variable('VAR1'))->setPaths($paths);
 
-    $actual = $this->callProtectedMethod($formatter, 'processPathStripPrefix', [[$variable], $prefix]);
+    $this->callProtectedMethod($formatter, 'processPathStripPrefix', [[$variable], $prefix]);
 
-    $this->assertEquals($expected, $actual[0]->getPaths());
+    $this->assertEquals($expected, $variable->getPaths());
   }
 
   /**
