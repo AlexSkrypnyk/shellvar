@@ -67,7 +67,7 @@ abstract class AbstractManager implements SingletonInterface, ConsoleAwareInterf
 
     /** @var \DrevOps\Shellvar\ConsoleAwareInterface $class */
     foreach ($this->factory->getEntityClasses() as $class) {
-      $items = array_merge($class::getConsoleArguments());
+      $items = array_merge($items, $class::getConsoleArguments());
     }
 
     return array_merge($items, $this::getConsoleArguments());
