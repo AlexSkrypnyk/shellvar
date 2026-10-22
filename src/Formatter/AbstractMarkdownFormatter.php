@@ -60,7 +60,7 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
   }
 
   /**
-   * AbstractFormatter constructor.
+   * Process the Markdown formatter configuration.
    *
    * @param \DrevOps\Shellvar\Config\Config $config
    *   The configuration.

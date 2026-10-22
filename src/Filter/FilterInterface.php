@@ -14,13 +14,13 @@ use DrevOps\Shellvar\Factory\FactoryDiscoverableInterface;
 interface FilterInterface extends FactoryDiscoverableInterface {
 
   /**
-   * Format variables data.
+   * Filter variables.
    *
    * @param array<mixed> $variables
    *   Variables to filter.
    *
    * @return array<mixed>
-   *   A formatted variables data as a string.
+   *   Filtered variables.
    */
   public function filter(array $variables): array;
 

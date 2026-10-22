@@ -133,8 +133,7 @@ class VariableParser {
    *   A value to validate.
    */
   protected static function validateValue(string $value): void {
-    // Replace double quotes enclosed by single quotes with a placeholder to
-    // not count them.
+    // Remove double quotes enclosed by single quotes to not count them.
     $processed = preg_replace("/'[^']*\"[^']*'/", '', $value) ?? $value;
 
     // Remove escaped double quotes to only count unescaped ones.
@@ -145,7 +144,7 @@ class VariableParser {
       throw new \RuntimeException('Invalid number of quotes in the value: ' . $value);
     }
 
-    // Even number of braces.
+    // Equal number of opening and closing braces.
     if ((str_contains($value, '{') || str_contains($value, '}')) && substr_count($value, '}') !== substr_count($value, '{')) {
       throw new \RuntimeException('Unbalanced braces in the value: ' . $value);
     }

@@ -122,10 +122,10 @@ abstract class AbstractFormatter implements FormatterInterface, FactoryDiscovera
   }
 
   /**
-   * Render variables data as a Markdown string.
+   * Render variables data as a string.
    *
    * @return string
-   *   A rendered Markdown string.
+   *   A rendered string.
    */
   abstract protected function doFormat(): string;
 
@@ -189,7 +189,7 @@ abstract class AbstractFormatter implements FormatterInterface, FactoryDiscovera
   }
 
   /**
-   * Process variables to set values for the variables without a value.
+   * Process variables to strip a prefix from their paths.
    *
    * @param \DrevOps\Shellvar\Variable\Variable[] $variables
    *   The variables array.
