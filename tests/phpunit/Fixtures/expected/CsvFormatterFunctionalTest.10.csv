@@ -1,0 +1,5 @@
+Name;"Default value";Description
+VAR1;val1;"Global variable."
+Var2;val2;"Mixed-case variable."
+local_var1;localval1;"Local variable."
+local_var2;${VAR1}-${local_var1};

@@ -158,6 +158,23 @@ class CsvFormatterFunctionalTest extends FormatterFunctionalTestCase {
           'paths' => [self::fixtureFile('test-data.sh')],
         ],
       ],
+
+      [
+        'Local variables are kept without --exclude-local',
+        [
+          '--sort' => TRUE,
+          'paths' => [self::fixtureFile('test-data-local.sh')],
+        ],
+      ],
+
+      [
+        'Local variables are removed with --exclude-local',
+        [
+          '--exclude-local' => TRUE,
+          '--sort' => TRUE,
+          'paths' => [self::fixtureFile('test-data-local.sh')],
+        ],
+      ],
     ];
   }
 

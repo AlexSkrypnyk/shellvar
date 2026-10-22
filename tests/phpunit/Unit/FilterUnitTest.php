@@ -81,12 +81,55 @@ class FilterUnitTest extends UnitTestBase {
   }
 
   /**
-   * Tests the filterExcludedPrefixedVars() method.
+   * Tests the ExcludeLocalFilter::filter() method.
+   */
+  #[DataProvider('dataProviderFilterExcludedLocalVars')]
+  public function testFilterExcludedLocalVars(array $var_names, ?bool $exclude_local, array $expected): void {
+    $vars = [];
+    foreach ($var_names as $var_name) {
+      $vars[] = new Variable($var_name);
+    }
+
+    $config = new Config();
+    if (!is_null($exclude_local)) {
+      $config->set('exclude-local', $exclude_local);
+    }
+
+    $filter = new ExcludeLocalFilter($config);
+    $actual = $filter->filter($vars);
+
+    $actual_names = [];
+    foreach ($actual as $item) {
+      // @phpstan-ignore-next-line
+      $actual_names[] = $item->getName();
+    }
+
+    $this->assertEquals($expected, $actual_names);
+  }
+
+  /**
+   * Data provider for testFilterExcludedLocalVars().
+   */
+  public static function dataProviderFilterExcludedLocalVars(): array {
+    return [
+      [[], NULL, []],
+      [[], TRUE, []],
+      [['VAR1', 'var2', '_var3', 'Var4'], NULL, ['VAR1', 'var2', '_var3', 'Var4']],
+      [['VAR1', 'var2', '_var3', 'Var4'], FALSE, ['VAR1', 'var2', '_var3', 'Var4']],
+      [['VAR1', 'var2', '_var3', 'Var4'], TRUE, ['VAR1', 'Var4']],
+      [['var1', '_var2'], TRUE, []],
+    ];
+  }
+
+  /**
+   * Tests that ExcludeLocalFilter::filter() drops non-variable entries.
    */
   public function testFilterExcludedLocalVarsInvalid(): void {
     $vars = ['invalid1', new Variable('VAR1'), new Variable('var2'), 'invalid2'];
 
-    $filter = new ExcludeLocalFilter(new Config());
+    $config = (new Config())->set('exclude-local', TRUE);
+    // @phpstan-ignore-next-line
+    $filter = new ExcludeLocalFilter($config);
     $actual = $filter->filter($vars);
 
     $actual_names = [];

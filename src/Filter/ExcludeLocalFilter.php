@@ -45,6 +45,10 @@ class ExcludeLocalFilter extends AbstractFilter {
    * {@inheritdoc}
    */
   public function filter(array $variables): array {
+    if (!$this->config->get('exclude-local')) {
+      return $variables;
+    }
+
     return array_filter($variables, static function ($variable): bool {
       if (!$variable instanceof Variable) {
         return FALSE;
