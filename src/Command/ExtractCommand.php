@@ -72,16 +72,13 @@ class ExtractCommand extends Command {
   protected function execute(InputInterface $input, OutputInterface $output): int {
     $this->config->setAll($input->getArguments(), $input->getOptions());
 
-    // Extract.
     $variables = ExtractorManager::getInstance()->extract();
 
-    // Filter.
     // Special case - reset instance to update config for filters.
     // @todo Fix this.
     FilterManager::resetInstance();
     $variables = FilterManager::getInstance($this->config)->filter($variables);
 
-    // Output.
     $formatted_output = FormatterManager::getInstance()->format($variables);
 
     $output->write($formatted_output);

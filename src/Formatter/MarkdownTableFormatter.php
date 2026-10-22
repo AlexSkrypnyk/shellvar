@@ -26,7 +26,6 @@ class MarkdownTableFormatter extends AbstractMarkdownFormatter {
   protected function processVariables(): void {
     parent::processVariables();
 
-    // Add anchors to variable names when linking is enabled.
     if ($this->config->get('md-link-vars')) {
       $anchor_case = $this->config->get('md-link-vars-anchor-case');
       if (is_string($anchor_case)) {
@@ -106,7 +105,6 @@ class MarkdownTableFormatter extends AbstractMarkdownFormatter {
       }
     }
 
-    // Rebuild description with separators.
     $result = '';
     foreach ($lines as $k => $line) {
       $result .= $line . ($separators[$k] ?? '');
@@ -143,7 +141,6 @@ class MarkdownTableFormatter extends AbstractMarkdownFormatter {
   protected function addAnchors(array $variables, string $anchor_case = self::VARIABLE_LINK_CASE_PRESERVE): array {
     foreach ($variables as $variable) {
       $var_name = $variable->getName();
-      // Remove backticks to get raw variable name.
       $raw_name = trim($var_name, '`');
 
       // Apply case transformation to match link anchor format.
@@ -153,7 +150,6 @@ class MarkdownTableFormatter extends AbstractMarkdownFormatter {
         default => $raw_name,
       };
 
-      // Prepend anchor tag before the variable name.
       $variable->setName('<a id="' . urlencode($anchor_name) . '"></a>' . $var_name);
     }
 

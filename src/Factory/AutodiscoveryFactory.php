@@ -30,7 +30,6 @@ class AutodiscoveryFactory {
    *   Directory to scan for entities.
    */
   public function __construct(protected string $dir) {
-    // Automatically discover own classes provided with a package.
     static::discoverOwn();
   }
 

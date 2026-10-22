@@ -32,7 +32,6 @@ class ShellExtractor extends AbstractExtractor {
   public function extract(): array {
     parent::extract();
 
-    // Exclude non-assignments.
     $this->variables = array_filter($this->variables, static fn (Variable $var): bool => $var->getIsAssignment());
 
     return $this->variables;
@@ -95,7 +94,7 @@ class ShellExtractor extends AbstractExtractor {
   }
 
   /**
-   * Concatenate lines that look like multi-sline strings.
+   * Concatenate lines that look like multi-line strings.
    *
    * @param array<int, string> $lines
    *   An array of lines to concatenate.
@@ -117,10 +116,8 @@ class ShellExtractor extends AbstractExtractor {
       // Remove escaped double quotes to only count unescaped ones.
       $processed = preg_replace('/\\\\\"/', '', (string) $processed) ?? $processed;
 
-      // Count unescaped double quotes.
       $quote_count = substr_count($processed, '"');
 
-      // Toggle concatenating mode if the number of quotes is odd.
       if ($quote_count % 2 !== 0) {
         $is_concatenating = !$is_concatenating;
       }

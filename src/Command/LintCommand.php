@@ -82,7 +82,6 @@ class LintCommand extends Command {
       'messages' => [],
     ];
 
-    // Load lines into array.
     $lines = @file($file_name);
     if ($lines === FALSE) {
       $result['success'] = FALSE;
@@ -91,7 +90,6 @@ class LintCommand extends Command {
       return $result;
     }
 
-    // Process lines.
     $processed_lines = [];
     $changed_count = 0;
     $ignore_next_line = FALSE;
@@ -99,7 +97,6 @@ class LintCommand extends Command {
     foreach ($lines as $k => $line) {
       $trimmed = trim($line);
 
-      // Check for ignore directives.
       if (preg_match('/^#\s*shellvar-ignore-next-line\s*$/', $trimmed)) {
         $ignore_next_line = TRUE;
         $processed_lines[] = $line;
@@ -120,7 +117,6 @@ class LintCommand extends Command {
         continue;
       }
 
-      // Skip processing if line is ignored.
       if ($ignore_next_line || $ignore_block) {
         $ignore_next_line = FALSE;
         $processed_lines[] = $line;
@@ -130,7 +126,6 @@ class LintCommand extends Command {
       $processed_line = $this->processLine($line);
       $line_number = $k + 1;
       if ($processed_line !== $line) {
-        // Removed new line from original line then push to messages.
         $line_removed_new_line = str_replace(["\r\n", "\n", "\r"], '', $line);
         $result['messages'][] = $is_running_fix ?
           sprintf('Replaced in line %s: %s', $line_number, $line_removed_new_line) : sprintf('%s: %s', $line_number, $line_removed_new_line);
@@ -203,7 +198,6 @@ class LintCommand extends Command {
    *   TRUE if the line at position is within interpolation context.
    */
   public function isInterpolation(string $line, int $pos): bool {
-    // Normalize position.
     $pos = max($pos - 1, 0);
 
     $prev = $line[$pos] ?? '';
@@ -213,7 +207,6 @@ class LintCommand extends Command {
       return FALSE;
     }
 
-    // Find previous single or double quote.
     for ($i = $pos; $i >= 0; $i--) {
       $char = $line[$i] ?? '';
       if ($char === '"' || $char === "'") {

@@ -135,7 +135,6 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
     // @endcode
     $in_list = FALSE;
     foreach ($lines as $k => $line) {
-      // Last line - do nothing.
       if ($k === count($lines) - 1) {
         continue;
       }
@@ -203,7 +202,6 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
 
       $default_value = strval($variable->getDefaultValue());
       if ($default_value !== '') {
-        // Wrap default value in code block if it contains new lines.
         if (str_contains($default_value, PHP_EOL)) {
           $default_value = PHP_EOL . '```' . PHP_EOL . $default_value . PHP_EOL . '```';
         }
@@ -248,7 +246,7 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
   }
 
   /**
-   * Process inline code to Convert numbers to code values.
+   * Process inline code to convert numbers to code values.
    *
    * @param \DrevOps\Shellvar\Variable\Variable[] $variables
    *   A list of variables to process.

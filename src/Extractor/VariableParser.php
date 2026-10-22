@@ -45,7 +45,6 @@ class VariableParser {
         continue;
       }
 
-      // Skip local variable assignment lines (all-lowercase name before '=').
       if (self::isLocalVariableAssignment($prev_line)) {
         $line_num--;
         continue;
@@ -83,7 +82,6 @@ class VariableParser {
    *   TRUE if the line is a local variable assignment.
    */
   public static function isLocalVariableAssignment(string $line): bool {
-    // Strip trailing semicolon for matching.
     $line = rtrim($line, ';');
 
     if (!preg_match('/^([a-z_]\w*)=/', $line, $matches)) {
