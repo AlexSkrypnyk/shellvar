@@ -267,32 +267,32 @@ abstract class AbstractFormatter implements FormatterInterface, FactoryDiscovera
   /**
    * Apply column transformations to a CsvTable instance.
    *
-   * @param \AlexSkrypnyk\CsvTable\CsvTable $csvTable
+   * @param \AlexSkrypnyk\CsvTable\CsvTable $csv_table
    *   The CsvTable instance.
    *
    * @return \AlexSkrypnyk\CsvTable\CsvTable
    *   The CsvTable instance with transformations applied.
    */
-  protected function applyColumnTransformations(CsvTable $csvTable): CsvTable {
+  protected function applyColumnTransformations(CsvTable $csv_table): CsvTable {
     $only_columns = $this->config->get('only-columns');
     if (is_string($only_columns) && !empty($only_columns)) {
       $columns = array_map(trim(...), explode(',', $only_columns));
-      $csvTable->onlyColumns($columns);
+      $csv_table->onlyColumns($columns);
     }
 
     $exclude_columns = $this->config->get('exclude-columns');
     if (is_string($exclude_columns) && !empty($exclude_columns)) {
       $columns = array_map(trim(...), explode(',', $exclude_columns));
-      $csvTable->withoutColumns($columns);
+      $csv_table->withoutColumns($columns);
     }
 
     $column_order = $this->config->get('column-order');
     if (is_string($column_order) && !empty($column_order)) {
       $columns = array_map(trim(...), explode(',', $column_order));
-      $csvTable->columnOrder($columns);
+      $csv_table->columnOrder($columns);
     }
 
-    return $csvTable;
+    return $csv_table;
   }
 
 }
