@@ -78,8 +78,8 @@ class UtilsTest extends UnitTestBase {
       ['', ''],
       ['\'single "quoted" string\'', '\'single "quoted" string\''],
       ['"double" \'and "single"\'', 'double \'and "single"\''],
-      ['\'[^\']*\'', '\'[^\']*\''],
-      ['unbalanced \'single "quote"', 'unbalanced \'single quote'],
+      ["'[^']*'", "'[^']*'"],
+      ['unbalanced \'single "quote"', "unbalanced 'single quote"],
     ];
   }
 
