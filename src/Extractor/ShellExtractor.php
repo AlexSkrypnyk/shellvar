@@ -109,8 +109,7 @@ class ShellExtractor extends AbstractExtractor {
     $is_concatenating = FALSE;
 
     foreach ($lines as $line) {
-      // Replace double quotes enclosed by single quotes with a placeholder to
-      // not count them.
+      // Remove double quotes enclosed by single quotes to not count them.
       $processed = preg_replace("/'[^']*\"[^']*'/", '', $line) ?? $line;
 
       // Remove escaped double quotes to only count unescaped ones.

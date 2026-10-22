@@ -88,8 +88,7 @@ class AutodiscoveryFactory {
   /**
    * Discover own entities provided with this package.
    *
-   * Extending classes can use FormatterFactory::registerFormatter() to register
-   * their own.
+   * Extending classes can use registerEntityClass() to register their own.
    */
   protected function discoverOwn(): void {
     $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($this->dir));
@@ -118,9 +117,9 @@ class AutodiscoveryFactory {
    * Register an entity class.
    *
    * @param string $name
-   *   Formatter name.
+   *   Entity name.
    * @param string $class
-   *   Formatter class.
+   *   Entity class.
    */
   public function registerEntityClass(string $name, string $class): void {
     $this->classes[$name] = $class;

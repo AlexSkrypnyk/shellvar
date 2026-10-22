@@ -127,7 +127,7 @@ class Utils {
     $replaced = preg_replace_callback(
       '/
         \\\\"|      # Match escaped double quotes
-        \'\[^\'\]*\'|  # Match single-quoted strings
+        \'[^\']*\'|  # Match single-quoted strings
         "|           # Match double quotes
     /x',
       static fn(array $matches): string => $matches[0] === '"' ? '' : $matches[0],
