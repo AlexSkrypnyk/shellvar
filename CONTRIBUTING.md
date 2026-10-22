@@ -57,10 +57,10 @@ Extractors, filters and formatters are discovered automatically from their direc
 
 Pushing a tag runs the `Release PHP` workflow. It builds the PHAR and attaches it to the GitHub release for that tag.
 
-The `Release Docker` workflow builds the [Docker image](https://hub.docker.com/r/drevops/shellvar) for `linux/amd64` and `linux/arm64`. It tests the `linux/amd64` build, then pushes both to Docker Hub with the following tags:
+The [Docker image](https://hub.docker.com/r/drevops/shellvar) is built for `linux/amd64` and `linux/arm64` and pushed to Docker Hub with the following tags:
 
-- `XX.YY.ZZ` - when a release tag is pushed.
-- `latest` - when a release tag is pushed.
-- `canary` - on every push to the `main` branch.
+- `XX.YY.ZZ` - when a release tag is pushed. The `Release Docker` workflow pushes it.
+- `latest` - when a release tag is pushed. The `Release Docker` workflow pushes it.
+- `canary` - on every push to the `main` branch, after the `Test Docker` tests pass on both architectures.
 
-The workflow logs in to Docker Hub with the `DOCKER_USER` and `DOCKER_PASS` repository secrets. To push to a different image, set the `DOCKER_IMAGE` repository variable.
+Both workflows log in to Docker Hub with the `DOCKER_USER` and `DOCKER_PASS` repository secrets. To push to a different image, set the `DOCKER_IMAGE` repository variable.
