@@ -124,10 +124,11 @@ class FilterUnitTest extends UnitTestBase {
   /**
    * Tests that ExcludeLocalFilter::filter() drops non-variable entries.
    */
-  public function testFilterExcludedLocalVarsInvalid(): void {
+  #[DataProvider('dataProviderFilterExcludedLocalVarsInvalid')]
+  public function testFilterExcludedLocalVarsInvalid(bool $exclude_local, array $expected): void {
     $vars = ['invalid1', new Variable('VAR1'), new Variable('var2'), 'invalid2'];
 
-    $config = (new Config())->set('exclude-local', TRUE);
+    $config = (new Config())->set('exclude-local', $exclude_local);
     // @phpstan-ignore-next-line
     $filter = new ExcludeLocalFilter($config);
     $actual = $filter->filter($vars);
@@ -138,7 +139,17 @@ class FilterUnitTest extends UnitTestBase {
       $actual_names[] = $item->getName();
     }
 
-    $this->assertEquals(['VAR1'], $actual_names);
+    $this->assertEquals($expected, $actual_names);
+  }
+
+  /**
+   * Data provider for testFilterExcludedLocalVarsInvalid().
+   */
+  public static function dataProviderFilterExcludedLocalVarsInvalid(): array {
+    return [
+      [TRUE, ['VAR1']],
+      [FALSE, ['VAR1', 'var2']],
+    ];
   }
 
 }
