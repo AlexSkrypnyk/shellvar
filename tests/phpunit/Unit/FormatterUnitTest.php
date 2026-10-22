@@ -7,6 +7,7 @@ namespace DrevOps\Shellvar\Tests\Unit;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use DrevOps\Shellvar\Config\Config;
+use DrevOps\Shellvar\Formatter\AbstractFormatter;
 use DrevOps\Shellvar\Formatter\AbstractMarkdownFormatter;
 use DrevOps\Shellvar\Formatter\MarkdownBlocksFormatter;
 use DrevOps\Shellvar\Variable\Variable;
@@ -16,6 +17,7 @@ use DrevOps\Shellvar\Variable\Variable;
  *
  * Unit tests for the Formatter class.
  */
+#[CoversClass(AbstractFormatter::class)]
 #[CoversClass(MarkdownBlocksFormatter::class)]
 class FormatterUnitTest extends UnitTestBase {
 
@@ -443,6 +445,35 @@ class FormatterUnitTest extends UnitTestBase {
         ],
       ],
 
+    ];
+  }
+
+  /**
+   * Tests the processPathStripPrefix() method.
+   */
+  #[DataProvider('dataProviderProcessPathStripPrefix')]
+  public function testProcessPathStripPrefix(array $paths, string $prefix, array $expected): void {
+    $formatter = new MarkdownBlocksFormatter((new Config()));
+    $variable = (new Variable('VAR1'))->setPaths($paths);
+
+    $actual = $this->callProtectedMethod($formatter, 'processPathStripPrefix', [[$variable], $prefix]);
+
+    $this->assertEquals($expected, $actual[0]->getPaths());
+  }
+
+  /**
+   * Data provider for testProcessPathStripPrefix().
+   */
+  public static function dataProviderProcessPathStripPrefix(): array {
+    return [
+      [[], '/app', []],
+      [['/app/x.sh'], '/app', ['/x.sh']],
+      [['/app/lib/app/x.sh'], '/app', ['/lib/app/x.sh']],
+      [['/app/app/x.sh'], '/app', ['/app/x.sh']],
+      [['/lib/app/x.sh'], '/app', ['/lib/app/x.sh']],
+      [['/other/x.sh'], '/app', ['/other/x.sh']],
+      [['/app'], '/app', ['']],
+      [['/app/a.sh', '/lib/app/b.sh', '/app/c/app/d.sh'], '/app', ['/a.sh', '/lib/app/b.sh', '/c/app/d.sh']],
     ];
   }
 

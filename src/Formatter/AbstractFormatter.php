@@ -204,7 +204,7 @@ abstract class AbstractFormatter implements FormatterInterface, FactoryDiscovera
       $updated_paths = [];
       foreach ($variable->getPaths() as $path) {
         if (str_starts_with($path, $prefix)) {
-          $path = str_replace($prefix, '', $path);
+          $path = substr($path, strlen($prefix));
         }
         $updated_paths[] = $path;
       }
