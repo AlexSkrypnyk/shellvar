@@ -34,8 +34,7 @@
         "rector/rector": "^2.7.0"
     },
     "replace": {
-        "alexskrypnyk/shell-variables-extractor": "self.version",
-        "alexskrypnyk/shellvar": "self.version"
+        "alexskrypnyk/shell-variables-extractor": "self.version"
     },
     "autoload": {
         "psr-4": {
