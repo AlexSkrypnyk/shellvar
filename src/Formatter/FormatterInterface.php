@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AlexSkrypnyk\Shellvar\Formatter;
+namespace DrevOps\Shellvar\Formatter;
 
 /**
  * Interface FormatterInterface.
@@ -14,7 +14,7 @@ interface FormatterInterface {
   /**
    * Format variables data.
    *
-   * @param \AlexSkrypnyk\Shellvar\Variable\Variable[] $variables
+   * @param \DrevOps\Shellvar\Variable\Variable[] $variables
    *   Variables.
    *
    * @return string

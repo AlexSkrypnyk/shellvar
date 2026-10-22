@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace AlexSkrypnyk\Shellvar\Extractor;
+namespace DrevOps\Shellvar\Extractor;
 
-use AlexSkrypnyk\Shellvar\Factory\FactoryDiscoverableInterface;
+use DrevOps\Shellvar\Factory\FactoryDiscoverableInterface;
 
 /**
  * Interface ExtractorInterface.
@@ -16,7 +16,7 @@ interface ExtractorInterface extends FactoryDiscoverableInterface {
   /**
    * Extracts variables from the targets provided in the configuration.
    *
-   * @return \AlexSkrypnyk\Shellvar\Variable\Variable[]
+   * @return \DrevOps\Shellvar\Variable\Variable[]
    *   Array of extracted variables.
    */
   public function extract(): array;

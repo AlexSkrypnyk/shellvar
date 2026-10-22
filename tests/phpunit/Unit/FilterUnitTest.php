@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace AlexSkrypnyk\Shellvar\Tests\Unit;
+namespace DrevOps\Shellvar\Tests\Unit;
 
-use AlexSkrypnyk\Shellvar\Filter\AbstractFilter;
+use DrevOps\Shellvar\Filter\AbstractFilter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
-use AlexSkrypnyk\Shellvar\Config\Config;
-use AlexSkrypnyk\Shellvar\Filter\ExcludeLocalFilter;
-use AlexSkrypnyk\Shellvar\Filter\ExcludePrefixFilter;
-use AlexSkrypnyk\Shellvar\Variable\Variable;
+use DrevOps\Shellvar\Config\Config;
+use DrevOps\Shellvar\Filter\ExcludeLocalFilter;
+use DrevOps\Shellvar\Filter\ExcludePrefixFilter;
+use DrevOps\Shellvar\Variable\Variable;
 
 /**
  * Class FilterUnitTest.

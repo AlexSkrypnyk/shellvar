@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AlexSkrypnyk\Shellvar\Tests\Traits;
+namespace DrevOps\Shellvar\Tests\Traits;
 
 use PHPUnit\Framework\MockObject\MockObject;
 

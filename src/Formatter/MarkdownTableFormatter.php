@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AlexSkrypnyk\Shellvar\Formatter;
+namespace DrevOps\Shellvar\Formatter;
 
 use AlexSkrypnyk\CsvTable\CsvTable;
 
@@ -132,12 +132,12 @@ class MarkdownTableFormatter extends AbstractMarkdownFormatter {
   /**
    * Add anchors to variable names for linking.
    *
-   * @param \AlexSkrypnyk\Shellvar\Variable\Variable[] $variables
+   * @param \DrevOps\Shellvar\Variable\Variable[] $variables
    *   A list of variables to process.
    * @param string $anchor_case
    *   Anchor case.
    *
-   * @return \AlexSkrypnyk\Shellvar\Variable\Variable[]
+   * @return \DrevOps\Shellvar\Variable\Variable[]
    *   A list of processed variables.
    */
   protected function addAnchors(array $variables, string $anchor_case = self::VARIABLE_LINK_CASE_PRESERVE): array {

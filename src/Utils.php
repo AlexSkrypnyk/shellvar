@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AlexSkrypnyk\Shellvar;
+namespace DrevOps\Shellvar;
 
 use Symfony\Component\Console\Exception\InvalidOptionException;
 

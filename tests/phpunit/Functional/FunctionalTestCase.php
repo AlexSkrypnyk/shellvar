@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace AlexSkrypnyk\Shellvar\Tests\Functional;
+namespace DrevOps\Shellvar\Tests\Functional;
 
-use AlexSkrypnyk\Shellvar\Tests\Traits\AssertTrait;
-use AlexSkrypnyk\Shellvar\Tests\Traits\FixtureTrait;
-use AlexSkrypnyk\Shellvar\Tests\Traits\MockTrait;
-use AlexSkrypnyk\Shellvar\Tests\Traits\ReflectionTrait;
+use DrevOps\Shellvar\Tests\Traits\AssertTrait;
+use DrevOps\Shellvar\Tests\Traits\FixtureTrait;
+use DrevOps\Shellvar\Tests\Traits\MockTrait;
+use DrevOps\Shellvar\Tests\Traits\ReflectionTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;

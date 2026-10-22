@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace AlexSkrypnyk\Shellvar\Extractor;
+namespace DrevOps\Shellvar\Extractor;
 
-use AlexSkrypnyk\Shellvar\Utils;
+use DrevOps\Shellvar\Utils;
 
 /**
  * Class VariableParser.

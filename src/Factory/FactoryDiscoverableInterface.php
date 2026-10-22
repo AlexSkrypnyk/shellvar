@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AlexSkrypnyk\Shellvar\Factory;
+namespace DrevOps\Shellvar\Factory;
 
 /**
  * Interface FactoryDiscoverableInterface.

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AlexSkrypnyk\Shellvar\Variable;
+namespace DrevOps\Shellvar\Variable;
 
 /**
  * Class Variable.

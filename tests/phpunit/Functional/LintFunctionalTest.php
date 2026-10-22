@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace AlexSkrypnyk\Shellvar\Tests\Functional;
+namespace DrevOps\Shellvar\Tests\Functional;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use AlexSkrypnyk\Shellvar\Command\LintCommand;
-use AlexSkrypnyk\Shellvar\Tests\Traits\FixtureTrait;
+use DrevOps\Shellvar\Command\LintCommand;
+use DrevOps\Shellvar\Tests\Traits\FixtureTrait;
 
 /**
  * Test Lint Command functional.

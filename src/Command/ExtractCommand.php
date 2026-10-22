@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace AlexSkrypnyk\Shellvar\Command;
+namespace DrevOps\Shellvar\Command;
 
-use AlexSkrypnyk\Shellvar\Config\Config;
-use AlexSkrypnyk\Shellvar\Extractor\ExtractorManager;
-use AlexSkrypnyk\Shellvar\Filter\FilterManager;
-use AlexSkrypnyk\Shellvar\Formatter\FormatterManager;
+use DrevOps\Shellvar\Config\Config;
+use DrevOps\Shellvar\Extractor\ExtractorManager;
+use DrevOps\Shellvar\Filter\FilterManager;
+use DrevOps\Shellvar\Formatter\FormatterManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -22,7 +22,7 @@ class ExtractCommand extends Command {
   /**
    * The config.
    *
-   * @var \AlexSkrypnyk\Shellvar\Config\Config
+   * @var \DrevOps\Shellvar\Config\Config
    */
   protected $config;
 
@@ -36,7 +36,7 @@ class ExtractCommand extends Command {
 
     $this->config = new Config();
 
-    /** @var array<class-string<\AlexSkrypnyk\Shellvar\AbstractManager>> $classes */
+    /** @var array<class-string<\DrevOps\Shellvar\AbstractManager>> $classes */
     $classes = [
       ExtractorManager::class,
       FilterManager::class,

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace AlexSkrypnyk\Shellvar\Tests\Functional;
+namespace DrevOps\Shellvar\Tests\Functional;
 
-use AlexSkrypnyk\Shellvar\Extractor\ShellExtractor;
+use DrevOps\Shellvar\Extractor\ShellExtractor;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
-use AlexSkrypnyk\Shellvar\Command\ExtractCommand;
+use DrevOps\Shellvar\Command\ExtractCommand;
 
 /**
  * Class RealFunctionalTest.

@@ -1,5 +1,5 @@
 {
-    "name": "alexskrypnyk/shellvar",
+    "name": "drevops/shellvar",
     "description": "Utility to work with shell variables.",
     "license": "GPL-2.0-or-later",
     "type": "library",
@@ -11,10 +11,10 @@
             "role": "Maintainer"
         }
     ],
-    "homepage": "https://github.com/AlexSkrypnyk/shellvar",
+    "homepage": "https://github.com/drevops/shellvar",
     "support": {
-        "issues": "https://github.com/AlexSkrypnyk/shellvar/issues",
-        "source": "https://github.com/AlexSkrypnyk/shellvar"
+        "issues": "https://github.com/drevops/shellvar/issues",
+        "source": "https://github.com/drevops/shellvar"
     },
     "require": {
         "php": ">=8.2",
@@ -34,16 +34,17 @@
         "rector/rector": "^2.7.0"
     },
     "replace": {
-        "alexskrypnyk/shell-variables-extractor": "self.version"
+        "alexskrypnyk/shell-variables-extractor": "self.version",
+        "alexskrypnyk/shellvar": "self.version"
     },
     "autoload": {
         "psr-4": {
-            "AlexSkrypnyk\\Shellvar\\": "src/"
+            "DrevOps\\Shellvar\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "AlexSkrypnyk\\Shellvar\\Tests\\": "tests/phpunit"
+            "DrevOps\\Shellvar\\Tests\\": "tests/phpunit"
         }
     },
     "bin": [

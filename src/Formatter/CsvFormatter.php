@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AlexSkrypnyk\Shellvar\Formatter;
+namespace DrevOps\Shellvar\Formatter;
 
 use AlexSkrypnyk\CsvTable\CsvTable;
 use Symfony\Component\Console\Input\InputOption;

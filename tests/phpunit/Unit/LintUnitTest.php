@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace AlexSkrypnyk\Shellvar\Tests\Unit;
+namespace DrevOps\Shellvar\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
-use AlexSkrypnyk\Shellvar\Command\LintCommand;
-use AlexSkrypnyk\Shellvar\Tests\Traits\FixtureTrait;
+use DrevOps\Shellvar\Command\LintCommand;
+use DrevOps\Shellvar\Tests\Traits\FixtureTrait;
 
 /**
  * Unit test for Lint Command.

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace AlexSkrypnyk\Shellvar\Extractor;
+namespace DrevOps\Shellvar\Extractor;
 
-use AlexSkrypnyk\Shellvar\Config\Config;
-use AlexSkrypnyk\Shellvar\Config\ConfigAwareTrait;
-use AlexSkrypnyk\Shellvar\ConsoleAwareInterface;
-use AlexSkrypnyk\Shellvar\Utils;
-use AlexSkrypnyk\Shellvar\Variable\VariableAwareTrait;
+use DrevOps\Shellvar\Config\Config;
+use DrevOps\Shellvar\Config\ConfigAwareTrait;
+use DrevOps\Shellvar\ConsoleAwareInterface;
+use DrevOps\Shellvar\Utils;
+use DrevOps\Shellvar\Variable\VariableAwareTrait;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
@@ -25,7 +25,7 @@ abstract class AbstractExtractor implements ExtractorInterface, ConsoleAwareInte
   /**
    * AbstractExtractor constructor.
    *
-   * @param \AlexSkrypnyk\Shellvar\Config\Config $config
+   * @param \DrevOps\Shellvar\Config\Config $config
    *   Config.
    */
   public function __construct(Config $config) {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AlexSkrypnyk\Shellvar\Tests\Fixtures\Discovery1;
+namespace DrevOps\Shellvar\Tests\Fixtures\Discovery1;
 
 /**
  * Class DummyNonDiscoverable.

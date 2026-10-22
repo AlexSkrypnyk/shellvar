@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AlexSkrypnyk\Shellvar\Traits;
+namespace DrevOps\Shellvar\Traits;
 
 /**
  * Trait SingletonTrait.

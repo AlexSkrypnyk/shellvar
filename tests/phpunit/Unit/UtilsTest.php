@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace AlexSkrypnyk\Shellvar\Tests\Unit;
+namespace DrevOps\Shellvar\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
-use AlexSkrypnyk\Shellvar\Utils;
+use DrevOps\Shellvar\Utils;
 use Symfony\Component\Console\Exception\InvalidOptionException;
 
 /**

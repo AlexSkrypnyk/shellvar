@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace AlexSkrypnyk\Shellvar\Extractor;
+namespace DrevOps\Shellvar\Extractor;
 
-use AlexSkrypnyk\Shellvar\AbstractManager;
+use DrevOps\Shellvar\AbstractManager;
 
 /**
  * Class ExtractorManager.
@@ -16,12 +16,12 @@ class ExtractorManager extends AbstractManager {
   /**
    * Extract variables from the targets provided in configs.
    *
-   * @return \AlexSkrypnyk\Shellvar\Variable\Variable[]
+   * @return \DrevOps\Shellvar\Variable\Variable[]
    *   Array of extracted variables.
    */
   public function extract(): array {
     // Using hardcoded 'extractor-shell' as we only have a single extractor.
-    /** @var \AlexSkrypnyk\Shellvar\Extractor\ExtractorInterface $extractor */
+    /** @var \DrevOps\Shellvar\Extractor\ExtractorInterface $extractor */
     $extractor = $this->factory->create('extractor-shell', $this->config);
 
     return $extractor->extract();

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace AlexSkrypnyk\Shellvar\Formatter;
+namespace DrevOps\Shellvar\Formatter;
 
-use AlexSkrypnyk\Shellvar\Config\Config;
-use AlexSkrypnyk\Shellvar\Utils;
+use DrevOps\Shellvar\Config\Config;
+use DrevOps\Shellvar\Utils;
 use Symfony\Component\Console\Input\InputOption;
 
 /**
@@ -62,7 +62,7 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
   /**
    * AbstractFormatter constructor.
    *
-   * @param \AlexSkrypnyk\Shellvar\Config\Config $config
+   * @param \DrevOps\Shellvar\Config\Config $config
    *   The configuration.
    *   {@inheritdoc}.
    */
@@ -187,12 +187,12 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
   /**
    * Process inline code.
    *
-   * @param \AlexSkrypnyk\Shellvar\Variable\Variable[] $variables
+   * @param \DrevOps\Shellvar\Variable\Variable[] $variables
    *   A list of variables to process.
    * @param string[] $tokens
    *   Additional tokens to be processed as inline code.
    *
-   * @return \AlexSkrypnyk\Shellvar\Variable\Variable[]
+   * @return \DrevOps\Shellvar\Variable\Variable[]
    *   A list of processed variables.
    */
   protected function processInlineCodeVars(array $variables, array $tokens = []): array {
@@ -250,10 +250,10 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
   /**
    * Process inline code to Convert numbers to code values.
    *
-   * @param \AlexSkrypnyk\Shellvar\Variable\Variable[] $variables
+   * @param \DrevOps\Shellvar\Variable\Variable[] $variables
    *   A list of variables to process.
    *
-   * @return \AlexSkrypnyk\Shellvar\Variable\Variable[]
+   * @return \DrevOps\Shellvar\Variable\Variable[]
    *   A list of processed variables.
    */
   protected function processInlineCodeNumbers(array $variables): array {
@@ -267,12 +267,12 @@ abstract class AbstractMarkdownFormatter extends AbstractFormatter {
   /**
    * Link variables.
    *
-   * @param \AlexSkrypnyk\Shellvar\Variable\Variable[] $variables
+   * @param \DrevOps\Shellvar\Variable\Variable[] $variables
    *   A list of variables to process.
    * @param string $anchor_case
    *   Anchor case.
    *
-   * @return \AlexSkrypnyk\Shellvar\Variable\Variable[]
+   * @return \DrevOps\Shellvar\Variable\Variable[]
    *   A list of processed variables.
    */
   protected function processLinks(array $variables, $anchor_case = self::VARIABLE_LINK_CASE_PRESERVE): array {
