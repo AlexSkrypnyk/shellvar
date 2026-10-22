@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AlexSkrypnyk\Shellvar\Command;
+namespace DrevOps\Shellvar\Command;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;

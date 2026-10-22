@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace AlexSkrypnyk\Shellvar\Filter;
+namespace DrevOps\Shellvar\Filter;
 
-use AlexSkrypnyk\Shellvar\AbstractManager;
-use AlexSkrypnyk\Shellvar\Config\Config;
+use DrevOps\Shellvar\AbstractManager;
+use DrevOps\Shellvar\Config\Config;
 
 /**
  * Class FilterManager.
@@ -17,20 +17,20 @@ class FilterManager extends AbstractManager {
   /**
    * A list of discovered filters.
    *
-   * @var \AlexSkrypnyk\Shellvar\Filter\FilterInterface[]
+   * @var \DrevOps\Shellvar\Filter\FilterInterface[]
    */
   protected array $filters;
 
   /**
    * FilterManager constructor.
    *
-   * @param \AlexSkrypnyk\Shellvar\Config\Config $config
+   * @param \DrevOps\Shellvar\Config\Config $config
    *   The configuration.
    */
   public function __construct(Config $config) {
     parent::__construct($config);
 
-    /** @var \AlexSkrypnyk\Shellvar\Filter\FilterInterface[] $filters */
+    /** @var \DrevOps\Shellvar\Filter\FilterInterface[] $filters */
     $filters = $this->factory->createAll($this->getConfig());
 
     $this->filters = $filters;

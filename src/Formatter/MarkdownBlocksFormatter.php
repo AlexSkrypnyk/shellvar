@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace AlexSkrypnyk\Shellvar\Formatter;
+namespace DrevOps\Shellvar\Formatter;
 
-use AlexSkrypnyk\Shellvar\Utils;
+use DrevOps\Shellvar\Utils;
 use Symfony\Component\Console\Input\InputOption;
 
 /**

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace AlexSkrypnyk\Shellvar\Factory;
+namespace DrevOps\Shellvar\Factory;
 
-use AlexSkrypnyk\Shellvar\Config\Config;
+use DrevOps\Shellvar\Config\Config;
 
 /**
  * Class AutodiscoveryFactory.
@@ -39,10 +39,10 @@ class AutodiscoveryFactory {
    *
    * @param string $name
    *   Entity name.
-   * @param \AlexSkrypnyk\Shellvar\Config\Config $config
+   * @param \DrevOps\Shellvar\Config\Config $config
    *   Entity configuration.
    *
-   * @return \AlexSkrypnyk\Shellvar\Factory\FactoryDiscoverableInterface
+   * @return \DrevOps\Shellvar\Factory\FactoryDiscoverableInterface
    *   Instantiated entity class instance.
    *
    * @throws \Exception
@@ -67,10 +67,10 @@ class AutodiscoveryFactory {
   /**
    * Create all class instances.
    *
-   * @param \AlexSkrypnyk\Shellvar\Config\Config $config
+   * @param \DrevOps\Shellvar\Config\Config $config
    *   The configuration instance.
    *
-   * @return \AlexSkrypnyk\Shellvar\Factory\FactoryDiscoverableInterface[]
+   * @return \DrevOps\Shellvar\Factory\FactoryDiscoverableInterface[]
    *   Array of instantiated entity class instances.
    *
    * @throws \Exception
@@ -78,7 +78,7 @@ class AutodiscoveryFactory {
   public function createAll(Config $config): array {
     $instances = [];
 
-    /** @var \AlexSkrypnyk\Shellvar\Factory\FactoryDiscoverableInterface $class */
+    /** @var \DrevOps\Shellvar\Factory\FactoryDiscoverableInterface $class */
     foreach ($this->classes as $class) {
       $instances[] = $this->create($class::getName(), $config);
     }

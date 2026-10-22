@@ -7,12 +7,12 @@
 
 <div align="center">
 
-[![GitHub Issues](https://img.shields.io/github/issues/AlexSkrypnyk/shellvar.svg)](https://github.com/AlexSkrypnyk/shellvar/issues)
-[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/AlexSkrypnyk/shellvar.svg)](https://github.com/AlexSkrypnyk/shellvar/pulls)
-[![Test PHP](https://github.com/AlexSkrypnyk/shellvar/actions/workflows/test-php.yml/badge.svg)](https://github.com/AlexSkrypnyk/shellvar/actions/workflows/test-php.yml)
-[![codecov](https://codecov.io/gh/AlexSkrypnyk/shellvar/graph/badge.svg?token=7WEB1IXBYT)](https://codecov.io/gh/AlexSkrypnyk/shellvar)
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/AlexSkrypnyk/shellvar)
-![LICENSE](https://img.shields.io/github/license/AlexSkrypnyk/shellvar)
+[![GitHub Issues](https://img.shields.io/github/issues/drevops/shellvar.svg)](https://github.com/drevops/shellvar/issues)
+[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/drevops/shellvar.svg)](https://github.com/drevops/shellvar/pulls)
+[![Test PHP](https://github.com/drevops/shellvar/actions/workflows/test-php.yml/badge.svg)](https://github.com/drevops/shellvar/actions/workflows/test-php.yml)
+[![codecov](https://codecov.io/gh/drevops/shellvar/graph/badge.svg)](https://codecov.io/gh/drevops/shellvar)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/drevops/shellvar)
+![LICENSE](https://img.shields.io/github/license/drevops/shellvar)
 ![Renovate](https://img.shields.io/badge/renovate-enabled-green?logo=renovatebot)
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/drevops/shellvar?logo=docker)](https://hub.docker.com/r/drevops/shellvar)
@@ -40,7 +40,7 @@
 ## Installation
 
 Download the latest version of the `shellvar` from
-the [releases page](https://github.com/AlexSkrypnyk/shellvar/releases)
+the [releases page](https://github.com/drevops/shellvar/releases)
 and run on host machine:
 
 ```bash

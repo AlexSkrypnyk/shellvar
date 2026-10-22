@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace AlexSkrypnyk\Shellvar;
+namespace DrevOps\Shellvar;
 
-use AlexSkrypnyk\Shellvar\Config\Config;
-use AlexSkrypnyk\Shellvar\Config\ConfigAwareTrait;
-use AlexSkrypnyk\Shellvar\Factory\AutodiscoveryFactory;
-use AlexSkrypnyk\Shellvar\Traits\SingletonInterface;
-use AlexSkrypnyk\Shellvar\Traits\SingletonTrait;
+use DrevOps\Shellvar\Config\Config;
+use DrevOps\Shellvar\Config\ConfigAwareTrait;
+use DrevOps\Shellvar\Factory\AutodiscoveryFactory;
+use DrevOps\Shellvar\Traits\SingletonInterface;
+use DrevOps\Shellvar\Traits\SingletonTrait;
 
 /**
  * Class AbstractManager.
@@ -28,7 +28,7 @@ abstract class AbstractManager implements SingletonInterface, ConsoleAwareInterf
   /**
    * AbstractManager constructor.
    *
-   * @param \AlexSkrypnyk\Shellvar\Config\Config $config
+   * @param \DrevOps\Shellvar\Config\Config $config
    *   The configuration.
    */
   public function __construct(Config $config) {
@@ -65,7 +65,7 @@ abstract class AbstractManager implements SingletonInterface, ConsoleAwareInterf
   public function getAllConsoleArguments(): array {
     $items = [];
 
-    /** @var \AlexSkrypnyk\Shellvar\ConsoleAwareInterface $class */
+    /** @var \DrevOps\Shellvar\ConsoleAwareInterface $class */
     foreach ($this->factory->getEntityClasses() as $class) {
       $items = array_merge($class::getConsoleArguments());
     }
@@ -82,7 +82,7 @@ abstract class AbstractManager implements SingletonInterface, ConsoleAwareInterf
   public function getAllConsoleOptions(): array {
     $items = [];
 
-    /** @var \AlexSkrypnyk\Shellvar\ConsoleAwareInterface $class */
+    /** @var \DrevOps\Shellvar\ConsoleAwareInterface $class */
     foreach ($this->factory->getEntityClasses() as $class) {
       $items = array_merge($items, $class::getConsoleOptions());
     }

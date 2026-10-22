@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace AlexSkrypnyk\Shellvar\Filter;
+namespace DrevOps\Shellvar\Filter;
 
-use AlexSkrypnyk\Shellvar\Factory\FactoryDiscoverableInterface;
+use DrevOps\Shellvar\Factory\FactoryDiscoverableInterface;
 
 /**
  * Interface FilterInterface.

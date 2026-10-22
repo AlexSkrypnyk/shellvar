@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AlexSkrypnyk\Shellvar\Config;
+namespace DrevOps\Shellvar\Config;
 
 /**
  * Class Config.

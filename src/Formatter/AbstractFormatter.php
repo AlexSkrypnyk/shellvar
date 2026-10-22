@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace AlexSkrypnyk\Shellvar\Formatter;
+namespace DrevOps\Shellvar\Formatter;
 
 use AlexSkrypnyk\CsvTable\CsvTable;
-use AlexSkrypnyk\Shellvar\Config\Config;
-use AlexSkrypnyk\Shellvar\Config\ConfigAwareTrait;
-use AlexSkrypnyk\Shellvar\Factory\FactoryDiscoverableInterface;
-use AlexSkrypnyk\Shellvar\Variable\VariableAwareTrait;
+use DrevOps\Shellvar\Config\Config;
+use DrevOps\Shellvar\Config\ConfigAwareTrait;
+use DrevOps\Shellvar\Factory\FactoryDiscoverableInterface;
+use DrevOps\Shellvar\Variable\VariableAwareTrait;
 use Symfony\Component\Console\Input\InputOption;
 
 /**
@@ -24,7 +24,7 @@ abstract class AbstractFormatter implements FormatterInterface, FactoryDiscovera
   /**
    * AbstractFormatter constructor.
    *
-   * @param \AlexSkrypnyk\Shellvar\Config\Config $config
+   * @param \DrevOps\Shellvar\Config\Config $config
    *   The configuration.
    */
   public function __construct(Config $config) {
@@ -155,10 +155,10 @@ abstract class AbstractFormatter implements FormatterInterface, FactoryDiscovera
   /**
    * Process variables to sort.
    *
-   * @param \AlexSkrypnyk\Shellvar\Variable\Variable[] $variables
+   * @param \DrevOps\Shellvar\Variable\Variable[] $variables
    *   The variables array.
    *
-   * @return \AlexSkrypnyk\Shellvar\Variable\Variable[]
+   * @return \DrevOps\Shellvar\Variable\Variable[]
    *   An array of processed variables.
    */
   protected function processSort($variables) {
@@ -170,12 +170,12 @@ abstract class AbstractFormatter implements FormatterInterface, FactoryDiscovera
   /**
    * Process variables to set values for the variables without a value.
    *
-   * @param \AlexSkrypnyk\Shellvar\Variable\Variable[] $variables
+   * @param \DrevOps\Shellvar\Variable\Variable[] $variables
    *   The variables array.
    * @param string $unset
    *   The value to set for the variables without a value.
    *
-   * @return \AlexSkrypnyk\Shellvar\Variable\Variable[]
+   * @return \DrevOps\Shellvar\Variable\Variable[]
    *   An array of processed variables.
    */
   protected function processUnset(array $variables, string $unset): array {
@@ -191,12 +191,12 @@ abstract class AbstractFormatter implements FormatterInterface, FactoryDiscovera
   /**
    * Process variables to set values for the variables without a value.
    *
-   * @param \AlexSkrypnyk\Shellvar\Variable\Variable[] $variables
+   * @param \DrevOps\Shellvar\Variable\Variable[] $variables
    *   The variables array.
    * @param string $prefix
    *   The prefix to strip from the path.
    *
-   * @return \AlexSkrypnyk\Shellvar\Variable\Variable[]
+   * @return \DrevOps\Shellvar\Variable\Variable[]
    *   An array of processed variables.
    */
   protected function processPathStripPrefix(array $variables, string $prefix): array {
@@ -217,10 +217,10 @@ abstract class AbstractFormatter implements FormatterInterface, FactoryDiscovera
   /**
    * Process descriptions.
    *
-   * @param \AlexSkrypnyk\Shellvar\Variable\Variable[] $variables
+   * @param \DrevOps\Shellvar\Variable\Variable[] $variables
    *   A list of variables to process.
    *
-   * @return \AlexSkrypnyk\Shellvar\Variable\Variable[]
+   * @return \DrevOps\Shellvar\Variable\Variable[]
    *   A list of processed variables.
    */
   protected function processDescriptions(array $variables): array {

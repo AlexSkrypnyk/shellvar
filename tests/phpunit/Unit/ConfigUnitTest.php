@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace AlexSkrypnyk\Shellvar\Tests\Unit;
+namespace DrevOps\Shellvar\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use AlexSkrypnyk\Shellvar\Config\Config;
+use DrevOps\Shellvar\Config\Config;
 
 /**
  * Unit Config test.

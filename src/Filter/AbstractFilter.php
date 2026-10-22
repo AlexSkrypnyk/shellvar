@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace AlexSkrypnyk\Shellvar\Filter;
+namespace DrevOps\Shellvar\Filter;
 
-use AlexSkrypnyk\Shellvar\Config\Config;
-use AlexSkrypnyk\Shellvar\Config\ConfigAwareTrait;
-use AlexSkrypnyk\Shellvar\ConsoleAwareInterface;
+use DrevOps\Shellvar\Config\Config;
+use DrevOps\Shellvar\Config\ConfigAwareTrait;
+use DrevOps\Shellvar\ConsoleAwareInterface;
 
 /**
  * Class AbstractFilter.
@@ -20,7 +20,7 @@ abstract class AbstractFilter implements FilterInterface, ConsoleAwareInterface 
   /**
    * AbstractFilter constructor.
    *
-   * @param \AlexSkrypnyk\Shellvar\Config\Config $config
+   * @param \DrevOps\Shellvar\Config\Config $config
    *   The configuration.
    */
   public function __construct(Config $config) {

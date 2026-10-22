@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace AlexSkrypnyk\Shellvar\Tests\Unit;
+namespace DrevOps\Shellvar\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use AlexSkrypnyk\Shellvar\Config\Config;
-use AlexSkrypnyk\Shellvar\Factory\AutodiscoveryFactory;
-use AlexSkrypnyk\Shellvar\Tests\Fixtures\Discovery1\DummyDiscoverable11;
-use AlexSkrypnyk\Shellvar\Tests\Fixtures\Discovery1\DummyDiscoverable12;
-use AlexSkrypnyk\Shellvar\Tests\Fixtures\Discovery2\DummyDiscoverable21;
-use AlexSkrypnyk\Shellvar\Tests\Fixtures\Discovery2\DummyDiscoverable22;
+use DrevOps\Shellvar\Config\Config;
+use DrevOps\Shellvar\Factory\AutodiscoveryFactory;
+use DrevOps\Shellvar\Tests\Fixtures\Discovery1\DummyDiscoverable11;
+use DrevOps\Shellvar\Tests\Fixtures\Discovery1\DummyDiscoverable12;
+use DrevOps\Shellvar\Tests\Fixtures\Discovery2\DummyDiscoverable21;
+use DrevOps\Shellvar\Tests\Fixtures\Discovery2\DummyDiscoverable22;
 
 /**
  * Class AutodiscoveryFactoryUnitTest.

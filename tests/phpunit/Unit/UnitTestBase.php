@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace AlexSkrypnyk\Shellvar\Tests\Unit;
+namespace DrevOps\Shellvar\Tests\Unit;
 
-use AlexSkrypnyk\Shellvar\Tests\Traits\FixtureTrait;
-use AlexSkrypnyk\Shellvar\Tests\Traits\MockTrait;
-use AlexSkrypnyk\Shellvar\Tests\Traits\ReflectionTrait;
+use DrevOps\Shellvar\Tests\Traits\FixtureTrait;
+use DrevOps\Shellvar\Tests\Traits\MockTrait;
+use DrevOps\Shellvar\Tests\Traits\ReflectionTrait;
 use PHPUnit\Framework\TestCase;
 
 /**

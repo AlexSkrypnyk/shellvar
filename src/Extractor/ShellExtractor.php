@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace AlexSkrypnyk\Shellvar\Extractor;
+namespace DrevOps\Shellvar\Extractor;
 
-use AlexSkrypnyk\Shellvar\Utils;
-use AlexSkrypnyk\Shellvar\Variable\Variable;
+use DrevOps\Shellvar\Utils;
+use DrevOps\Shellvar\Variable\Variable;
 
 /**
  * Class ShellExtractor.
@@ -152,7 +152,7 @@ class ShellExtractor extends AbstractExtractor {
    * @param string $line
    *   A line to extract a variable name from.
    *
-   * @return \AlexSkrypnyk\Shellvar\Variable\Variable|null
+   * @return \DrevOps\Shellvar\Variable\Variable|null
    *   Variable instance or NULL if a variable was not extracted.
    */
   protected function extractVariable(string $line): ?Variable {

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace AlexSkrypnyk\Shellvar\Filter;
+namespace DrevOps\Shellvar\Filter;
 
-use AlexSkrypnyk\Shellvar\Config\Config;
-use AlexSkrypnyk\Shellvar\Utils;
+use DrevOps\Shellvar\Config\Config;
+use DrevOps\Shellvar\Utils;
 use Symfony\Component\Console\Input\InputOption;
 
 /**

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace AlexSkrypnyk\Shellvar\Tests\Unit;
+namespace DrevOps\Shellvar\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
-use AlexSkrypnyk\Shellvar\Extractor\ShellExtractor;
-use AlexSkrypnyk\Shellvar\Variable\Variable;
+use DrevOps\Shellvar\Extractor\ShellExtractor;
+use DrevOps\Shellvar\Variable\Variable;
 
 /**
  * Class ExtractorUnitTest.

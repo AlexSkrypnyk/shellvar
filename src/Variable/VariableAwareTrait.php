@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AlexSkrypnyk\Shellvar\Variable;
+namespace DrevOps\Shellvar\Variable;
 
 /**
  * Trait VariableAwareTrait.
@@ -14,7 +14,7 @@ trait VariableAwareTrait {
   /**
    * Variables.
    *
-   * @var \AlexSkrypnyk\Shellvar\Variable\Variable[]
+   * @var \DrevOps\Shellvar\Variable\Variable[]
    */
   protected $variables = [];
 
@@ -22,7 +22,7 @@ trait VariableAwareTrait {
    * Get the variables.
    *
    * @return array<Variable>
-   *   Returns list of AlexSkrypnyk\Shellvar\Variable\Variable
+   *   Returns list of DrevOps\Shellvar\Variable\Variable
    */
   public function getVariables(): array {
     return $this->variables;
@@ -31,7 +31,7 @@ trait VariableAwareTrait {
   /**
    * Set the variables.
    *
-   * @param \AlexSkrypnyk\Shellvar\Variable\Variable[] $variables
+   * @param \DrevOps\Shellvar\Variable\Variable[] $variables
    *   The variables to set.
    */
   public function setVariables(array $variables): void {

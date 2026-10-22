@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AlexSkrypnyk\Shellvar\Config;
+namespace DrevOps\Shellvar\Config;
 
 /**
  * Trait ConfigAwareTrait.
@@ -15,14 +15,14 @@ trait ConfigAwareTrait {
   /**
    * The configuration.
    *
-   * @var \AlexSkrypnyk\Shellvar\Config\Config
+   * @var \DrevOps\Shellvar\Config\Config
    */
   protected $config;
 
   /**
    * Get the configuration.
    *
-   * @return \AlexSkrypnyk\Shellvar\Config\Config
+   * @return \DrevOps\Shellvar\Config\Config
    *   The configuration.
    */
   public function getConfig(): Config {
@@ -32,7 +32,7 @@ trait ConfigAwareTrait {
   /**
    * Set the configuration.
    *
-   * @param \AlexSkrypnyk\Shellvar\Config\Config $config
+   * @param \DrevOps\Shellvar\Config\Config $config
    *   The configuration to set.
    */
   public function setConfig(Config $config): void {
@@ -44,7 +44,7 @@ trait ConfigAwareTrait {
   /**
    * Process the configuration.
    *
-   * @param \AlexSkrypnyk\Shellvar\Config\Config $config
+   * @param \DrevOps\Shellvar\Config\Config $config
    *   The configuration to process.
    */
   protected function processConfig(Config $config): void {

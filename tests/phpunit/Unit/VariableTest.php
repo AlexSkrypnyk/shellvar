@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace AlexSkrypnyk\Shellvar\Tests\Unit;
+namespace DrevOps\Shellvar\Tests\Unit;
 
-use AlexSkrypnyk\Shellvar\Variable\Variable;
-use AlexSkrypnyk\Shellvar\Variable\VariableAwareTrait;
+use DrevOps\Shellvar\Variable\Variable;
+use DrevOps\Shellvar\Variable\VariableAwareTrait;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 /**

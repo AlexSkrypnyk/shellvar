@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace AlexSkrypnyk\Shellvar\Formatter;
+namespace DrevOps\Shellvar\Formatter;
 
-use AlexSkrypnyk\Shellvar\AbstractManager;
+use DrevOps\Shellvar\AbstractManager;
 use Symfony\Component\Console\Input\InputOption;
 
 /**
@@ -31,7 +31,7 @@ class FormatterManager extends AbstractManager {
   /**
    * Format provided variables using the format specified in config.
    *
-   * @param \AlexSkrypnyk\Shellvar\Variable\Variable[] $variables
+   * @param \DrevOps\Shellvar\Variable\Variable[] $variables
    *   The variables to format.
    *
    * @return string
